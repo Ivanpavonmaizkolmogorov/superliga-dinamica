@@ -1,0 +1,10 @@
+{
+  "cuota_inscripcion": 15.0,
+  "reparto_premios_porcentaje": {
+    "1_clasificado_general": 20,
+    "pareja_ganadora": 20,
+    "2_clasificado_general": 20,
+    "mejor_2_vuelta": 20,
+    "campeon_invierno": 20
+  }
+}
