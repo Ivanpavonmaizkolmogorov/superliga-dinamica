@@ -1,0 +1,14 @@
+{
+  "cuota": 20.0,
+  "num_managers": 10,
+  "bote_total": 200.0,
+  "premios_pct": {
+    "Pareja de Oro": 0.357,
+    "Campeón Absoluto": 0.286,
+    "Subcampeón": 0.107,
+    "Ganador Sprint 1 (J1-10)": 0.029,
+    "Ganador Sprint 2 (J11-20)": 0.043,
+    "Ganador Sprint 3 (J21-30)": 0.071,
+    "Ganador Sprint 4 (J31-38)": 0.107
+  }
+}
