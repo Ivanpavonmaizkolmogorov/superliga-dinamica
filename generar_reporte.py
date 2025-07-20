@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import font, scrolledtext
 from gestor_datos import cargar_perfiles, cargar_parejas, cargar_config_liga
-from cronista import generar_cronica
+from cronista import generar_cronica, generar_comentario_premio # ## MODIFICADO ##
 
 def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     if not parejas: return ""
@@ -108,6 +108,56 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
             reporte += f"  - {nombre}: {valor:.2f} €\n"
     return reporte
 
+## --- NUEVA FUNCIÓN QUE GENERA COMENTARIOS DE LA IA SOBRE LOS PREMIOS --- ##
+def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual):
+    """
+    Crea una sección completa con los comentarios del cronista sobre los principales premios.
+    """
+    if not config_liga or not config_liga.get('premios_valor'):
+        return ""
+
+    print("Generando comentarios de la IA para los premios...")
+    
+    es_final = (jornada_actual == 38)
+    reporte = "\n\n---\n\n" + "🎤 **EL MICRÓFONO DEL CRONISTA: ANÁLISIS DE PREMIOS** 🎤\n\n"
+
+    # 1. Comentario para el Líder (o Campeón)
+    perfiles_ordenados = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])
+    if perfiles_ordenados:
+        campeon = perfiles_ordenados[0]
+        nombre_premio = "Campeón de Liga" if es_final else "Líder Actual"
+        comentario_campeon = generar_comentario_premio(nombre_premio, [campeon['nombre_mister']], jornada_actual, es_final)
+        reporte += f"**{nombre_premio}: {campeon['nombre_mister']}**\n_{comentario_campeon}_\n\n"
+
+    # 2. Comentario para la Pareja de Oro
+    if parejas:
+        clasificacion_parejas = []
+        for pareja in parejas:
+            puntos, num_miembros = 0, 0
+            for manager_id in pareja['id_managers']:
+                perfil = next((p for p in perfiles if p['id_manager'] == manager_id), None)
+                if perfil:
+                    puntos += perfil['historial_temporada'][-1]['puntos_totales']
+                    num_miembros += 1
+            media = puntos / num_miembros if num_miembros > 0 else 0
+            clasificacion_parejas.append({"nombre": pareja['nombre_pareja'], "media": media})
+        
+        if clasificacion_parejas:
+            pareja_ganadora = max(clasificacion_parejas, key=lambda x: x['media'])
+            nombre_premio_pareja = "Pareja de Oro (Campeones)" if es_final else "Pareja de Oro (Líderes)"
+            comentario_pareja = generar_comentario_premio(nombre_premio_pareja, [pareja_ganadora['nombre']], jornada_actual, es_final)
+            reporte += f"**{nombre_premio_pareja}: {pareja_ganadora['nombre']}**\n_{comentario_pareja}_\n\n"
+
+    # 3. Comentarios para Sprints finalizados
+    sprints = { "Sprint 1 (J1-10)": (1, 10), "Sprint 2 (J11-20)": (11, 20), "Sprint 3 (J21-30)": (21, 30), "Sprint 4 (J31-38)": (31, 38) }
+    for nombre, (inicio, fin) in sprints.items():
+        if jornada_actual >= fin: # Solo comentar si el sprint ha terminado
+            ganador = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= fin))
+            comentario_sprint = generar_comentario_premio(f"Ganador {nombre}", [ganador['nombre_mister']], jornada_actual, True) # Es un premio final
+            reporte += f"**Ganador {nombre}: {ganador['nombre_mister']}**\n_{comentario_sprint}_\n\n"
+
+    return reporte
+
 def main():
     print("--- GENERANDO REPORTE SEMANAL ---")
     perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
@@ -130,8 +180,16 @@ def main():
     reporte_parejas = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
     reporte_sprints = calcular_clasificacion_sprints(perfiles, jornada_actual)
     reporte_reparto_premios = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
+       ## --- MODIFICACIÓN FINAL --- ##
+    # Generamos la nueva sección de comentarios y la añadimos al reporte
+    reporte_comentarios_ia = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
     
-    reporte_final = reporte_individual + reporte_parejas + reporte_sprints + reporte_reparto_premios
+    reporte_final = (reporte_individual + 
+                     reporte_parejas + 
+                     reporte_sprints + 
+                     reporte_reparto_premios +
+                     reporte_comentarios_ia) # <-- SE AÑADE AQUÍ
+
 
     root = tk.Tk(); root.title(f"Reporte de la Jornada {jornada_actual}"); root.geometry("700x800")
     text_area = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=("Consolas", 10))

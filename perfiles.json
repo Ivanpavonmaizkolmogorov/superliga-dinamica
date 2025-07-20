@@ -1,86 +1,134 @@
 [
   {
-    "id_manager": "7101774",
-    "nombre_mister": "The 👑",
+    "id_manager": "13305509",
+    "nombre_mister": "PIRI",
     "apodo_lema": "El Novato",
     "historial_temporada": [
       {
         "jornada": 1,
-        "puntos_jornada": 46,
+        "puntos_jornada": 26,
         "puesto": 0,
-        "puntos_totales": 46
+        "puntos_totales": 26
       },
       {
         "jornada": 2,
-        "puntos_jornada": 79,
+        "puntos_jornada": 80,
         "puesto": 0,
-        "puntos_totales": 125
+        "puntos_totales": 106
       },
       {
         "jornada": 3,
-        "puntos_jornada": 82,
+        "puntos_jornada": 39,
         "puesto": 0,
-        "puntos_totales": 207
+        "puntos_totales": 145
       },
       {
         "jornada": 4,
-        "puntos_jornada": 81,
+        "puntos_jornada": 67,
         "puesto": 0,
-        "puntos_totales": 288
+        "puntos_totales": 212
       },
       {
         "jornada": 5,
-        "puntos_jornada": 78,
+        "puntos_jornada": 68,
         "puesto": 0,
-        "puntos_totales": 366
+        "puntos_totales": 280
       },
       {
         "jornada": 6,
-        "puntos_jornada": 67,
+        "puntos_jornada": 58,
         "puesto": 0,
-        "puntos_totales": 433
+        "puntos_totales": 338
       },
       {
         "jornada": 7,
-        "puntos_jornada": 51,
+        "puntos_jornada": 66,
         "puesto": 0,
-        "puntos_totales": 484
+        "puntos_totales": 404
       },
       {
         "jornada": 8,
-        "puntos_jornada": 58,
+        "puntos_jornada": 60,
         "puesto": 0,
-        "puntos_totales": 542
+        "puntos_totales": 464
       },
       {
         "jornada": 9,
-        "puntos_jornada": 69,
+        "puntos_jornada": 62,
         "puesto": 0,
-        "puntos_totales": 611
+        "puntos_totales": 526
       },
       {
         "jornada": 10,
-        "puntos_jornada": 28,
+        "puntos_jornada": 76,
         "puesto": 0,
-        "puntos_totales": 639
+        "puntos_totales": 602
       },
       {
         "jornada": 11,
-        "puntos_jornada": 69,
+        "puntos_jornada": 39,
         "puesto": 0,
-        "puntos_totales": 708
+        "puntos_totales": 641
       },
       {
         "jornada": 12,
-        "puntos_jornada": 75,
+        "puntos_jornada": 48,
         "puesto": 0,
-        "puntos_totales": 783
+        "puntos_totales": 689
       },
       {
         "jornada": 13,
-        "puntos_jornada": 78,
-        "puesto": 1,
+        "puntos_jornada": 67,
+        "puesto": 0,
+        "puntos_totales": 756
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 71,
+        "puesto": 0,
+        "puntos_totales": 827
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 34,
+        "puesto": 0,
         "puntos_totales": 861
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 66,
+        "puesto": 0,
+        "puntos_totales": 927
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 62,
+        "puesto": 0,
+        "puntos_totales": 989
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 62,
+        "puesto": 0,
+        "puntos_totales": 1051
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 84,
+        "puesto": 0,
+        "puntos_totales": 1135
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 85,
+        "puesto": 0,
+        "puntos_totales": 1220
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 66,
+        "puesto": 1,
+        "puntos_totales": 1286
       }
     ]
   },
@@ -91,251 +139,129 @@
     "historial_temporada": [
       {
         "jornada": 1,
-        "puntos_jornada": 80,
+        "puntos_jornada": 58,
         "puesto": 0,
-        "puntos_totales": 80
+        "puntos_totales": 58
       },
       {
         "jornada": 2,
-        "puntos_jornada": 32,
+        "puntos_jornada": 67,
         "puesto": 0,
-        "puntos_totales": 112
+        "puntos_totales": 125
       },
       {
         "jornada": 3,
-        "puntos_jornada": 79,
+        "puntos_jornada": 44,
         "puesto": 0,
-        "puntos_totales": 191
+        "puntos_totales": 169
       },
       {
         "jornada": 4,
-        "puntos_jornada": 81,
+        "puntos_jornada": 44,
         "puesto": 0,
-        "puntos_totales": 272
+        "puntos_totales": 213
       },
       {
         "jornada": 5,
-        "puntos_jornada": 62,
-        "puesto": 0,
-        "puntos_totales": 334
-      },
-      {
-        "jornada": 6,
-        "puntos_jornada": 37,
-        "puesto": 0,
-        "puntos_totales": 371
-      },
-      {
-        "jornada": 7,
-        "puntos_jornada": 56,
-        "puesto": 0,
-        "puntos_totales": 427
-      },
-      {
-        "jornada": 8,
-        "puntos_jornada": 59,
-        "puesto": 0,
-        "puntos_totales": 486
-      },
-      {
-        "jornada": 9,
-        "puntos_jornada": 65,
-        "puesto": 0,
-        "puntos_totales": 551
-      },
-      {
-        "jornada": 10,
         "puntos_jornada": 64,
         "puesto": 0,
-        "puntos_totales": 615
-      },
-      {
-        "jornada": 11,
-        "puntos_jornada": 82,
-        "puesto": 0,
-        "puntos_totales": 697
-      },
-      {
-        "jornada": 12,
-        "puntos_jornada": 76,
-        "puesto": 0,
-        "puntos_totales": 773
-      },
-      {
-        "jornada": 13,
-        "puntos_jornada": 61,
-        "puesto": 2,
-        "puntos_totales": 834
-      }
-    ]
-  },
-  {
-    "id_manager": "13305509",
-    "nombre_mister": "PIRI",
-    "apodo_lema": "El Novato",
-    "historial_temporada": [
-      {
-        "jornada": 1,
-        "puntos_jornada": 80,
-        "puesto": 0,
-        "puntos_totales": 80
-      },
-      {
-        "jornada": 2,
-        "puntos_jornada": 51,
-        "puesto": 0,
-        "puntos_totales": 131
-      },
-      {
-        "jornada": 3,
-        "puntos_jornada": 62,
-        "puesto": 0,
-        "puntos_totales": 193
-      },
-      {
-        "jornada": 4,
-        "puntos_jornada": 50,
-        "puesto": 0,
-        "puntos_totales": 243
-      },
-      {
-        "jornada": 5,
-        "puntos_jornada": 31,
-        "puesto": 0,
-        "puntos_totales": 274
+        "puntos_totales": 277
       },
       {
         "jornada": 6,
-        "puntos_jornada": 74,
+        "puntos_jornada": 70,
         "puesto": 0,
-        "puntos_totales": 348
+        "puntos_totales": 347
       },
       {
         "jornada": 7,
-        "puntos_jornada": 73,
+        "puntos_jornada": 63,
         "puesto": 0,
-        "puntos_totales": 421
+        "puntos_totales": 410
       },
       {
         "jornada": 8,
-        "puntos_jornada": 72,
+        "puntos_jornada": 62,
         "puesto": 0,
-        "puntos_totales": 493
+        "puntos_totales": 472
       },
       {
         "jornada": 9,
         "puntos_jornada": 48,
         "puesto": 0,
-        "puntos_totales": 541
+        "puntos_totales": 520
       },
       {
         "jornada": 10,
-        "puntos_jornada": 56,
-        "puesto": 0,
-        "puntos_totales": 597
-      },
-      {
-        "jornada": 11,
-        "puntos_jornada": 81,
-        "puesto": 0,
-        "puntos_totales": 678
-      },
-      {
-        "jornada": 12,
-        "puntos_jornada": 73,
-        "puesto": 0,
-        "puntos_totales": 751
-      },
-      {
-        "jornada": 13,
-        "puntos_jornada": 61,
-        "puesto": 3,
-        "puntos_totales": 812
-      }
-    ]
-  },
-  {
-    "id_manager": "7106479",
-    "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-    "apodo_lema": "El Novato",
-    "historial_temporada": [
-      {
-        "jornada": 1,
-        "puntos_jornada": 25,
-        "puesto": 0,
-        "puntos_totales": 25
-      },
-      {
-        "jornada": 2,
-        "puntos_jornada": 38,
-        "puesto": 0,
-        "puntos_totales": 63
-      },
-      {
-        "jornada": 3,
-        "puntos_jornada": 74,
-        "puesto": 0,
-        "puntos_totales": 137
-      },
-      {
-        "jornada": 4,
-        "puntos_jornada": 43,
-        "puesto": 0,
-        "puntos_totales": 180
-      },
-      {
-        "jornada": 5,
-        "puntos_jornada": 33,
-        "puesto": 0,
-        "puntos_totales": 213
-      },
-      {
-        "jornada": 6,
         "puntos_jornada": 79,
         "puesto": 0,
-        "puntos_totales": 292
-      },
-      {
-        "jornada": 7,
-        "puntos_jornada": 55,
-        "puesto": 0,
-        "puntos_totales": 347
-      },
-      {
-        "jornada": 8,
-        "puntos_jornada": 78,
-        "puesto": 0,
-        "puntos_totales": 425
-      },
-      {
-        "jornada": 9,
-        "puntos_jornada": 71,
-        "puesto": 0,
-        "puntos_totales": 496
-      },
-      {
-        "jornada": 10,
-        "puntos_jornada": 53,
-        "puesto": 0,
-        "puntos_totales": 549
+        "puntos_totales": 599
       },
       {
         "jornada": 11,
-        "puntos_jornada": 59,
+        "puntos_jornada": 62,
         "puesto": 0,
-        "puntos_totales": 608
+        "puntos_totales": 661
       },
       {
         "jornada": 12,
-        "puntos_jornada": 56,
+        "puntos_jornada": 60,
         "puesto": 0,
-        "puntos_totales": 664
+        "puntos_totales": 721
       },
       {
         "jornada": 13,
-        "puntos_jornada": 50,
-        "puesto": 4,
-        "puntos_totales": 714
+        "puntos_jornada": 36,
+        "puesto": 0,
+        "puntos_totales": 757
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 45,
+        "puesto": 0,
+        "puntos_totales": 802
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 75,
+        "puesto": 0,
+        "puntos_totales": 877
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 71,
+        "puesto": 0,
+        "puntos_totales": 948
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 68,
+        "puesto": 0,
+        "puntos_totales": 1016
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 62,
+        "puesto": 0,
+        "puntos_totales": 1078
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 72,
+        "puesto": 0,
+        "puntos_totales": 1150
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 51,
+        "puesto": 0,
+        "puntos_totales": 1201
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 73,
+        "puesto": 2,
+        "puntos_totales": 1274
       }
     ]
   },
@@ -346,342 +272,135 @@
     "historial_temporada": [
       {
         "jornada": 1,
-        "puntos_jornada": 36,
+        "puntos_jornada": 57,
         "puesto": 0,
-        "puntos_totales": 36
+        "puntos_totales": 57
       },
       {
         "jornada": 2,
-        "puntos_jornada": 45,
+        "puntos_jornada": 60,
         "puesto": 0,
-        "puntos_totales": 81
+        "puntos_totales": 117
       },
       {
         "jornada": 3,
-        "puntos_jornada": 81,
-        "puesto": 0,
-        "puntos_totales": 162
-      },
-      {
-        "jornada": 4,
-        "puntos_jornada": 59,
-        "puesto": 0,
-        "puntos_totales": 221
-      },
-      {
-        "jornada": 5,
-        "puntos_jornada": 37,
-        "puesto": 0,
-        "puntos_totales": 258
-      },
-      {
-        "jornada": 6,
-        "puntos_jornada": 84,
-        "puesto": 0,
-        "puntos_totales": 342
-      },
-      {
-        "jornada": 7,
-        "puntos_jornada": 55,
-        "puesto": 0,
-        "puntos_totales": 397
-      },
-      {
-        "jornada": 8,
-        "puntos_jornada": 31,
-        "puesto": 0,
-        "puntos_totales": 428
-      },
-      {
-        "jornada": 9,
-        "puntos_jornada": 30,
-        "puesto": 0,
-        "puntos_totales": 458
-      },
-      {
-        "jornada": 10,
-        "puntos_jornada": 79,
-        "puesto": 0,
-        "puntos_totales": 537
-      },
-      {
-        "jornada": 11,
-        "puntos_jornada": 75,
-        "puesto": 0,
-        "puntos_totales": 612
-      },
-      {
-        "jornada": 12,
-        "puntos_jornada": 33,
-        "puesto": 0,
-        "puntos_totales": 645
-      },
-      {
-        "jornada": 13,
-        "puntos_jornada": 62,
-        "puesto": 5,
-        "puntos_totales": 707
-      }
-    ]
-  },
-  {
-    "id_manager": "7110624",
-    "nombre_mister": "Al Hansi Flick 🏆🏆",
-    "apodo_lema": "El Novato",
-    "historial_temporada": [
-      {
-        "jornada": 1,
-        "puntos_jornada": 83,
-        "puesto": 0,
-        "puntos_totales": 83
-      },
-      {
-        "jornada": 2,
-        "puntos_jornada": 69,
-        "puesto": 0,
-        "puntos_totales": 152
-      },
-      {
-        "jornada": 3,
-        "puntos_jornada": 48,
-        "puesto": 0,
-        "puntos_totales": 200
-      },
-      {
-        "jornada": 4,
-        "puntos_jornada": 73,
-        "puesto": 0,
-        "puntos_totales": 273
-      },
-      {
-        "jornada": 5,
-        "puntos_jornada": 70,
-        "puesto": 0,
-        "puntos_totales": 343
-      },
-      {
-        "jornada": 6,
-        "puntos_jornada": 27,
-        "puesto": 0,
-        "puntos_totales": 370
-      },
-      {
-        "jornada": 7,
-        "puntos_jornada": 73,
-        "puesto": 0,
-        "puntos_totales": 443
-      },
-      {
-        "jornada": 8,
-        "puntos_jornada": 25,
-        "puesto": 0,
-        "puntos_totales": 468
-      },
-      {
-        "jornada": 9,
         "puntos_jornada": 38,
         "puesto": 0,
-        "puntos_totales": 506
-      },
-      {
-        "jornada": 10,
-        "puntos_jornada": 40,
-        "puesto": 0,
-        "puntos_totales": 546
-      },
-      {
-        "jornada": 11,
-        "puntos_jornada": 70,
-        "puesto": 0,
-        "puntos_totales": 616
-      },
-      {
-        "jornada": 12,
-        "puntos_jornada": 58,
-        "puesto": 0,
-        "puntos_totales": 674
-      },
-      {
-        "jornada": 13,
-        "puntos_jornada": 26,
-        "puesto": 6,
-        "puntos_totales": 700
-      }
-    ]
-  },
-  {
-    "id_manager": "7106544",
-    "nombre_mister": "THE ELEVATOR💪🏆",
-    "apodo_lema": "El Novato",
-    "historial_temporada": [
-      {
-        "jornada": 1,
-        "puntos_jornada": 48,
-        "puesto": 0,
-        "puntos_totales": 48
-      },
-      {
-        "jornada": 2,
-        "puntos_jornada": 54,
-        "puesto": 0,
-        "puntos_totales": 102
-      },
-      {
-        "jornada": 3,
-        "puntos_jornada": 62,
-        "puesto": 0,
-        "puntos_totales": 164
+        "puntos_totales": 155
       },
       {
         "jornada": 4,
-        "puntos_jornada": 65,
+        "puntos_jornada": 85,
         "puesto": 0,
-        "puntos_totales": 229
+        "puntos_totales": 240
       },
       {
         "jornada": 5,
-        "puntos_jornada": 66,
+        "puntos_jornada": 76,
         "puesto": 0,
-        "puntos_totales": 295
+        "puntos_totales": 316
       },
       {
         "jornada": 6,
-        "puntos_jornada": 36,
+        "puntos_jornada": 40,
         "puesto": 0,
-        "puntos_totales": 331
+        "puntos_totales": 356
       },
       {
         "jornada": 7,
         "puntos_jornada": 78,
         "puesto": 0,
-        "puntos_totales": 409
+        "puntos_totales": 434
       },
       {
         "jornada": 8,
-        "puntos_jornada": 39,
+        "puntos_jornada": 63,
         "puesto": 0,
-        "puntos_totales": 448
+        "puntos_totales": 497
       },
       {
         "jornada": 9,
-        "puntos_jornada": 30,
+        "puntos_jornada": 69,
         "puesto": 0,
-        "puntos_totales": 478
+        "puntos_totales": 566
       },
       {
         "jornada": 10,
-        "puntos_jornada": 72,
+        "puntos_jornada": 55,
         "puesto": 0,
-        "puntos_totales": 550
+        "puntos_totales": 621
       },
       {
         "jornada": 11,
-        "puntos_jornada": 25,
-        "puesto": 0,
-        "puntos_totales": 575
-      },
-      {
-        "jornada": 12,
-        "puntos_jornada": 66,
-        "puesto": 0,
-        "puntos_totales": 641
-      },
-      {
-        "jornada": 13,
-        "puntos_jornada": 56,
-        "puesto": 7,
-        "puntos_totales": 697
-      }
-    ]
-  },
-  {
-    "id_manager": "7106472",
-    "nombre_mister": "Pericles Triano Muñoz",
-    "apodo_lema": "El Novato",
-    "historial_temporada": [
-      {
-        "jornada": 1,
-        "puntos_jornada": 76,
-        "puesto": 0,
-        "puntos_totales": 76
-      },
-      {
-        "jornada": 2,
-        "puntos_jornada": 33,
-        "puesto": 0,
-        "puntos_totales": 109
-      },
-      {
-        "jornada": 3,
-        "puntos_jornada": 64,
-        "puesto": 0,
-        "puntos_totales": 173
-      },
-      {
-        "jornada": 4,
-        "puntos_jornada": 38,
-        "puesto": 0,
-        "puntos_totales": 211
-      },
-      {
-        "jornada": 5,
-        "puntos_jornada": 58,
-        "puesto": 0,
-        "puntos_totales": 269
-      },
-      {
-        "jornada": 6,
         "puntos_jornada": 79,
         "puesto": 0,
-        "puntos_totales": 348
-      },
-      {
-        "jornada": 7,
-        "puntos_jornada": 37,
-        "puesto": 0,
-        "puntos_totales": 385
-      },
-      {
-        "jornada": 8,
-        "puntos_jornada": 57,
-        "puesto": 0,
-        "puntos_totales": 442
-      },
-      {
-        "jornada": 9,
-        "puntos_jornada": 39,
-        "puesto": 0,
-        "puntos_totales": 481
-      },
-      {
-        "jornada": 10,
-        "puntos_jornada": 40,
-        "puesto": 0,
-        "puntos_totales": 521
-      },
-      {
-        "jornada": 11,
-        "puntos_jornada": 47,
-        "puesto": 0,
-        "puntos_totales": 568
+        "puntos_totales": 700
       },
       {
         "jornada": 12,
-        "puntos_jornada": 36,
+        "puntos_jornada": 56,
         "puesto": 0,
-        "puntos_totales": 604
+        "puntos_totales": 756
       },
       {
         "jornada": 13,
+        "puntos_jornada": 58,
+        "puesto": 0,
+        "puntos_totales": 814
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 871
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 62,
+        "puesto": 0,
+        "puntos_totales": 933
+      },
+      {
+        "jornada": 16,
         "puntos_jornada": 59,
-        "puesto": 8,
-        "puntos_totales": 663
+        "puesto": 0,
+        "puntos_totales": 992
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 34,
+        "puesto": 0,
+        "puntos_totales": 1026
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 67,
+        "puesto": 0,
+        "puntos_totales": 1093
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 50,
+        "puesto": 0,
+        "puntos_totales": 1143
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 80,
+        "puesto": 0,
+        "puntos_totales": 1223
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 29,
+        "puesto": 3,
+        "puntos_totales": 1252
       }
     ]
   },
   {
-    "id_manager": "12112883",
-    "nombre_mister": "Francis",
+    "id_manager": "7101774",
+    "nombre_mister": "The 👑",
     "apodo_lema": "El Novato",
     "historial_temporada": [
       {
@@ -692,75 +411,256 @@
       },
       {
         "jornada": 2,
-        "puntos_jornada": 38,
+        "puntos_jornada": 44,
         "puesto": 0,
-        "puntos_totales": 77
+        "puntos_totales": 83
       },
       {
         "jornada": 3,
-        "puntos_jornada": 25,
+        "puntos_jornada": 50,
         "puesto": 0,
-        "puntos_totales": 102
+        "puntos_totales": 133
       },
       {
         "jornada": 4,
-        "puntos_jornada": 72,
+        "puntos_jornada": 53,
         "puesto": 0,
-        "puntos_totales": 174
+        "puntos_totales": 186
       },
       {
         "jornada": 5,
-        "puntos_jornada": 67,
+        "puntos_jornada": 30,
         "puesto": 0,
-        "puntos_totales": 241
+        "puntos_totales": 216
       },
       {
         "jornada": 6,
-        "puntos_jornada": 31,
+        "puntos_jornada": 60,
         "puesto": 0,
-        "puntos_totales": 272
+        "puntos_totales": 276
       },
       {
         "jornada": 7,
-        "puntos_jornada": 68,
+        "puntos_jornada": 66,
         "puesto": 0,
-        "puntos_totales": 340
+        "puntos_totales": 342
       },
       {
         "jornada": 8,
         "puntos_jornada": 80,
         "puesto": 0,
-        "puntos_totales": 420
+        "puntos_totales": 422
       },
       {
         "jornada": 9,
-        "puntos_jornada": 45,
+        "puntos_jornada": 53,
         "puesto": 0,
-        "puntos_totales": 465
+        "puntos_totales": 475
       },
       {
         "jornada": 10,
-        "puntos_jornada": 42,
+        "puntos_jornada": 75,
         "puesto": 0,
-        "puntos_totales": 507
+        "puntos_totales": 550
       },
       {
         "jornada": 11,
-        "puntos_jornada": 62,
+        "puntos_jornada": 32,
         "puesto": 0,
-        "puntos_totales": 569
+        "puntos_totales": 582
       },
       {
         "jornada": 12,
-        "puntos_jornada": 56,
+        "puntos_jornada": 58,
         "puesto": 0,
-        "puntos_totales": 625
+        "puntos_totales": 640
       },
       {
         "jornada": 13,
+        "puntos_jornada": 45,
+        "puesto": 0,
+        "puntos_totales": 685
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 48,
+        "puesto": 0,
+        "puntos_totales": 733
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 65,
+        "puesto": 0,
+        "puntos_totales": 798
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 64,
+        "puesto": 0,
+        "puntos_totales": 862
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 919
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 79,
+        "puesto": 0,
+        "puntos_totales": 998
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 78,
+        "puesto": 0,
+        "puntos_totales": 1076
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 78,
+        "puesto": 0,
+        "puntos_totales": 1154
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 83,
+        "puesto": 4,
+        "puntos_totales": 1237
+      }
+    ]
+  },
+  {
+    "id_manager": "7110624",
+    "nombre_mister": "Al Hansi Flick 🏆🏆",
+    "apodo_lema": "El Novato",
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 57
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 112
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 34,
+        "puesto": 0,
+        "puntos_totales": 146
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 49,
+        "puesto": 0,
+        "puntos_totales": 195
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 74,
+        "puesto": 0,
+        "puntos_totales": 269
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 42,
+        "puesto": 0,
+        "puntos_totales": 311
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 73,
+        "puesto": 0,
+        "puntos_totales": 384
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 35,
+        "puesto": 0,
+        "puntos_totales": 419
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 74,
+        "puesto": 0,
+        "puntos_totales": 493
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 73,
+        "puesto": 0,
+        "puntos_totales": 566
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 54,
+        "puesto": 0,
+        "puntos_totales": 620
+      },
+      {
+        "jornada": 12,
         "puntos_jornada": 32,
-        "puesto": 9,
-        "puntos_totales": 657
+        "puesto": 0,
+        "puntos_totales": 652
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 81,
+        "puesto": 0,
+        "puntos_totales": 733
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 27,
+        "puesto": 0,
+        "puntos_totales": 760
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 74,
+        "puesto": 0,
+        "puntos_totales": 834
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 49,
+        "puesto": 0,
+        "puntos_totales": 883
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 940
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 74,
+        "puesto": 0,
+        "puntos_totales": 1014
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 75,
+        "puesto": 0,
+        "puntos_totales": 1089
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 59,
+        "puesto": 0,
+        "puntos_totales": 1148
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 64,
+        "puesto": 5,
+        "puntos_totales": 1212
       }
     ]
   },
@@ -771,81 +671,661 @@
     "historial_temporada": [
       {
         "jornada": 1,
-        "puntos_jornada": 40,
+        "puntos_jornada": 63,
         "puesto": 0,
-        "puntos_totales": 40
+        "puntos_totales": 63
       },
       {
         "jornada": 2,
-        "puntos_jornada": 47,
+        "puntos_jornada": 58,
         "puesto": 0,
-        "puntos_totales": 87
+        "puntos_totales": 121
       },
       {
         "jornada": 3,
-        "puntos_jornada": 51,
+        "puntos_jornada": 85,
         "puesto": 0,
-        "puntos_totales": 138
+        "puntos_totales": 206
       },
       {
         "jornada": 4,
-        "puntos_jornada": 31,
+        "puntos_jornada": 48,
         "puesto": 0,
-        "puntos_totales": 169
+        "puntos_totales": 254
       },
       {
         "jornada": 5,
-        "puntos_jornada": 68,
+        "puntos_jornada": 66,
         "puesto": 0,
-        "puntos_totales": 237
+        "puntos_totales": 320
       },
       {
         "jornada": 6,
-        "puntos_jornada": 32,
+        "puntos_jornada": 85,
         "puesto": 0,
-        "puntos_totales": 269
+        "puntos_totales": 405
       },
       {
         "jornada": 7,
-        "puntos_jornada": 57,
+        "puntos_jornada": 55,
         "puesto": 0,
-        "puntos_totales": 326
+        "puntos_totales": 460
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 32,
+        "puesto": 0,
+        "puntos_totales": 492
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 30,
+        "puesto": 0,
+        "puntos_totales": 522
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 73,
+        "puesto": 0,
+        "puntos_totales": 595
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 84,
+        "puesto": 0,
+        "puntos_totales": 679
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 71,
+        "puesto": 0,
+        "puntos_totales": 750
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 805
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 64,
+        "puesto": 0,
+        "puntos_totales": 869
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 66,
+        "puesto": 0,
+        "puntos_totales": 935
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 25,
+        "puesto": 0,
+        "puntos_totales": 960
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 80,
+        "puesto": 0,
+        "puntos_totales": 1040
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 74,
+        "puesto": 0,
+        "puntos_totales": 1114
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 34,
+        "puesto": 0,
+        "puntos_totales": 1148
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 31,
+        "puesto": 0,
+        "puntos_totales": 1179
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 25,
+        "puesto": 6,
+        "puntos_totales": 1204
+      }
+    ]
+  },
+  {
+    "id_manager": "7106472",
+    "nombre_mister": "Pericles Triano Muñoz",
+    "apodo_lema": "El Novato",
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 70,
+        "puesto": 0,
+        "puntos_totales": 70
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 82,
+        "puesto": 0,
+        "puntos_totales": 152
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 58,
+        "puesto": 0,
+        "puntos_totales": 210
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 79,
+        "puesto": 0,
+        "puntos_totales": 289
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 31,
+        "puesto": 0,
+        "puntos_totales": 320
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 76,
+        "puesto": 0,
+        "puntos_totales": 396
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 56,
+        "puesto": 0,
+        "puntos_totales": 452
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 507
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 34,
+        "puesto": 0,
+        "puntos_totales": 541
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 64,
+        "puesto": 0,
+        "puntos_totales": 605
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 39,
+        "puesto": 0,
+        "puntos_totales": 644
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 26,
+        "puesto": 0,
+        "puntos_totales": 670
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 43,
+        "puesto": 0,
+        "puntos_totales": 713
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 77,
+        "puesto": 0,
+        "puntos_totales": 790
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 54,
+        "puesto": 0,
+        "puntos_totales": 844
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 37,
+        "puesto": 0,
+        "puntos_totales": 881
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 26,
+        "puesto": 0,
+        "puntos_totales": 907
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 72,
+        "puesto": 0,
+        "puntos_totales": 979
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 78,
+        "puesto": 0,
+        "puntos_totales": 1057
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 62,
+        "puesto": 0,
+        "puntos_totales": 1119
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 54,
+        "puesto": 7,
+        "puntos_totales": 1173
+      }
+    ]
+  },
+  {
+    "id_manager": "7106544",
+    "nombre_mister": "THE ELEVATOR💪🏆",
+    "apodo_lema": "El Novato",
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 45,
+        "puesto": 0,
+        "puntos_totales": 45
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 41,
+        "puesto": 0,
+        "puntos_totales": 86
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 40,
+        "puesto": 0,
+        "puntos_totales": 126
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 26,
+        "puesto": 0,
+        "puntos_totales": 152
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 64,
+        "puesto": 0,
+        "puntos_totales": 216
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 52,
+        "puesto": 0,
+        "puntos_totales": 268
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 82,
+        "puesto": 0,
+        "puntos_totales": 350
       },
       {
         "jornada": 8,
         "puntos_jornada": 29,
         "puesto": 0,
-        "puntos_totales": 355
+        "puntos_totales": 379
       },
       {
         "jornada": 9,
-        "puntos_jornada": 77,
+        "puntos_jornada": 40,
         "puesto": 0,
-        "puntos_totales": 432
+        "puntos_totales": 419
       },
       {
         "jornada": 10,
-        "puntos_jornada": 38,
+        "puntos_jornada": 78,
         "puesto": 0,
-        "puntos_totales": 470
+        "puntos_totales": 497
       },
       {
         "jornada": 11,
-        "puntos_jornada": 85,
+        "puntos_jornada": 67,
         "puesto": 0,
-        "puntos_totales": 555
+        "puntos_totales": 564
       },
       {
         "jornada": 12,
-        "puntos_jornada": 32,
+        "puntos_jornada": 71,
         "puesto": 0,
-        "puntos_totales": 587
+        "puntos_totales": 635
       },
       {
         "jornada": 13,
+        "puntos_jornada": 82,
+        "puesto": 0,
+        "puntos_totales": 717
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 33,
+        "puesto": 0,
+        "puntos_totales": 750
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 47,
+        "puesto": 0,
+        "puntos_totales": 797
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 26,
+        "puesto": 0,
+        "puntos_totales": 823
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 67,
+        "puesto": 0,
+        "puntos_totales": 890
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 81,
+        "puesto": 0,
+        "puntos_totales": 971
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 67,
+        "puesto": 0,
+        "puntos_totales": 1038
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 1095
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 73,
+        "puesto": 8,
+        "puntos_totales": 1168
+      }
+    ]
+  },
+  {
+    "id_manager": "12112883",
+    "nombre_mister": "Francis",
+    "apodo_lema": "El Novato",
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 49,
+        "puesto": 0,
+        "puntos_totales": 49
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 76,
+        "puesto": 0,
+        "puntos_totales": 125
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 62,
+        "puesto": 0,
+        "puntos_totales": 187
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 242
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 299
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 68,
+        "puesto": 0,
+        "puntos_totales": 367
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 53,
+        "puesto": 0,
+        "puntos_totales": 420
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 71,
+        "puesto": 0,
+        "puntos_totales": 491
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 27,
+        "puesto": 0,
+        "puntos_totales": 518
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 60,
+        "puesto": 0,
+        "puntos_totales": 578
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 76,
+        "puesto": 0,
+        "puntos_totales": 654
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 25,
+        "puesto": 0,
+        "puntos_totales": 679
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 26,
+        "puesto": 0,
+        "puntos_totales": 705
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 41,
+        "puesto": 0,
+        "puntos_totales": 746
+      },
+      {
+        "jornada": 15,
         "puntos_jornada": 46,
+        "puesto": 0,
+        "puntos_totales": 792
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 33,
+        "puesto": 0,
+        "puntos_totales": 825
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 28,
+        "puesto": 0,
+        "puntos_totales": 853
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 79,
+        "puesto": 0,
+        "puntos_totales": 932
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 987
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 74,
+        "puesto": 0,
+        "puntos_totales": 1061
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 31,
+        "puesto": 9,
+        "puntos_totales": 1092
+      }
+    ]
+  },
+  {
+    "id_manager": "7106479",
+    "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+    "apodo_lema": "El Novato",
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 77,
+        "puesto": 0,
+        "puntos_totales": 77
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 27,
+        "puesto": 0,
+        "puntos_totales": 104
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 27,
+        "puesto": 0,
+        "puntos_totales": 131
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 49,
+        "puesto": 0,
+        "puntos_totales": 180
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 31,
+        "puesto": 0,
+        "puntos_totales": 211
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 70,
+        "puesto": 0,
+        "puntos_totales": 281
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 58,
+        "puesto": 0,
+        "puntos_totales": 339
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 78,
+        "puesto": 0,
+        "puntos_totales": 417
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 25,
+        "puesto": 0,
+        "puntos_totales": 442
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 85,
+        "puesto": 0,
+        "puntos_totales": 527
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 584
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 61,
+        "puesto": 0,
+        "puntos_totales": 645
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 702
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 27,
+        "puesto": 0,
+        "puntos_totales": 729
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 40,
+        "puesto": 0,
+        "puntos_totales": 769
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 25,
+        "puesto": 0,
+        "puntos_totales": 794
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 29,
+        "puesto": 0,
+        "puntos_totales": 823
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 74,
+        "puesto": 0,
+        "puntos_totales": 897
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 81,
+        "puesto": 0,
+        "puntos_totales": 978
+      },
+      {
+        "jornada": 20,
+        "puntos_jornada": 50,
+        "puesto": 0,
+        "puntos_totales": 1028
+      },
+      {
+        "jornada": 21,
+        "puntos_jornada": 56,
         "puesto": 10,
-        "puntos_totales": 633
+        "puntos_totales": 1084
       }
     ]
   }

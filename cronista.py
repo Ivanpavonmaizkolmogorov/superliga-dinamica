@@ -18,6 +18,8 @@ else:
     print("ADVERTENCIA: No se encontró GEMINI_API_KEY. Las crónicas no se generarán.")
 
 
+
+
 def generar_cronica(perfil_manager, datos_actuales):
     """
     Genera una crónica personalizada para un mánager, teniendo en cuenta sus títulos.
@@ -128,3 +130,45 @@ def crear_nombre_emergencia(perfiles):
     justificacion = "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
     
     return nombre_final, justificacion
+# Pega esto al final de tu archivo cronista.py
+
+## --- NUEVA FUNCIÓN PARA COMENTAR PREMIOS --- ##
+def generar_comentario_premio(nombre_premio, ganadores, jornada_actual, es_final):
+    """
+    Genera un comentario del cronista sobre un premio específico y sus ganadores.
+
+    Args:
+        nombre_premio (str): El nombre del premio (e.g., "Pareja de Oro").
+        ganadores (list): Una lista con los nombres de los mánagers ganadores.
+        jornada_actual (int): La jornada actual de la liga.
+        es_final (bool): True si el premio es definitivo (fin de liga o sprint).
+    """
+    global gemini_model # Es buena práctica asegurarse de que la variable global está accesible
+    if not gemini_model:
+        return "El cronista guarda silencio, impresionado por la hazaña."
+
+    # Adaptar el tono si el premio es definitivo o provisional
+    contexto_temporal = "Este es el veredicto final. ¡Ya no hay vuelta atrás!" if es_final else f"En la jornada {jornada_actual}, esta es la situación, pero todo puede cambiar."
+    
+    # Formatear la lista de ganadores para el prompt
+    nombres_ganadores = " y ".join(ganadores)
+
+    prompt = f"""
+    Actúa como un cronista deportivo legendario, analizando el cuadro de honor de una liga fantasy.
+    
+    Premio en disputa: "{nombre_premio}"
+    Ganador(es) actuales: {nombres_ganadores}
+    Contexto: {contexto_temporal}
+
+    Escribe un comentario muy breve (1-2 frases ingeniosas) sobre este logro. 
+    - Si es un premio final, habla de su legado, de cómo serán recordados. Sé épico o sarcástico.
+    - Si es provisional, comenta sobre si podrán mantener la posición, la presión que sienten o si es un espejismo.
+    
+    Sé directo y memorable.
+    """
+    try:
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"Error al generar comentario para el premio {nombre_premio}: {e}")
+        return f"El cronista se ha quedado sin palabras ante el logro de {nombres_ganadores}."
