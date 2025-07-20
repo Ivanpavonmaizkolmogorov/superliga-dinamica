@@ -6,32 +6,14 @@
     "historial_temporada": []
   },
   {
-    "id_manager": "7106544",
-    "nombre_mister": "THE ELEVATOR💪🏆",
-    "apodo_lema": "El Novato",
-    "historial_temporada": []
-  },
-  {
-    "id_manager": "7110624",
-    "nombre_mister": "Al Hansi Flick 🏆🏆",
-    "apodo_lema": "El Novato",
-    "historial_temporada": []
-  },
-  {
-    "id_manager": "13305509",
-    "nombre_mister": "PIRI",
-    "apodo_lema": "El Novato",
-    "historial_temporada": []
-  },
-  {
-    "id_manager": "8539397",
-    "nombre_mister": "Panda’s Team 🏆",
-    "apodo_lema": "El Novato",
-    "historial_temporada": []
-  },
-  {
     "id_manager": "7106479",
     "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+    "apodo_lema": "El Novato",
+    "historial_temporada": []
+  },
+  {
+    "id_manager": "7106544",
+    "nombre_mister": "THE ELEVATOR💪🏆",
     "apodo_lema": "El Novato",
     "historial_temporada": []
   },
@@ -42,8 +24,26 @@
     "historial_temporada": []
   },
   {
+    "id_manager": "7110624",
+    "nombre_mister": "Al Hansi Flick 🏆🏆",
+    "apodo_lema": "El Novato",
+    "historial_temporada": []
+  },
+  {
+    "id_manager": "8539397",
+    "nombre_mister": "Panda’s Team 🏆",
+    "apodo_lema": "El Novato",
+    "historial_temporada": []
+  },
+  {
     "id_manager": "12112883",
     "nombre_mister": "Francis",
+    "apodo_lema": "El Novato",
+    "historial_temporada": []
+  },
+  {
+    "id_manager": "13305509",
+    "nombre_mister": "PIRI",
     "apodo_lema": "El Novato",
     "historial_temporada": []
   }

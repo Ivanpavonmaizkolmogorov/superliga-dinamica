@@ -1,0 +1,34 @@
+[
+  {
+    "nombre_pareja": "Los Novatores",
+    "id_managers": [
+      "7106472",
+      "7110624"
+    ],
+    "justificacion": "El nombre \"Los Novatores\" captura la esencia del equipo de forma ingeniosa.  A pesar de que Al Hansi Flick ostenta dos títulos, ambos mánagers comparten el lema \"El Novato\", reflejando la relativa inexperiencia en la liga fantasy, a pesar de la experiencia de Flick en el mundo real.  El nombre juega con la palabra \"novato\", convirtiéndola en un término de identidad y fuerza,  sugiriendo que aunque son nuevos en esto, están listos para dejar su huella.  El plural \"Los Novatores\" añade una sensación de equipo y unidad,  preparados para desafiar a los equipos más establecidos."
+  },
+  {
+    "nombre_pareja": "Los Dos Caras de la Moneda",
+    "id_managers": [
+      "7106479",
+      "8539397"
+    ],
+    "justificacion": "Refleja la dualidad del equipo: por un lado, la inexperiencia representada por el lema 'El Novato' aplicado a ambos mánagers, y por otro, la promesa de futuro y la posibilidad de éxito, simbolizada por sus dos títulos conseguidos.  'Dos Caras' juega con la idea de la incertidumbre y el potencial, mientras que 'de la Moneda' aporta un toque elegante y evoca la posibilidad de que la suerte (o el talento) caiga de su lado."
+  },
+  {
+    "nombre_pareja": "Los Ascensores",
+    "id_managers": [
+      "7106544",
+      "12112883"
+    ],
+    "justificacion": "Combina el nombre de un mánager, \"THE ELEVATOR\" (El Ascensor), con la realidad de ser un equipo completamente novato.  \"Los Ascensores\" evoca la imagen de un equipo que está en ascenso, buscando su primer gran éxito, reflejando la falta de palmarés y el lema \"El Novato\" compartido por ambos mánagers.  Es un nombre divertido, memorable y que refleja con precisión la situación del equipo."
+  },
+  {
+    "nombre_pareja": "Los Polluelos Inmaculados",
+    "id_managers": [
+      "7107051",
+      "13305509"
+    ],
+    "justificacion": "El nombre refleja la inexperiencia de Perico y PIRI, ambos 'novatos' sin títulos.  'Polluelos' alude a su falta de experiencia,  mientras que 'Inmaculados' es una forma irónica y divertida de destacar sus '0' títulos,  sugiriendo una pureza de victoria aún por manchar."
+  }
+]

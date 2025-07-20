@@ -8,3 +8,12 @@ venv/
 # Python cache
 __pycache__/
 *.pyc
+
+# --- ¡AÑADIR ESTAS LÍNEAS! ---
+
+# Ignorar el perfil del navegador de Playwright
+# Esta carpeta contiene datos de sesión y caché, NUNCA debe subirse.
+playwright_edge_profile/
+
+# Ignorar archivos de caché de Playwright si se generan
+playwright-report/
