@@ -55,26 +55,34 @@ class SuperligaController:
         self.python_executable = sys.executable
         self.update_app_state_and_buttons()
         self.panel.log_message("Panel de Control listo. Selecciona una acción.")
+# Dentro de la clase SuperligaController en superliga.py
+
+    def accion_reset_temporada(self):
+        self.panel.log_message("\n>>> Lanzando Asistente de Reinicio de Temporada...")
+        self.run_script_in_subprocess('reiniciar_temporada.py')
+
+# Dentro de la clase SuperligaController en superliga.py
 
     def run_action(self, action_name):
         self.panel.set_all_buttons_state("disabled")
         self.panel.log_message(f"\n>>> Lanzando acción: '{action_name}'...")
+        self.panel.log_message("    (Revisa la consola principal para ver el progreso)")
         
-        # --- ¡ESTE ES EL CAMBIO CLAVE! ---
-        # Si la acción es 'formar_parejas', la tratamos de forma especial.
-        if action_name == 'formar_parejas':
-            thread = threading.Thread(target=self.accion_formar_parejas, daemon=True)
-            thread.start()
-            return # Salimos para no usar el método subprocess
-
-        # Para el resto, usamos el método estándar de subprocess
+        # --- ¡ESTA ES LA CORRECCIÓN! ---
+        # Añadimos la acción 'reset_season' al mapa.
         action_map = {
             'crear_perfiles': 'crear_perfiles.py',
             'run_jornada': 'procesar_jornada.py',
+            'formar_parejas': 'formar_parejas.py',
             'simular': 'simulador.py',
+            'reset_season': 'reiniciar_temporada.py' # <-- AÑADIR ESTA LÍNEA
+            # 'config_liga' lo dejaremos para el final
         }
+        
         script_a_lanzar = action_map.get(action_name)
+        
         if script_a_lanzar:
+            # La lógica para lanzar el script en un hilo ya es correcta
             thread = threading.Thread(target=self.run_script_in_subprocess, args=(script_a_lanzar,), daemon=True)
             thread.start()
         else:
