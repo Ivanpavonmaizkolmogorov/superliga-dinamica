@@ -1,50 +1,202 @@
 [
   {
-    "id_manager": "13305509",
-    "nombre_mister": "PIRI",
+    "id_manager": "7106472",
+    "nombre_mister": "Pericles Triano Muñoz",
     "apodo_lema": "El Novato",
-    "historial_temporada": []
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 0,
+        "puesto": 1,
+        "puntos_totales": 0
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 70,
+        "puesto": 0,
+        "puntos_totales": 144
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 57,
+        "puesto": 1,
+        "puntos_totales": 201
+      }
+    ]
   },
   {
     "id_manager": "8539397",
     "nombre_mister": "Panda’s Team 🏆",
     "apodo_lema": "El Novato",
-    "historial_temporada": []
-  },
-  {
-    "id_manager": "7107051",
-    "nombre_mister": "Perico",
-    "apodo_lema": "El Novato",
-    "historial_temporada": []
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 0,
+        "puesto": 6,
+        "puntos_totales": 0
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 36,
+        "puesto": 0,
+        "puntos_totales": 107
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 70,
+        "puesto": 2,
+        "puntos_totales": 177
+      }
+    ]
   },
   {
     "id_manager": "7106544",
     "nombre_mister": "THE ELEVATOR💪🏆",
     "apodo_lema": "El Novato",
-    "historial_temporada": []
-  },
-  {
-    "id_manager": "7106472",
-    "nombre_mister": "Pericles Triano Muñoz",
-    "apodo_lema": "El Novato",
-    "historial_temporada": []
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 0,
+        "puesto": 3,
+        "puntos_totales": 0
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 84,
+        "puesto": 0,
+        "puntos_totales": 124
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 38,
+        "puesto": 3,
+        "puntos_totales": 162
+      }
+    ]
   },
   {
     "id_manager": "7106479",
     "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
     "apodo_lema": "El Novato",
-    "historial_temporada": []
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 0,
+        "puesto": 2,
+        "puntos_totales": 0
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 92
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 58,
+        "puesto": 4,
+        "puntos_totales": 150
+      }
+    ]
   },
   {
-    "id_manager": "12112883",
-    "nombre_mister": "Francis",
+    "id_manager": "13305509",
+    "nombre_mister": "PIRI",
     "apodo_lema": "El Novato",
-    "historial_temporada": []
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 0,
+        "puesto": 8,
+        "puntos_totales": 0
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 51,
+        "puesto": 0,
+        "puntos_totales": 91
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 48,
+        "puesto": 5,
+        "puntos_totales": 139
+      }
+    ]
   },
   {
     "id_manager": "7110624",
     "nombre_mister": "Al Hansi Flick 🏆🏆",
     "apodo_lema": "El Novato",
-    "historial_temporada": []
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 0,
+        "puesto": 5,
+        "puntos_totales": 0
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 41,
+        "puesto": 0,
+        "puntos_totales": 85
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 47,
+        "puesto": 6,
+        "puntos_totales": 132
+      }
+    ]
+  },
+  {
+    "id_manager": "12112883",
+    "nombre_mister": "Francis",
+    "apodo_lema": "El Novato",
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 0,
+        "puesto": 7,
+        "puntos_totales": 0
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 29,
+        "puesto": 0,
+        "puntos_totales": 66
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 54,
+        "puesto": 7,
+        "puntos_totales": 120
+      }
+    ]
+  },
+  {
+    "id_manager": "7107051",
+    "nombre_mister": "Perico",
+    "apodo_lema": "El Novato",
+    "historial_temporada": [
+      {
+        "jornada": 1,
+        "puntos_jornada": 0,
+        "puesto": 4,
+        "puntos_totales": 0
+      },
+      {
+        "jornada": 2,
+        "puntos_jornada": 26,
+        "puesto": 0,
+        "puntos_totales": 78
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 32,
+        "puesto": 8,
+        "puntos_totales": 110
+      }
+    ]
   }
 ]
