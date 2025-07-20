@@ -1,12 +1,12 @@
-# scraper.py (Versión Final con Inyección de JavaScript)
+# scraper.py (Versión "Bingo" con Inyección de JavaScript que SÍ FUNCIONABA)
 
 from playwright.sync_api import sync_playwright, TimeoutError
 from config import MISTER_URL, PLAYWRIGHT_PROFILE_PATH
 import time
+import re
 
 def extraer_datos_mister():
-    if not MISTER_URL:
-        print("Error: Falta MISTER_URL_LIGA en .env"); return None
+    if not MISTER_URL: print("Error: Falta MISTER_URL_LIGA en .env"); return None
 
     print("Iniciando scraping con perfil DEDICADO...")
     
@@ -14,81 +14,82 @@ def extraer_datos_mister():
         context = None
         try:
             browser_args = ['--disable-session-crashed-bubble', '--start-maximized']
-            context = p.chromium.launch_persistent_context(
-                PLAYWRIGHT_PROFILE_PATH, 
-                headless=False, 
-                channel="msedge",
-                args=browser_args,
-                no_viewport=True
-            )
-            
+            context = p.chromium.launch_persistent_context(PLAYWRIGHT_PROFILE_PATH, headless=False, channel="msedge", args=browser_args, no_viewport=True)
             page = context.pages[0] if context.pages else context.new_page()
             
             print(f"Navegando a {MISTER_URL}...")
             page.goto(MISTER_URL, timeout=40000, wait_until="load")
             
-            print("Página cargada. Esperando 3 segundos para que todo se asiente...")
+            print("Página cargada. Esperando 3 segundos...")
             time.sleep(3)
 
-            # --- ¡NUEVO MÉTODO DE CLIC: INYECCIÓN DE JAVASCRIPT! ---
-            print("Forzando clic en 'General' mediante JavaScript...")
+            # --- Lógica de CLIC FORZADO ---
             try:
-                # Esta línea ejecuta código JavaScript directamente en la página del navegador
                 page.evaluate("document.querySelector('button[data-tab=\"total\"]').click()")
-                print("-> Clic forzado enviado. Esperando 2 segundos para la reacción de la UI...")
+                print("-> Clic en 'General' forzado. Esperando 2s...")
                 time.sleep(2)
-            except Exception as e:
-                # Este error solo debería ocurrir si no estamos logueados y el botón NO existe
-                print(f"No se pudo forzar el clic (posiblemente no se ha iniciado sesión). Error: {e}")
-                # Continuamos, la siguiente comprobación lo confirmará.
+            except Exception:
+                # Si esto falla es porque no estamos logueados.
+                pass
 
-            # --- NUEVO MÉTODO DE COMPROBACIÓN: BUSCAR DATOS DIRECTAMENTE ---
-            print("Comprobando el resultado: buscando datos de mánagers en el HTML...")
-            filas_managers = page.query_selector_all("div.panel-total ul.player-list li a.user")
+            # --- COMPROBACIÓN DEFINITIVA ---
+            filas_managers_html = page.query_selector_all("div.panel-total ul.player-list li a.user")
             
-            # Si después de todo, no encontramos mánagers, ENTONCES pedimos el login.
-            if not filas_managers:
-                print("\n" + "="*60)
-                print("¡ACCIÓN REQUERIDA! No se han encontrado datos de mánagers.")
-                print("Esto puede ser porque la sesión no está iniciada o la liga está vacía.")
-                print("1. En la ventana de Edge, INICIA SESIÓN con 'Recuérdame'.")
-                print("2. Cierra la ventana del navegador MANUALMENTE cuando termines.")
-                print("3. Vuelve a ejecutar el script.")
-                print("="*60)
+            if not filas_managers_html:
+                print("\n¡ACCIÓN REQUERIDA! No se han encontrado datos de mánagers (posiblemente sesión no iniciada).")
                 page.wait_for_event('close', timeout=300000)
-                return [] # Devolvemos lista vacía, que es un resultado válido.
+                return None # Devolvemos None para indicar un fallo que requiere acción
+
+            # --- SI HAY DATOS, EXTRAEMOS TODO ---
+            print(f"-> ¡Éxito! {len(filas_managers_html)} mánagers encontrados. Extrayendo datos...")
             
-            # --- SI HEMOS LLEGADO HASTA AQUÍ, ¡TENEMOS DATOS! ---
-            print(f"-> ¡Éxito! {len(filas_managers)} mánagers encontrados. Extrayendo datos...")
+            # 1. Datos Generales
             datos_generales = {}
-            # Re-localizamos las filas completas para obtener los puntos
             for fila in page.query_selector_all("div.panel-total ul.player-list li"):
-                link = fila.query_selector("a.user")
-                points = fila.query_selector("div.points")
+                link = fila.query_selector("a.user"); points = fila.query_selector("div.points")
                 if not link or not points: continue
-                
                 manager_id = link.get_attribute("href").split('/')[1]
                 nombre_element = fila.query_selector("div.name")
-                nombre_manager = nombre_element.inner_text().strip() if nombre_element else "Nombre no encontrado"
+                nombre_manager = nombre_element.inner_text().strip() if nombre_element else "N/A"
                 puntos_totales = int(points.inner_text().split()[0])
-                
-                datos_generales[manager_id] = {
-                    "puntos_totales": puntos_totales, "nombre_mister": nombre_manager
-                }
+                datos_generales[manager_id] = {"nombre_mister": nombre_manager, "puntos_totales": puntos_totales}
+
+            # 2. Datos de Jornada
+            page.evaluate("document.querySelector('button[data-tab=\"gameweek\"]').click()")
+            time.sleep(2)
             
+            datos_jornada = {}
+            numero_jornada_actual = 1
+            if not page.locator('div.panel-gameweek div.empty').is_visible():
+                opciones = page.query_selector_all("div.panel-gameweek select option")
+                if opciones:
+                    ultima_opcion = opciones[-1]
+                    texto_jornada = ultima_opcion.inner_text()
+                    numeros = re.findall(r'\d+', texto_jornada)
+                    if numeros: numero_jornada_actual = int(numeros[0])
+                    page.select_option("div.panel-gameweek select", value=ultima_opcion.get_attribute("value"))
+                    time.sleep(2)
+                
+                for fila in page.query_selector_all("div.panel-gameweek ul.player-list li"):
+                    link = fila.query_selector("a.user"); points = fila.query_selector("div.points")
+                    if not link or not points: continue
+                    manager_id = link.get_attribute("href").split('/')[1]
+                    datos_jornada[manager_id] = int(points.inner_text().split()[0])
+            
+            print(f"-> Última jornada detectada: {numero_jornada_actual}")
+
+            # 3. Fusión Final
             resultado_final = []
             for manager_id, data in datos_generales.items():
                 resultado_final.append({
                     "id_manager": manager_id, "nombre_mister": data["nombre_mister"],
-                    "puntos_jornada": 0, "puntos_totales": data["puntos_totales"]
+                    "puntos_jornada": datos_jornada.get(manager_id, 0),
+                    "puntos_totales": data["puntos_totales"]
                 })
             
-            print(f"Scraping completado. Datos procesados para {len(resultado_final)} mánagers.")
-            return resultado_final
+            return {"numero_jornada": numero_jornada_actual, "datos_managers": resultado_final}
 
         except Exception as e:
-            print(f"\n--- OCURRIÓ UN ERROR CRÍTICO DURANTE EL SCRAPING ---\nError: {e}")
-            return None
+            print(f"\n--- ERROR CRÍTICO ---\n{e}"); return None
         finally:
-            if context:
-                print("Cerrando el navegador..."); context.close(); print("Navegador cerrado.")
+            if context: print("Cerrando navegador..."); context.close()

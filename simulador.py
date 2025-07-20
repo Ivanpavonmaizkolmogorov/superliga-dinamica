@@ -1,60 +1,73 @@
 # simulador.py
+
 import random
-import copy
+from gestor_datos import cargar_perfiles, guardar_perfiles
 
-def generar_puntos_jornada_falsos(perfiles):
+def generar_datos_falsos(num_jornada_final, managers):
     """
-    Genera una lista de puntos de jornada falsos, uno por cada mánager,
-    con una ligera variación para que no todos saquen lo mismo.
+    Modifica los perfiles de los mánagers para simular que la temporada
+    ha avanzado hasta una jornada específica, generando un historial falso.
     """
-    puntos_falsos = []
-    for _ in perfiles:
-        # Simula una puntuación realista para una jornada de fantasy (entre 30 y 90)
-        puntos_falsos.append(random.randint(30, 90))
-    return puntos_falsos
+    print(f"\nGenerando historial falso hasta la jornada {num_jornada_final}...")
 
-def simular_nueva_jornada(perfiles):
-    """
-    Toma una lista de perfiles, les añade una nueva jornada simulada con puntos
-    aleatorios, recalcula los totales y los puestos, y devuelve los perfiles actualizados.
-    """
-    # Usamos deepcopy para asegurar que no modificamos la lista original accidentalmente
-    perfiles_simulados = copy.deepcopy(perfiles)
-    
-    puntos_jornada_falsos = generar_puntos_jornada_falsos(perfiles_simulados)
-    
-    # Primero, asignamos los puntos falsos y actualizamos los totales de cada mánager
-    for i, perfil in enumerate(perfiles_simulados):
-        puntos_jornada = puntos_jornada_falsos[i]
+    for manager in managers:
+        # Limpiamos cualquier historial previo para empezar de cero
+        manager['historial_temporada'] = []
+        puntos_totales_acumulados = 0
         
-        if perfil.get('historial_temporada'):
-            # Si ya hay historial, calculamos la nueva jornada y los puntos totales
-            ultima_jornada_historial = perfil['historial_temporada'][-1]
-            jornada_actual = ultima_jornada_historial.get('jornada', 0) + 1
-            puntos_totales_actuales = ultima_jornada_historial.get('puntos_totales', 0) + puntos_jornada
-        else:
-            # Si es la primera jornada para este mánager
-            jornada_actual = 1
-            puntos_totales_actuales = puntos_jornada
-            perfil['historial_temporada'] = [] # Aseguramos que la lista exista
+        for j in range(1, num_jornada_final + 1):
+            # Generamos puntos aleatorios pero realistas
+            puntos_jornada_actual = random.randint(25, 85)
+            puntos_totales_acumulados += puntos_jornada_actual
             
-        # Añadimos la nueva entrada al historial (el puesto aún es provisional)
-        perfil['historial_temporada'].append({
-            "jornada": jornada_actual,
-            "puntos_jornada": puntos_jornada,
-            "puesto": 0, # El puesto se recalculará a continuación
-            "puntos_totales": puntos_totales_actuales
-        })
+            manager['historial_temporada'].append({
+                "jornada": j,
+                "puntos_jornada": puntos_jornada_actual,
+                "puesto": 0, # Se recalculará después
+                "puntos_totales": puntos_totales_acumulados
+            })
 
-    # Segundo, una vez todos los totales están actualizados, ordenamos la lista completa
-    # para determinar los puestos correctos en esta nueva jornada.
-    perfiles_simulados.sort(
-        key=lambda p: p['historial_temporada'][-1]['puntos_totales'], 
-        reverse=True
-    )
+    # Recalculamos los puestos para la última jornada simulada
+    managers.sort(key=lambda m: m['historial_temporada'][-1]['puntos_totales'], reverse=True)
     
-    # Finalmente, actualizamos el puesto de cada mánager en su última entrada del historial
-    for i, perfil in enumerate(perfiles_simulados):
-        perfil['historial_temporada'][-1]['puesto'] = i + 1
+    for i, manager in enumerate(managers):
+        manager['historial_temporada'][-1]['puesto'] = i + 1
+
+    print("¡Historial falso generado con éxito!")
+    return managers
+
+def main():
+    """Función principal del simulador."""
+    print("\n" + "="*50)
+    print("--- SIMULADOR DE TEMPORADA DE LA SUPERLIGA ---")
+    print("="*50)
+
+    try:
+        jornada_a_simular = int(input("Introduce el número de jornada a la que quieres 'viajar' (1-38): "))
+        if not 1 <= jornada_a_simular <= 38:
+            print("Error: El número de jornada debe estar entre 1 y 38.")
+            return
+    except ValueError:
+        print("Error: Por favor, introduce un número válido.")
+        return
+
+    perfiles_actuales = cargar_perfiles()
+    if not perfiles_actuales:
+        print("Error: 'perfiles.json' está vacío. Ejecuta 'Crear / Actualizar Perfiles' primero.")
+        return
         
-    return perfiles_simulados
+    perfiles_modificados = generar_datos_falsos(jornada_a_simular, perfiles_actuales)
+    guardar_perfiles(perfiles_modificados)
+
+    print("\n¡SIMULACIÓN COMPLETADA!")
+    print(f"-> Tu archivo 'perfiles.json' ahora refleja el estado de la liga en la JORNADA {jornada_a_simular}.")
+    print("-> Ahora puedes usar el botón 'Procesar Nueva Jornada' para simular la JORNADA " + str(jornada_a_simular + 1) + ".")
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print(f"Ha ocurrido un error inesperado: {e}")
+    finally:
+        print("\n--- PROCESO DE SIMULACIÓN FINALIZADO ---")
+        input("Pulsa Enter para volver al panel de control...")
