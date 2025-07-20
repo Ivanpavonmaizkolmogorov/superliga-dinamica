@@ -1,6 +1,8 @@
-# gestor_datos.py
+# gestor_datos.py (Versión con la nueva función para cargar la configuración de la liga)
+
 import json
-from config import PERFILES_JSON_PATH, PAREJAS_JSON_PATH
+# ¡Importante! Añadimos la nueva variable de configuración
+from config import PERFILES_JSON_PATH, PAREJAS_JSON_PATH, LIGA_CONFIG_JSON_PATH
 
 def cargar_perfiles():
     """
@@ -27,7 +29,6 @@ def guardar_perfiles(perfiles):
         json.dump(perfiles, f, indent=2, ensure_ascii=False)
     print(f"INFO: Perfiles guardados correctamente en '{PERFILES_JSON_PATH}'.")
 
-# --- ESTA ES LA FUNCIÓN QUE FALTABA ---
 def cargar_parejas():
     """
     Abre y carga las parejas desde 'parejas.json'.
@@ -37,12 +38,30 @@ def cargar_parejas():
         with open(PAREJAS_JSON_PATH, 'r', encoding='utf-8') as f:
             contenido = f.read()
             if not contenido:
-                # Si el archivo está vacío, no es un error, simplemente no hay parejas.
                 return []
             return json.loads(contenido)
     except FileNotFoundError:
-        print(f"ADVERTENCIA: No se encontró '{PAREJAS_JSON_PATH}'. La clasificación por parejas no se generará.")
+        print(f"ADVERTENCIA: No se encontró '{PAREJAS_JSON_PATH}'.")
         return []
     except json.JSONDecodeError:
-        print(f"ERROR: '{PAREJAS_JSON_PATH}' está corrupto. La clasificación por parejas no se generará.")
+        print(f"ERROR: '{PAREJAS_JSON_PATH}' está corrupto.")
         return []
+
+# --- ¡NUEVA FUNCIÓN AÑADIDA! ---
+def cargar_config_liga():
+    """
+    Abre y carga la configuración de la liga desde 'liga_config.json'.
+    Si el archivo no existe o está vacío, devuelve un diccionario vacío.
+    """
+    try:
+        with open(LIGA_CONFIG_JSON_PATH, 'r', encoding='utf-8') as f:
+            contenido = f.read()
+            if not contenido:
+                return {} # Devuelve un diccionario vacío si no hay configuración
+            return json.loads(contenido)
+    except FileNotFoundError:
+        print(f"ADVERTENCIA: No se encontró '{LIGA_CONFIG_JSON_PATH}'. Los premios no se calcularán.")
+        return {}
+    except json.JSONDecodeError:
+        print(f"ERROR: '{LIGA_CONFIG_JSON_PATH}' está corrupto.")
+        return {}

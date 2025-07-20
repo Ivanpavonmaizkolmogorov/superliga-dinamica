@@ -10,5 +10,14 @@
     "Ganador Sprint 2 (J11-20)": 0.043,
     "Ganador Sprint 3 (J21-30)": 0.071,
     "Ganador Sprint 4 (J31-38)": 0.107
+  },
+  "premios_valor": {
+    "Pareja de Oro": 71.4,
+    "Campeón Absoluto": 57.2,
+    "Subcampeón": 21.4,
+    "Ganador Sprint 1": 5.8,
+    "Ganador Sprint 2": 8.6,
+    "Ganador Sprint 3": 14.2,
+    "Ganador Sprint 4": 21.4
   }
 }
