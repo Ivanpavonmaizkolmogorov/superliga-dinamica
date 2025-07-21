@@ -9,57 +9,71 @@ import subprocess
 from gestor_datos import cargar_perfiles
 
 # --- CLASE DE LA INTERFAZ GRÁFICA (VISTA) ---
+# REEMPLAZA ESTA CLASE ENTERA en tu archivo superliga.py
+
 class MainPanel(tk.Frame):
     def __init__(self, master, controller):
         super().__init__(master)
         self.master = master
         self.controller = controller
         self.master.title("Panel de Administración - Superliga Dinámica")
-        self.master.geometry("800x650")
+        self.master.geometry("1000x600") # Hacemos la ventana más ancha
         self.master.configure(bg="#2c3e50")
-        
-        control_frame = tk.Frame(self.master, bg="#34495e", padx=20, pady=20)
-        control_frame.pack(side="top", fill="x")
-        
-        button_font = font.Font(family="Helvetica", size=12, weight="bold")
+
+        # --- Frame para los botones (panel izquierdo) ---
+        control_frame = tk.Frame(self.master, bg="#34495e", padx=15, pady=20)
+        control_frame.pack(side=tk.LEFT, fill=tk.Y) # Se ancla a la izquierda y ocupa toda la altura
+
+        # --- Frame para la consola (panel derecho) ---
+        log_frame = tk.Frame(self.master, bg="#2c3e50")
+        log_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True) # Ocupa el resto del espacio
+
+        # --- Creación de los botones ---
+        button_font = font.Font(family="Helvetica", size=11, weight="bold")
         self.buttons = {}
         
-        # --- NUEVA DISPOSICIÓN DE BOTONES ---
+        # Diccionario simplificado, ya no necesita filas/columnas
         button_data = {
-            'crear_perfiles': ("1. Crear / Actualizar Perfiles", "#16a085", 0, 0),
-            'config_liga': ("2. Configuración de Liga", "#d35400", 0, 1),
-            'editar_perfiles': ("3. Editar Perfiles (Cronista)", "#3498db", 1, 0),
-            'formar_parejas': ("4. Formar Parejas", "#8e44ad", 1, 1),
-            'run_jornada': ("5. Procesar Nueva Jornada", "#2980b9", 2, 0),
-            'generar_reporte': ("6. Generar Reporte Semanal", "#f39c12", 2, 1),
-            'simular': ("Simular Jornada(s)", "#27ae60", 3, 0),
-            'reset_season': ("Reiniciar Temporada", "#e74c3c", 3, 1)
+            'crear_perfiles': ("1. Crear / Actualizar Perfiles", "#16a085"),
+            'config_liga': ("2. Configuración de Liga", "#d35400"),
+            'editar_perfiles': ("3. Editar Perfiles (Cronista)", "#3498db"),
+            'formar_parejas': ("4. Formar Parejas", "#8e44ad"),
+            'run_jornada': ("5. Procesar Nueva Jornada", "#2980b9"),
+            'generar_reporte': ("6. Generar Reporte Semanal", "#f39c12"),
+            'simular': ("Simular Jornada(s)", "#27ae60"),
+            'reset_season': ("Reiniciar Temporada", "#e74c3c")
         }
 
-        for key, data in button_data.items():
-            text, color, row, col = data[:4]
-            columnspan = data[4] if len(data) > 4 else 1
-            btn = tk.Button(control_frame, text=text, font=button_font, bg=color, fg="white", height=2,
-                            command=lambda k=key: self.controller.run_action(k))
-            btn.grid(row=row, column=col, columnspan=columnspan, padx=5, pady=5, sticky="ew")
+        for key, (text, color) in button_data.items():
+            btn = tk.Button(control_frame, text=text, font=button_font, bg=color, fg="white",
+                             command=lambda k=key: self.controller.run_action(k))
+            # Usamos pack para apilarlos verticalmente
+            btn.pack(fill=tk.X, padx=5, pady=6) 
             self.buttons[key] = btn
 
-        control_frame.grid_columnconfigure(0, weight=1); control_frame.grid_columnconfigure(1, weight=1)
-        self.log_area = scrolledtext.ScrolledText(self.master, wrap=tk.WORD, font=("Consolas", 10), bg="#ecf0f1", fg="#2c3e50")
+        # --- Creación de la consola ---
+        self.log_area = scrolledtext.ScrolledText(log_frame, wrap=tk.WORD, font=("Consolas", 10), bg="#ecf0f1", fg="#2c3e50")
         self.log_area.pack(expand=True, fill="both", padx=10, pady=10)
         
-    def log_message(self, msg): self.log_area.insert(tk.END, msg + "\n"); self.log_area.see(tk.END); self.master.update_idletasks()
+    def log_message(self, msg): 
+        self.log_area.insert(tk.END, msg + "\n")
+        self.log_area.see(tk.END)
+        self.master.update_idletasks()
     
     def set_all_buttons_state(self, state):
-        for btn in self.buttons.values(): btn.config(state=state)
+        for btn in self.buttons.values(): 
+            btn.config(state=state)
         
     def update_button_states(self, app_state):
         self.set_all_buttons_state("normal")
         if not app_state['perfiles_exist']:
-            self.buttons['run_jornada'].config(state="disabled"); self.buttons['generar_reporte'].config(state="disabled")
-            self.buttons['formar_parejas'].config(state="disabled"); self.buttons['simular'].config(state="disabled")
-            self.buttons['reset_season'].config(state="disabled"); self.buttons['config_liga'].config(state="disabled")
-
+            self.buttons['run_jornada'].config(state="disabled")
+            self.buttons['generar_reporte'].config(state="disabled")
+            self.buttons['formar_parejas'].config(state="disabled")
+            self.buttons['simular'].config(state="disabled")
+            self.buttons['reset_season'].config(state="disabled")
+            self.buttons['config_liga'].config(state="disabled")
+            self.buttons['editar_perfiles'].config(state="disabled")
 # --- CLASE CONTROLADORA (CEREBRO) ---
 class SuperligaController:
     def __init__(self, root):
