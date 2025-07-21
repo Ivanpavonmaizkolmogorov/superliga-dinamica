@@ -1,1375 +1,83 @@
 [
     {
+        "id_manager": "7106479",
+        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "apodo_lema": "El saboteador",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 57,
+                "puesto": 0,
+                "puntos_totales": 57
+            },
+            {
+                "jornada": 2,
+                "puntos_jornada": 77,
+                "puesto": 0,
+                "puntos_totales": 134
+            },
+            {
+                "jornada": 3,
+                "puntos_jornada": 80,
+                "puesto": 1,
+                "puntos_totales": 214
+            }
+        ],
+        "momento_gloria": "doblete, dos años seguidos ganando el titulo de campeon",
+        "peor_desastre": "un año casi desciendo a segunda division",
+        "estilo_juego": "Poner al jugdor más en forma",
+        "rival_historico": "7110624",
+        "jugador_fetiche": "Mbappé",
+        "filosofia_fichajes": "Mirando mucho por la eficiencia, coste de oportunidad y rentabilidad",
+        "telegram_user_id": 2078045747
+    },
+    {
         "id_manager": "12112883",
         "nombre_mister": "Francis",
         "apodo_lema": "El Novato",
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 64,
+                "puntos_jornada": 68,
                 "puesto": 0,
-                "puntos_totales": 64
+                "puntos_totales": 68
             },
             {
                 "jornada": 2,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 141
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 35,
-                "puesto": 0,
-                "puntos_totales": 176
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 251
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 62,
-                "puesto": 0,
-                "puntos_totales": 313
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 74,
-                "puesto": 0,
-                "puntos_totales": 387
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 48,
-                "puesto": 0,
-                "puntos_totales": 435
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 516
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 32,
-                "puesto": 0,
-                "puntos_totales": 548
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 581
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 69,
-                "puesto": 0,
-                "puntos_totales": 650
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 725
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 72,
-                "puesto": 0,
-                "puntos_totales": 797
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 840
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 61,
-                "puesto": 0,
-                "puntos_totales": 901
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 70,
-                "puesto": 0,
-                "puntos_totales": 971
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 1002
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 1045
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 1095
-            },
-            {
-                "jornada": 20,
                 "puntos_jornada": 60,
                 "puesto": 0,
-                "puntos_totales": 1155
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 70,
-                "puesto": 0,
-                "puntos_totales": 1225
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 83,
-                "puesto": 0,
-                "puntos_totales": 1308
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 30,
-                "puesto": 0,
-                "puntos_totales": 1338
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 64,
-                "puesto": 0,
-                "puntos_totales": 1402
-            },
-            {
-                "jornada": 25,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 1477
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 68,
-                "puesto": 0,
-                "puntos_totales": 1545
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 56,
-                "puesto": 0,
-                "puntos_totales": 1601
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 1676
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 1758
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 1808
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 55,
-                "puesto": 0,
-                "puntos_totales": 1863
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 73,
-                "puesto": 0,
-                "puntos_totales": 1936
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 1973
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 36,
-                "puesto": 0,
-                "puntos_totales": 2009
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 65,
-                "puesto": 0,
-                "puntos_totales": 2074
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 72,
-                "puesto": 0,
-                "puntos_totales": 2146
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 77,
-                "puesto": 1,
-                "puntos_totales": 2223
-            }
-        ]
-    },
-    {
-        "id_manager": "7106544",
-        "nombre_mister": "THE ELEVATOR💪🏆",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 63,
-                "puesto": 0,
-                "puntos_totales": 63
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 74,
-                "puesto": 0,
-                "puntos_totales": 137
+                "puntos_totales": 128
             },
             {
                 "jornada": 3,
-                "puntos_jornada": 85,
-                "puesto": 0,
-                "puntos_totales": 222
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 46,
-                "puesto": 0,
-                "puntos_totales": 268
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 72,
-                "puesto": 0,
-                "puntos_totales": 340
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 394
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 66,
-                "puesto": 0,
-                "puntos_totales": 460
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 491
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 562
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 68,
-                "puesto": 0,
-                "puntos_totales": 630
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 76,
-                "puesto": 0,
-                "puntos_totales": 706
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 788
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 44,
-                "puesto": 0,
-                "puntos_totales": 832
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 882
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 953
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 63,
-                "puesto": 0,
-                "puntos_totales": 1016
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 47,
-                "puesto": 0,
-                "puntos_totales": 1063
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 51,
-                "puesto": 0,
-                "puntos_totales": 1114
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 52,
-                "puesto": 0,
-                "puntos_totales": 1166
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 48,
-                "puesto": 0,
-                "puntos_totales": 1214
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 56,
-                "puesto": 0,
-                "puntos_totales": 1270
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 62,
-                "puesto": 0,
-                "puntos_totales": 1332
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 62,
-                "puesto": 0,
-                "puntos_totales": 1394
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 1473
-            },
-            {
-                "jornada": 25,
-                "puntos_jornada": 59,
-                "puesto": 0,
-                "puntos_totales": 1532
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 83,
-                "puesto": 0,
-                "puntos_totales": 1615
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 1669
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 1719
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 85,
-                "puesto": 0,
-                "puntos_totales": 1804
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 1858
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 26,
-                "puesto": 0,
-                "puntos_totales": 1884
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 73,
-                "puesto": 0,
-                "puntos_totales": 1957
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 2034
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 83,
-                "puesto": 0,
-                "puntos_totales": 2117
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 2157
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 29,
-                "puesto": 0,
-                "puntos_totales": 2186
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 28,
+                "puntos_jornada": 69,
                 "puesto": 2,
-                "puntos_totales": 2214
+                "puntos_totales": 197
             }
         ]
     },
     {
-        "id_manager": "7110624",
-        "nombre_mister": "Al Hansi Flick 🏆🏆",
+        "id_manager": "7112166",
+        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
         "apodo_lema": "El Novato",
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 26,
+                "puntos_jornada": 39,
                 "puesto": 0,
-                "puntos_totales": 26
+                "puntos_totales": 39
             },
             {
                 "jornada": 2,
-                "puntos_jornada": 64,
-                "puesto": 0,
-                "puntos_totales": 90
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 172
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 222
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 85,
-                "puesto": 0,
-                "puntos_totales": 307
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 42,
-                "puesto": 0,
-                "puntos_totales": 349
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 56,
-                "puesto": 0,
-                "puntos_totales": 405
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 47,
-                "puesto": 0,
-                "puntos_totales": 452
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 73,
-                "puesto": 0,
-                "puntos_totales": 525
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 568
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 647
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 69,
-                "puesto": 0,
-                "puntos_totales": 716
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 68,
-                "puesto": 0,
-                "puntos_totales": 784
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 55,
-                "puesto": 0,
-                "puntos_totales": 839
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 52,
-                "puesto": 0,
-                "puntos_totales": 891
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 69,
-                "puesto": 0,
-                "puntos_totales": 960
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 52,
-                "puesto": 0,
-                "puntos_totales": 1012
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 1062
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 59,
-                "puesto": 0,
-                "puntos_totales": 1121
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 1161
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 30,
-                "puesto": 0,
-                "puntos_totales": 1191
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 78,
-                "puesto": 0,
-                "puntos_totales": 1269
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 59,
-                "puesto": 0,
-                "puntos_totales": 1328
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 1377
-            },
-            {
-                "jornada": 25,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 1404
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 1458
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 83,
-                "puesto": 0,
-                "puntos_totales": 1541
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 25,
-                "puesto": 0,
-                "puntos_totales": 1566
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 74,
-                "puesto": 0,
-                "puntos_totales": 1640
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 78,
-                "puesto": 0,
-                "puntos_totales": 1718
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 1799
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 85,
-                "puesto": 0,
-                "puntos_totales": 1884
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 1923
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 72,
-                "puesto": 0,
-                "puntos_totales": 1995
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 2074
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 62,
-                "puesto": 0,
-                "puntos_totales": 2136
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 39,
-                "puesto": 3,
-                "puntos_totales": 2175
-            }
-        ]
-    },
-    {
-        "id_manager": "14307371",
-        "nombre_mister": "José Manuel Castro Castro",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 79
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 46,
-                "puesto": 0,
-                "puntos_totales": 125
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 175
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 76,
-                "puesto": 0,
-                "puntos_totales": 251
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 69,
-                "puesto": 0,
-                "puntos_totales": 320
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 48,
-                "puesto": 0,
-                "puntos_totales": 368
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 47,
-                "puesto": 0,
-                "puntos_totales": 415
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 48,
-                "puesto": 0,
-                "puntos_totales": 463
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 512
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 83,
-                "puesto": 0,
-                "puntos_totales": 595
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 59,
-                "puesto": 0,
-                "puntos_totales": 654
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 78,
-                "puesto": 0,
-                "puntos_totales": 732
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 41,
-                "puesto": 0,
-                "puntos_totales": 773
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 810
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 887
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 968
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 1018
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 25,
-                "puesto": 0,
-                "puntos_totales": 1043
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 67,
-                "puesto": 0,
-                "puntos_totales": 1110
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 78,
-                "puesto": 0,
-                "puntos_totales": 1188
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 32,
-                "puesto": 0,
-                "puntos_totales": 1220
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 42,
-                "puesto": 0,
-                "puntos_totales": 1262
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 45,
-                "puesto": 0,
-                "puntos_totales": 1307
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 57,
-                "puesto": 0,
-                "puntos_totales": 1364
-            },
-            {
-                "jornada": 25,
-                "puntos_jornada": 84,
-                "puesto": 0,
-                "puntos_totales": 1448
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 38,
-                "puesto": 0,
-                "puntos_totales": 1486
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 76,
-                "puesto": 0,
-                "puntos_totales": 1562
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 1644
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 29,
-                "puesto": 0,
-                "puntos_totales": 1673
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 73,
-                "puesto": 0,
-                "puntos_totales": 1746
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 36,
-                "puesto": 0,
-                "puntos_totales": 1782
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 1809
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 53,
-                "puesto": 0,
-                "puntos_totales": 1862
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 72,
-                "puesto": 0,
-                "puntos_totales": 1934
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 60,
-                "puesto": 0,
-                "puntos_totales": 1994
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 65,
-                "puesto": 0,
-                "puntos_totales": 2059
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 57,
-                "puesto": 4,
-                "puntos_totales": 2116
-            }
-        ]
-    },
-    {
-        "id_manager": "7101774",
-        "nombre_mister": "The 👑",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 54
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 51,
-                "puesto": 0,
-                "puntos_totales": 105
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 51,
-                "puesto": 0,
-                "puntos_totales": 156
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 68,
-                "puesto": 0,
-                "puntos_totales": 224
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 306
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 84,
-                "puesto": 0,
-                "puntos_totales": 390
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 427
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 504
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 531
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 610
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 42,
-                "puesto": 0,
-                "puntos_totales": 652
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 47,
-                "puesto": 0,
-                "puntos_totales": 699
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 58,
-                "puesto": 0,
-                "puntos_totales": 757
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 839
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 916
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 48,
-                "puesto": 0,
-                "puntos_totales": 964
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 1046
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 36,
-                "puesto": 0,
-                "puntos_totales": 1082
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 1153
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 1196
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 1239
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 46,
-                "puesto": 0,
-                "puntos_totales": 1285
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 1324
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 41,
-                "puesto": 0,
-                "puntos_totales": 1365
-            },
-            {
-                "jornada": 25,
                 "puntos_jornada": 75,
                 "puesto": 0,
-                "puntos_totales": 1440
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 57,
-                "puesto": 0,
-                "puntos_totales": 1497
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 63,
-                "puesto": 0,
-                "puntos_totales": 1560
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 52,
-                "puesto": 0,
-                "puntos_totales": 1612
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 85,
-                "puesto": 0,
-                "puntos_totales": 1697
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 65,
-                "puesto": 0,
-                "puntos_totales": 1762
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 1811
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 1844
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 55,
-                "puesto": 0,
-                "puntos_totales": 1899
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 32,
-                "puesto": 0,
-                "puntos_totales": 1931
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 58,
-                "puesto": 0,
-                "puntos_totales": 1989
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 38,
-                "puesto": 0,
-                "puntos_totales": 2027
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 53,
-                "puesto": 5,
-                "puntos_totales": 2080
-            }
-        ]
-    },
-    {
-        "id_manager": "7106472",
-        "nombre_mister": "Pericles Triano Muñoz",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 67,
-                "puesto": 0,
-                "puntos_totales": 67
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 101
+                "puntos_totales": 114
             },
             {
                 "jornada": 3,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 138
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 65,
-                "puesto": 0,
-                "puntos_totales": 203
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 74,
-                "puesto": 0,
-                "puntos_totales": 277
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 76,
-                "puesto": 0,
-                "puntos_totales": 353
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 393
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 427
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 73,
-                "puesto": 0,
-                "puntos_totales": 500
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 549
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 628
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 48,
-                "puesto": 0,
-                "puntos_totales": 676
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 85,
-                "puesto": 0,
-                "puntos_totales": 761
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 58,
-                "puesto": 0,
-                "puntos_totales": 819
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 68,
-                "puesto": 0,
-                "puntos_totales": 887
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 920
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 67,
-                "puesto": 0,
-                "puntos_totales": 987
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 57,
-                "puesto": 0,
-                "puntos_totales": 1044
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 1093
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 76,
-                "puesto": 0,
-                "puntos_totales": 1169
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 55,
-                "puesto": 0,
-                "puntos_totales": 1224
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 1267
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 1348
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 36,
-                "puesto": 0,
-                "puntos_totales": 1384
-            },
-            {
-                "jornada": 25,
-                "puntos_jornada": 58,
-                "puesto": 0,
-                "puntos_totales": 1442
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 1491
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 35,
-                "puesto": 0,
-                "puntos_totales": 1526
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 1607
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 74,
-                "puesto": 0,
-                "puntos_totales": 1681
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 57,
-                "puesto": 0,
-                "puntos_totales": 1738
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 1788
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 1821
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 1855
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 1882
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 1953
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 1993
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 28,
-                "puesto": 6,
-                "puntos_totales": 2021
+                "puntos_jornada": 82,
+                "puesto": 3,
+                "puntos_totales": 196
             }
         ]
     },
@@ -1380,466 +88,127 @@
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 57,
+                "puntos_jornada": 63,
                 "puesto": 0,
-                "puntos_totales": 57
+                "puntos_totales": 63
             },
             {
                 "jornada": 2,
-                "puntos_jornada": 74,
+                "puntos_jornada": 55,
                 "puesto": 0,
-                "puntos_totales": 131
+                "puntos_totales": 118
             },
             {
                 "jornada": 3,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 202
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 245
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 279
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 312
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 366
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 397
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 446
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 26,
-                "puesto": 0,
-                "puntos_totales": 472
-            },
-            {
-                "jornada": 11,
                 "puntos_jornada": 72,
-                "puesto": 0,
-                "puntos_totales": 544
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 72,
-                "puesto": 0,
-                "puntos_totales": 616
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 59,
-                "puesto": 0,
-                "puntos_totales": 675
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 59,
-                "puesto": 0,
-                "puntos_totales": 734
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 57,
-                "puesto": 0,
-                "puntos_totales": 791
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 830
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 70,
-                "puesto": 0,
-                "puntos_totales": 900
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 73,
-                "puesto": 0,
-                "puntos_totales": 973
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 1048
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 38,
-                "puesto": 0,
-                "puntos_totales": 1086
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 45,
-                "puesto": 0,
-                "puntos_totales": 1131
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 1202
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 1241
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 84,
-                "puesto": 0,
-                "puntos_totales": 1325
-            },
-            {
-                "jornada": 25,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 1352
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 25,
-                "puesto": 0,
-                "puntos_totales": 1377
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 68,
-                "puesto": 0,
-                "puntos_totales": 1445
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 60,
-                "puesto": 0,
-                "puntos_totales": 1505
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 36,
-                "puesto": 0,
-                "puntos_totales": 1541
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 47,
-                "puesto": 0,
-                "puntos_totales": 1588
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 1669
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 1718
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 1789
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 1868
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 35,
-                "puesto": 0,
-                "puntos_totales": 1903
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 58,
-                "puesto": 0,
-                "puntos_totales": 1961
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 47,
-                "puesto": 7,
-                "puntos_totales": 2008
+                "puesto": 4,
+                "puntos_totales": 190
             }
         ]
     },
     {
-        "id_manager": "7106479",
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "apodo_lema": "El saboteador",
+        "id_manager": "8524310",
+        "nombre_mister": "king revolution 💪⚽",
+        "apodo_lema": "El Novato",
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 46,
+                "puntos_jornada": 27,
                 "puesto": 0,
-                "puntos_totales": 46
+                "puntos_totales": 27
             },
             {
                 "jornada": 2,
-                "puntos_jornada": 69,
+                "puntos_jornada": 75,
                 "puesto": 0,
-                "puntos_totales": 115
+                "puntos_totales": 102
             },
             {
                 "jornada": 3,
-                "puntos_jornada": 53,
-                "puesto": 0,
-                "puntos_totales": 168
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 201
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 255
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 36,
-                "puesto": 0,
-                "puntos_totales": 291
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 340
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 374
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 423
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 78,
-                "puesto": 0,
-                "puntos_totales": 501
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 76,
-                "puesto": 0,
-                "puntos_totales": 577
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 58,
-                "puesto": 0,
-                "puntos_totales": 635
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 717
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 751
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 778
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 69,
-                "puesto": 0,
-                "puntos_totales": 847
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 84,
-                "puesto": 0,
-                "puntos_totales": 931
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 26,
-                "puesto": 0,
-                "puntos_totales": 957
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 67,
-                "puesto": 0,
-                "puntos_totales": 1024
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 1099
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 45,
-                "puesto": 0,
-                "puntos_totales": 1144
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 1181
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 1258
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 66,
-                "puesto": 0,
-                "puntos_totales": 1324
-            },
-            {
-                "jornada": 25,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 1367
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 73,
-                "puesto": 0,
-                "puntos_totales": 1440
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 50,
-                "puesto": 0,
-                "puntos_totales": 1490
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 51,
-                "puesto": 0,
-                "puntos_totales": 1541
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 1622
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 1650
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 1704
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 64,
-                "puesto": 0,
-                "puntos_totales": 1768
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 25,
-                "puesto": 0,
-                "puntos_totales": 1793
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 58,
-                "puesto": 0,
-                "puntos_totales": 1851
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 1882
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 63,
-                "puesto": 0,
-                "puntos_totales": 1945
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 50,
-                "puesto": 8,
-                "puntos_totales": 1995
+                "puntos_jornada": 83,
+                "puesto": 5,
+                "puntos_totales": 185
             }
-        ],
-        "momento_gloria": "doblete, dos años seguidos ganando el titulo de campeon",
-        "peor_desastre": "un año casi desciendo a segunda division",
-        "estilo_juego": "Poner al jugdor más en forma",
-        "rival_historico": "7110624",
-        "jugador_fetiche": "Mbappé",
-        "filosofia_fichajes": "Mirando mucho por la eficiencia, coste de oportunidad y rentabilidad"
+        ]
     },
     {
-        "id_manager": "8539397",
-        "nombre_mister": "Panda’s Team 🏆",
+        "id_manager": "14574192",
+        "nombre_mister": "Jortru",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 51,
+                "puesto": 0,
+                "puntos_totales": 51
+            },
+            {
+                "jornada": 2,
+                "puntos_jornada": 66,
+                "puesto": 0,
+                "puntos_totales": 117
+            },
+            {
+                "jornada": 3,
+                "puntos_jornada": 48,
+                "puesto": 6,
+                "puntos_totales": 165
+            }
+        ]
+    },
+    {
+        "id_manager": "10361479",
+        "nombre_mister": "raul_piru_",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 35,
+                "puesto": 0,
+                "puntos_totales": 35
+            },
+            {
+                "jornada": 2,
+                "puntos_jornada": 62,
+                "puesto": 0,
+                "puntos_totales": 97
+            },
+            {
+                "jornada": 3,
+                "puntos_jornada": 66,
+                "puesto": 7,
+                "puntos_totales": 163
+            }
+        ]
+    },
+    {
+        "id_manager": "7110624",
+        "nombre_mister": "Al Hansi Flick 🏆🏆",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 37,
+                "puesto": 0,
+                "puntos_totales": 37
+            },
+            {
+                "jornada": 2,
+                "puntos_jornada": 61,
+                "puesto": 0,
+                "puntos_totales": 98
+            },
+            {
+                "jornada": 3,
+                "puntos_jornada": 61,
+                "puesto": 8,
+                "puntos_totales": 159
+            }
+        ]
+    },
+    {
+        "id_manager": "7106544",
+        "nombre_mister": "THE ELEVATOR💪🏆",
         "apodo_lema": "El Novato",
         "historial_temporada": [
             {
@@ -1850,219 +219,140 @@
             },
             {
                 "jornada": 2,
-                "puntos_jornada": 42,
+                "puntos_jornada": 55,
                 "puesto": 0,
-                "puntos_totales": 91
+                "puntos_totales": 104
             },
             {
                 "jornada": 3,
-                "puntos_jornada": 31,
+                "puntos_jornada": 55,
+                "puesto": 9,
+                "puntos_totales": 159
+            }
+        ]
+    },
+    {
+        "id_manager": "8539397",
+        "nombre_mister": "Panda’s Team 🏆",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 61,
                 "puesto": 0,
-                "puntos_totales": 122
+                "puntos_totales": 61
             },
             {
-                "jornada": 4,
-                "puntos_jornada": 30,
+                "jornada": 2,
+                "puntos_jornada": 33,
                 "puesto": 0,
-                "puntos_totales": 152
+                "puntos_totales": 94
             },
             {
-                "jornada": 5,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 180
-            },
+                "jornada": 3,
+                "puntos_jornada": 54,
+                "puesto": 10,
+                "puntos_totales": 148
+            }
+        ]
+    },
+    {
+        "id_manager": "7108124",
+        "nombre_mister": "Rafatobalo",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
             {
-                "jornada": 6,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 220
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 26,
-                "puesto": 0,
-                "puntos_totales": 246
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 38,
-                "puesto": 0,
-                "puntos_totales": 284
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 355
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 432
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 30,
-                "puesto": 0,
-                "puntos_totales": 462
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 501
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 51,
-                "puesto": 0,
-                "puntos_totales": 552
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 44,
-                "puesto": 0,
-                "puntos_totales": 596
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 70,
-                "puesto": 0,
-                "puntos_totales": 666
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 747
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 41,
-                "puesto": 0,
-                "puntos_totales": 788
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 816
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 71,
-                "puesto": 0,
-                "puntos_totales": 887
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 65,
-                "puesto": 0,
-                "puntos_totales": 952
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 983
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 66,
-                "puesto": 0,
-                "puntos_totales": 1049
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 70,
-                "puesto": 0,
-                "puntos_totales": 1119
-            },
-            {
-                "jornada": 24,
+                "jornada": 1,
                 "puntos_jornada": 55,
                 "puesto": 0,
-                "puntos_totales": 1174
+                "puntos_totales": 55
             },
             {
-                "jornada": 25,
-                "puntos_jornada": 48,
+                "jornada": 2,
+                "puntos_jornada": 61,
                 "puesto": 0,
-                "puntos_totales": 1222
+                "puntos_totales": 116
             },
             {
-                "jornada": 26,
-                "puntos_jornada": 43,
-                "puesto": 0,
-                "puntos_totales": 1265
-            },
+                "jornada": 3,
+                "puntos_jornada": 32,
+                "puesto": 11,
+                "puntos_totales": 148
+            }
+        ]
+    },
+    {
+        "id_manager": "7106472",
+        "nombre_mister": "Pericles Triano Muñoz",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
             {
-                "jornada": 27,
+                "jornada": 1,
                 "puntos_jornada": 33,
                 "puesto": 0,
-                "puntos_totales": 1298
+                "puntos_totales": 33
             },
             {
-                "jornada": 28,
-                "puntos_jornada": 83,
+                "jornada": 2,
+                "puntos_jornada": 28,
                 "puesto": 0,
-                "puntos_totales": 1381
+                "puntos_totales": 61
             },
             {
-                "jornada": 29,
-                "puntos_jornada": 54,
+                "jornada": 3,
+                "puntos_jornada": 81,
+                "puesto": 12,
+                "puntos_totales": 142
+            }
+        ]
+    },
+    {
+        "id_manager": "14307371",
+        "nombre_mister": "José Manuel Castro Castro",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 28,
                 "puesto": 0,
-                "puntos_totales": 1435
+                "puntos_totales": 28
             },
             {
-                "jornada": 30,
-                "puntos_jornada": 77,
+                "jornada": 2,
+                "puntos_jornada": 62,
                 "puesto": 0,
-                "puntos_totales": 1512
+                "puntos_totales": 90
             },
             {
-                "jornada": 31,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 1591
-            },
+                "jornada": 3,
+                "puntos_jornada": 43,
+                "puesto": 13,
+                "puntos_totales": 133
+            }
+        ]
+    },
+    {
+        "id_manager": "7101774",
+        "nombre_mister": "The 👑",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
             {
-                "jornada": 32,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 1668
-            },
-            {
-                "jornada": 33,
+                "jornada": 1,
                 "puntos_jornada": 29,
                 "puesto": 0,
-                "puntos_totales": 1697
+                "puntos_totales": 29
             },
             {
-                "jornada": 34,
-                "puntos_jornada": 48,
+                "jornada": 2,
+                "puntos_jornada": 54,
                 "puesto": 0,
-                "puntos_totales": 1745
+                "puntos_totales": 83
             },
             {
-                "jornada": 35,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 1779
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 1812
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 56,
-                "puesto": 9,
-                "puntos_totales": 1868
+                "jornada": 3,
+                "puntos_jornada": 35,
+                "puesto": 14,
+                "puntos_totales": 118
             }
         ]
     },
@@ -2073,225 +363,21 @@
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 48,
+                "puntos_jornada": 62,
                 "puesto": 0,
-                "puntos_totales": 48
+                "puntos_totales": 62
             },
             {
                 "jornada": 2,
-                "puntos_jornada": 69,
+                "puntos_jornada": 31,
                 "puesto": 0,
-                "puntos_totales": 117
+                "puntos_totales": 93
             },
             {
                 "jornada": 3,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 145
-            },
-            {
-                "jornada": 4,
-                "puntos_jornada": 51,
-                "puesto": 0,
-                "puntos_totales": 196
-            },
-            {
-                "jornada": 5,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 227
-            },
-            {
-                "jornada": 6,
-                "puntos_jornada": 32,
-                "puesto": 0,
-                "puntos_totales": 259
-            },
-            {
-                "jornada": 7,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 299
-            },
-            {
-                "jornada": 8,
-                "puntos_jornada": 70,
-                "puesto": 0,
-                "puntos_totales": 369
-            },
-            {
-                "jornada": 9,
-                "puntos_jornada": 52,
-                "puesto": 0,
-                "puntos_totales": 421
-            },
-            {
-                "jornada": 10,
-                "puntos_jornada": 44,
-                "puesto": 0,
-                "puntos_totales": 465
-            },
-            {
-                "jornada": 11,
-                "puntos_jornada": 32,
-                "puesto": 0,
-                "puntos_totales": 497
-            },
-            {
-                "jornada": 12,
-                "puntos_jornada": 82,
-                "puesto": 0,
-                "puntos_totales": 579
-            },
-            {
-                "jornada": 13,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 628
-            },
-            {
-                "jornada": 14,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 667
-            },
-            {
-                "jornada": 15,
-                "puntos_jornada": 84,
-                "puesto": 0,
-                "puntos_totales": 751
-            },
-            {
-                "jornada": 16,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 778
-            },
-            {
-                "jornada": 17,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 815
-            },
-            {
-                "jornada": 18,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 852
-            },
-            {
-                "jornada": 19,
-                "puntos_jornada": 55,
-                "puesto": 0,
-                "puntos_totales": 907
-            },
-            {
-                "jornada": 20,
-                "puntos_jornada": 74,
-                "puesto": 0,
-                "puntos_totales": 981
-            },
-            {
-                "jornada": 21,
-                "puntos_jornada": 26,
-                "puesto": 0,
-                "puntos_totales": 1007
-            },
-            {
-                "jornada": 22,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 1046
-            },
-            {
-                "jornada": 23,
-                "puntos_jornada": 45,
-                "puesto": 0,
-                "puntos_totales": 1091
-            },
-            {
-                "jornada": 24,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 1166
-            },
-            {
-                "jornada": 25,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 1243
-            },
-            {
-                "jornada": 26,
-                "puntos_jornada": 29,
-                "puesto": 0,
-                "puntos_totales": 1272
-            },
-            {
-                "jornada": 27,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 1299
-            },
-            {
-                "jornada": 28,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 1333
-            },
-            {
-                "jornada": 29,
-                "puntos_jornada": 85,
-                "puesto": 0,
-                "puntos_totales": 1418
-            },
-            {
-                "jornada": 30,
-                "puntos_jornada": 34,
-                "puesto": 0,
-                "puntos_totales": 1452
-            },
-            {
-                "jornada": 31,
-                "puntos_jornada": 56,
-                "puesto": 0,
-                "puntos_totales": 1508
-            },
-            {
-                "jornada": 32,
-                "puntos_jornada": 63,
-                "puesto": 0,
-                "puntos_totales": 1571
-            },
-            {
-                "jornada": 33,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 1604
-            },
-            {
-                "jornada": 34,
-                "puntos_jornada": 26,
-                "puesto": 0,
-                "puntos_totales": 1630
-            },
-            {
-                "jornada": 35,
-                "puntos_jornada": 65,
-                "puesto": 0,
-                "puntos_totales": 1695
-            },
-            {
-                "jornada": 36,
-                "puntos_jornada": 65,
-                "puesto": 0,
-                "puntos_totales": 1760
-            },
-            {
-                "jornada": 37,
-                "puntos_jornada": 33,
-                "puesto": 10,
-                "puntos_totales": 1793
+                "puntos_jornada": 25,
+                "puesto": 15,
+                "puntos_totales": 118
             }
         ]
     }

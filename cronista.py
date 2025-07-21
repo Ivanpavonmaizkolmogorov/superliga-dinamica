@@ -22,27 +22,53 @@ else:
 
 # REEMPLAZA ESTA FUNCIÓN en tu archivo cronista.py
 
+# Asegúrate de que tienes 'import json' al principio de tu archivo cronista.py
+import json
+
+# ... (resto de tus importaciones y la configuración de gemini_model) ...
+
 def generar_cronica(perfil_manager, datos_actuales, nombre_rival="Nadie en particular"):
     """
-    Genera una crónica personalizada para un mánager, usando un perfil enriquecido.
-    Ahora recibe también el nombre del rival.
+    Genera una crónica personalizada para un mánager, usando un perfil enriquecido
+    y AHORA también sus últimas declaraciones de Telegram.
     """
     if not gemini_model: 
         return "El cronista está afónico hoy. No hay crónica."
 
+    # --- INICIO DE LA MODIFICACIÓN: LEER DECLARACIONES.JSON ---
+    
+    ultima_declaracion = "Este mánager ha optado por un prudente silencio esta semana."
+    telegram_user_id = perfil_manager.get("telegram_user_id")
+
+    if telegram_user_id:
+        try:
+            with open('declaraciones.json', 'r', encoding='utf-8') as f:
+                declaraciones = json.load(f)
+            
+            # Buscamos la última declaración de este usuario específico recorriendo la lista al revés
+            for declaracion in reversed(declaraciones):
+                if declaracion.get("telegram_user_id") == telegram_user_id:
+                    ultima_declaracion = declaracion["declaracion"]
+                    break
+        except (FileNotFoundError, json.JSONDecodeError):
+            # Si el archivo no existe o está vacío, no hacemos nada y usamos el mensaje por defecto.
+            pass
+            
+    # --- FIN DE LA MODIFICACIÓN ---
+
     nombre_mister = perfil_manager.get('nombre_mister', 'Mánager Desconocido')
     
-    # --- LÓGICA DE TÍTULOS ---
     num_titulos = nombre_mister.count('🏆')
     contexto_titulos = f"Tiene {num_titulos} títulos en su palmarés." if num_titulos > 0 else "Aún no ha ganado ningún título."
 
-    # --- RECOGEMOS LOS NUEVOS DATOS DEL PERFIL ---
     estilo = perfil_manager.get('estilo_juego') or "No definido"
     fetiche = perfil_manager.get('jugador_fetiche') or "No tiene"
     fichajes = perfil_manager.get('filosofia_fichajes') or "Impredecible"
 
+    # --- INICIO DE LA MODIFICACIÓN: PROMPT MEJORADO ---
+
     prompt = f"""
-    Actúa como un cronista deportivo legendario, ingenioso, con memoria y un toque de sarcasmo (estilo Maldini o Axel Torres). Eres un experto en leer entre líneas y crear narrativas.
+    Actúa como un cronista deportivo legendario, ingenioso y con memoria (estilo Maldini o Axel Torres). Tienes acceso a todo: datos, perfiles y las declaraciones del vestuario (el chat de la liga).
     
     Aquí tienes la ficha completa del mánager sobre el que vas a comentar:
     - Nombre: {nombre_mister}
@@ -59,14 +85,19 @@ def generar_cronica(perfil_manager, datos_actuales, nombre_rival="Nadie en parti
     - Puntos conseguidos: {datos_actuales.get('puntos_jornada', 0)}
     - Posición actual en la liga: {datos_actuales.get('puesto', 'N/A')}
 
+    DECLARACIÓN MÁS RECIENTE DEL MÁNAGER (obtenida del chat de la liga):
+    - "{ultima_declaracion}"
+
     Misión: Escribe un comentario breve y punzante (2-3 frases) sobre su rendimiento.
-    Debes CONECTAR OBLIGATORIAMENTE los datos de la jornada con algún dato de su ficha personal.
-    - Si ha hecho muchos puntos y su estilo es "amarategui", sé irónico.
-    - Si su jugador fetiche le ha dado puntos, menciónalo.
-    - Si ha quedado por encima de su rival histórico, haz hincapié en ello.
-    - Si su filosofía es "tirar de cartera" y ha pinchado, critica sus caros fichajes.
-    Sé creativo, específico y memorable. No seas genérico.
+    Debes CONECTAR OBLIGATORIAMENTE los datos de la jornada con algún dato de su ficha personal O, preferiblemente, con su última declaración.
+    - Si su declaración fue arrogante y pinchó, resáltalo. ("Sus palabras prometían un huracán, pero en el campo solo vimos una llovizna de 40 puntos").
+    - Si se quejó de un jugador y ese jugador le dio puntos, sé irónico. ("Parece que el 'paquete' del que hablaba sí sabía cómo encontrar la red").
+    - Si su filosofía es "tirar de cartera" y en el chat dijo que "el dinero no da la felicidad", pero ganó, comenta la ironía.
+    Sé creativo, específico y memorable.
     """
+    
+    # --- FIN DE LA MODIFICACIÓN ---
+
     try:
         response = gemini_model.generate_content(prompt)
         return response.text.strip()
