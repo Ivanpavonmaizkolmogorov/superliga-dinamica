@@ -65,3 +65,18 @@ def cargar_config_liga():
     except json.JSONDecodeError:
         print(f"ERROR: '{LIGA_CONFIG_JSON_PATH}' está corrupto.")
         return {}
+
+# Añade esta función a tu archivo gestor_datos.py
+
+def guardar_perfiles(perfiles):
+    """
+    Guarda la lista completa de perfiles en el archivo perfiles.json.
+    """
+    try:
+        with open('perfiles.json', 'w', encoding='utf-8') as f:
+            json.dump(perfiles, f, ensure_ascii=False, indent=4)
+        print("INFO: perfiles.json guardado correctamente.")
+        return True
+    except Exception as e:
+        print(f"ERROR: No se pudo guardar perfiles.json. Error: {e}")
+        return False

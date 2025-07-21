@@ -26,12 +26,13 @@ class MainPanel(tk.Frame):
         
         # --- NUEVA DISPOSICIÓN DE BOTONES ---
         button_data = {
-            'crear_perfiles': ("Crear / Actualizar Perfiles", "#16a085", 0, 0),
-            'run_jornada': ("Procesar Nueva Jornada", "#2980b9", 0, 1),
-            'generar_reporte': ("Generar Reporte Semanal", "#f39c12", 1, 0, 2), # <-- NUEVO BOTÓN
-            'formar_parejas': ("Formar Parejas", "#8e44ad", 2, 0),
-            'simular': ("Simular Jornada(s)", "#27ae60", 2, 1),
-            'config_liga': ("Configuración de Liga", "#d35400", 3, 0),
+            'crear_perfiles': ("1. Crear / Actualizar Perfiles", "#16a085", 0, 0),
+            'config_liga': ("2. Configuración de Liga", "#d35400", 0, 1),
+            'editar_perfiles': ("3. Editar Perfiles (Cronista)", "#3498db", 1, 0),
+            'formar_parejas': ("4. Formar Parejas", "#8e44ad", 1, 1),
+            'run_jornada': ("5. Procesar Nueva Jornada", "#2980b9", 2, 0),
+            'generar_reporte': ("6. Generar Reporte Semanal", "#f39c12", 2, 1),
+            'simular': ("Simular Jornada(s)", "#27ae60", 3, 0),
             'reset_season': ("Reiniciar Temporada", "#e74c3c", 3, 1)
         }
 
@@ -87,6 +88,9 @@ class SuperligaController:
         if action_name == 'formar_parejas':
             thread = threading.Thread(target=self.accion_formar_parejas, daemon=True); thread.start()
             return
+        if action_name == 'editar_perfiles':
+            thread = threading.Thread(target=self.accion_editar_perfiles, daemon=True); thread.start()
+            return
 
         if script_a_lanzar:
             thread = threading.Thread(target=self.run_script_in_subprocess, args=(script_a_lanzar,), daemon=True)
@@ -94,6 +98,21 @@ class SuperligaController:
         else:
             self.panel.log_message(f"Acción '{action_name}' no implementada.")
             self.update_app_state_and_buttons()
+
+    # ## AÑADE ESTA NUEVA FUNCIÓN a la clase SuperligaController ##
+    def accion_editar_perfiles(self):
+        """Método especial para lanzar el editor de perfiles."""
+        try:
+            from editar_perfil import main as lanzar_editor_perfiles
+            self.panel.log_message("    (Abriendo editor de perfiles...)")
+            self.root.withdraw()  # Ocultamos la ventana principal
+            lanzar_editor_perfiles()
+            self.root.deiconify() # Mostramos la ventana principal de nuevo al cerrar
+            self.panel.log_message("\n<<< Editor de perfiles cerrado.")
+        except Exception as e:
+            self.panel.log_message(f"ERROR al lanzar 'editar_perfil.py': {e}")
+        finally:
+            self.root.after(0, self.update_app_state_and_buttons)
 
     def run_script_in_subprocess(self, script_name):
         self.panel.log_message(f"    (Ejecutando script '{script_name}' en un nuevo proceso...)")
