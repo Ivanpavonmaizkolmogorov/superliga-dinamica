@@ -152,18 +152,23 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
             premios_texto += f"  - {nombre}: {valor:.2f} €\n"
     return titulo + premios_texto
 
+# REEMPLAZA ESTA FUNCIÓN ENTERA en generar_reporte.py
+
 def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual):
     if not config_liga or not config_liga.get('premios_valor'): return ""
     print("Generando comentarios de la IA para los premios...")
     es_final = (jornada_actual == 38)
-    titulo = "## 🎤 EL MICRÓFONO DEL CRONISTA 🎤\n\n"
-    comentarios_texto = ""
+    reporte = "\n\n---\n\n## 🎤 EL MICRÓFONO DEL CRONISTA 🎤\n\n"
     perfiles_ordenados = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])
+    
+    # 1. Comentario para el Líder General
     if perfiles_ordenados:
         campeon = perfiles_ordenados[0]
         nombre_premio = "Campeón de Liga" if es_final else "Líder Actual"
         comentario_campeon = generar_comentario_premio(nombre_premio, [campeon['nombre_mister']], jornada_actual, es_final)
-        comentarios_texto += f"### {nombre_premio}: {campeon['nombre_mister']}\n_{comentario_campeon}_\n\n"
+        reporte += f"### {nombre_premio}: {campeon['nombre_mister']}\n_{comentario_campeon}_\n\n"
+        
+    # 2. Comentario para la Pareja de Oro
     if parejas:
         clasificacion_parejas = []
         for pareja in parejas:
@@ -177,15 +182,36 @@ def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actua
         if clasificacion_parejas:
             pareja_ganadora = max(clasificacion_parejas, key=lambda x: x['media'])
             nombre_premio_pareja = "Pareja de Oro (Campeones)" if es_final else "Pareja de Oro (Líderes)"
+            
+            # ## LÍNEA CORREGIDA ##
             comentario_pareja = generar_comentario_premio(nombre_premio_pareja, [pareja_ganadora['nombre']], jornada_actual, es_final)
-            comentarios_texto += f"### {nombre_premio_pareja}: {pareja_ganadora['nombre']}\n_{comentario_pareja}_\n\n"
+            
+            reporte += f"### {nombre_premio_pareja}: {pareja_ganadora['nombre']}\n_{comentario_pareja}_\n\n"
+            
+    # 3. Comentarios para Sprints (en curso o finalizados)
     sprints = { "Sprint 1 (J1-10)": (1, 10), "Sprint 2 (J11-20)": (11, 20), "Sprint 3 (J21-30)": (21, 30), "Sprint 4 (J31-38)": (31, 38) }
     for nombre, (inicio, fin) in sprints.items():
-        if jornada_actual >= fin:
-            ganador = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= fin))
-            comentario_sprint = generar_comentario_premio(f"Ganador {nombre}", [ganador['nombre_mister']], jornada_actual, True)
-            comentarios_texto += f"### Ganador {nombre}: {ganador['nombre_mister']}\n_{comentario_sprint}_\n\n"
-    return titulo + comentarios_texto
+        # Solo comentamos si el sprint ya ha empezado
+        if jornada_actual >= inicio:
+            # Decide si el sprint ha terminado o está en curso
+            if jornada_actual >= fin:
+                nombre_premio = f"Ganador {nombre}"
+                es_sprint_final = True
+            else:
+                # Extrae el número del sprint para el título provisional
+                num_sprint = nombre.split(' ')[1]
+                nombre_premio = f"Líder Prov. {num_sprint}"
+                es_sprint_final = False
+
+            # Calcula el líder actual del sprint
+            lider_actual_sprint = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= jornada_actual))
+            
+            # Llama al cronista con el contexto correcto (provisional o final)
+            comentario_sprint = generar_comentario_premio(nombre_premio, [lider_actual_sprint['nombre_mister']], jornada_actual, es_sprint_final)
+            
+            reporte += f"### {nombre_premio}: {lider_actual_sprint['nombre_mister']}\n_{comentario_sprint}_\n\n"
+
+    return reporte
 
 # --- FUNCIONES WEB Y DE VENTANA (SIN CAMBIOS) ---
 def obtener_temporada_actual():
