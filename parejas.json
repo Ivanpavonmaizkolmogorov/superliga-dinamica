@@ -1,6 +1,22 @@
 [
   {
-    "nombre_pareja": "Pericles y Al Racing",
+    "nombre_pareja": "José y Perico Racing",
+    "id_managers": [
+      "14307371",
+      "7107051"
+    ],
+    "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
+  },
+  {
+    "nombre_pareja": "The y THE FC",
+    "id_managers": [
+      "7101774",
+      "7106544"
+    ],
+    "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
+  },
+  {
+    "nombre_pareja": "Pericles y Al FC",
     "id_managers": [
       "7106472",
       "7110624"
@@ -8,34 +24,18 @@
     "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
   },
   {
-    "nombre_pareja": "Pandas y Francis Team",
+    "nombre_pareja": "Francis y Carlo United",
+    "id_managers": [
+      "12112883",
+      "7106479"
+    ],
+    "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
+  },
+  {
+    "nombre_pareja": "Pandas y PIRI Racing",
     "id_managers": [
       "8539397",
-      "12112883"
-    ],
-    "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
-  },
-  {
-    "nombre_pareja": "THE y Perico United",
-    "id_managers": [
-      "7106544",
-      "7107051"
-    ],
-    "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
-  },
-  {
-    "nombre_pareja": "Carlo y The Team",
-    "id_managers": [
-      "7106479",
-      "7101774"
-    ],
-    "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
-  },
-  {
-    "nombre_pareja": "PIRI y José CF",
-    "id_managers": [
-      "13305509",
-      "14307371"
+      "13305509"
     ],
     "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
   }
