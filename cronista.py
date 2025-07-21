@@ -172,3 +172,73 @@ def generar_comentario_premio(nombre_premio, ganadores, jornada_actual, es_final
     except Exception as e:
         print(f"Error al generar comentario para el premio {nombre_premio}: {e}")
         return f"El cronista se ha quedado sin palabras ante el logro de {nombres_ganadores}."
+# Pega estas dos nuevas funciones al final de tu archivo cronista.py
+
+def generar_comentario_parejas(clasificacion):
+    """
+    Genera un comentario analizando la clasificación por parejas.
+    Recibe la lista completa de la clasificación.
+    """
+    global gemini_model
+    if not gemini_model or not clasificacion:
+        return "El cronista está estudiando las sinergias de los equipos."
+
+    # Preparamos los datos del top 3 para la IA
+    top_parejas_texto = ""
+    for i, pareja in enumerate(clasificacion[:3]): # Tomamos el top 3
+        nombre = pareja.get('nombre', 'Pareja Desconocida')
+        media = pareja.get('media', 0)
+        top_parejas_texto += f"- Posición {i+1}: {nombre} (Media: {media} pts)\n"
+
+    prompt = f"""
+    Actúa como un analista deportivo experto en química de equipo y estrategia, como si fueras Axel Torres.
+    Te proporciono el top 3 de la clasificación por parejas de una liga fantasy.
+
+    Clasificación actual:
+    {top_parejas_texto}
+
+    Analiza la situación. Tu comentario debe ser breve (2-3 frases) y con carácter.
+    - Si la diferencia de puntos entre el primero y el segundo es pequeña, habla de la intensa rivalidad y la tensión.
+    - Si el líder tiene una gran ventaja, comenta sobre su aplastante dominio y si alguien podrá alcanzarles.
+    - Menciona por su nombre al menos a los dos primeros equipos.
+    """
+    try:
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"Error al generar comentario de parejas: {e}")
+        return "Una alianza poderosa se está forjando, pero el cronista aún no descifra cuál."
+
+def generar_comentario_sprint(nombre_sprint, clasificacion):
+    """
+    Genera un comentario analizando la clasificación de un sprint.
+    Recibe el nombre del sprint y la lista completa de su clasificación.
+    """
+    global gemini_model
+    if not gemini_model or not clasificacion:
+        return "El cronista está tomando tiempos para ver quién es el más rápido."
+
+    top_managers_texto = ""
+    for i, manager in enumerate(clasificacion[:3]): # Tomamos el top 3
+        nombre = manager.get('nombre', 'Mánager Desconocido')
+        puntos = manager.get('puntos', 0)
+        top_managers_texto += f"- Posición {i+1}: {nombre} ({puntos} pts)\n"
+
+    prompt = f"""
+    Actúa como un comentarista de Fórmula 1, analizando una carrera corta (un sprint). Eres rápido, incisivo y te fijas en el estado de forma.
+    Te proporciono el top 3 de la clasificación del sprint "{nombre_sprint}".
+
+    Clasificación del Sprint:
+    {top_managers_texto}
+
+    Genera un comentario de 2 frases sobre el rendimiento en este tramo específico de la temporada.
+    - Enfócate en quién está "on fire" o quién ha dado la sorpresa.
+    - Si la carrera es apretada, habla de la lucha por la "pole position".
+    - Menciona por su nombre al menos al líder del sprint.
+    """
+    try:
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"Error al generar comentario de sprint: {e}")
+        return "Los mánagers aprietan el acelerador, pero el cronista aún no tiene claro quién ganará la carrera."

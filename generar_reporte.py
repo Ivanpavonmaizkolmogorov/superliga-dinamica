@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import font, scrolledtext
 from gestor_datos import cargar_perfiles, cargar_parejas, cargar_config_liga
-from cronista import generar_cronica, generar_comentario_premio
+from cronista import generar_cronica, generar_comentario_premio, generar_comentario_parejas, generar_comentario_sprint
 import os
 import markdown
 from datetime import datetime
@@ -10,8 +10,12 @@ import re
 import git
 
 # --- FUNCIONES DE CÁLCULO DE REPORTE (SIN CAMBIOS) ---
+# En generar_reporte.py, dentro de calcular_clasificacion_parejas
+
+# REEMPLAZA ESTA FUNCIÓN ENTERA
 def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     if not parejas: return ""
+    
     titulo = "## ⚔️ COMPETICIÓN POR PAREJAS (MEDIA TOTAL) ⚔️\n\n"
     if jornada_actual == 38:
         titulo = "## ⚔️ COMPETICIÓN POR PAREJAS (CLASIFICACIÓN FINAL) ⚔️\n\n"
@@ -27,11 +31,21 @@ def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
                 miembros_encontrados += 1
         media = puntos_totales / miembros_encontrados if miembros_encontrados > 0 else 0
         clasificacion.append({"nombre": pareja['nombre_pareja'], "media": round(media)})
+    
     clasificacion.sort(key=lambda x: x['media'], reverse=True)
+    
     for i, item in enumerate(clasificacion):
         clasificacion_texto += f"### {i+1}. {item['nombre']}\n*(Media Total: {item['media']} pts)*\n\n"
+    
+    # Llamada a la IA para el análisis de parejas
+    print(" -> Generando comentario de IA para la clasificación de parejas...")
+    comentario_ia = generar_comentario_parejas(clasificacion)
+    clasificacion_texto += f"\n_{comentario_ia}_"
+    
     return titulo + clasificacion_texto
+# En generar_reporte.py, dentro de calcular_clasificacion_sprints
 
+# REEMPLAZA ESTA FUNCIÓN ENTERA
 def calcular_clasificacion_sprints(perfiles, jornada_actual):
     sprints = { "Sprint 1 (J1-10)": (1, 10), "Sprint 2 (J11-20)": (11, 20), "Sprint 3 (J21-30)": (21, 30), "Sprint 4 (J31-38)": (31, 38) }
     reporte_final = ""
@@ -43,9 +57,17 @@ def calcular_clasificacion_sprints(perfiles, jornada_actual):
             for perfil in perfiles:
                 puntos = sum(h['puntos_jornada'] for h in perfil['historial_temporada'] if inicio <= h['jornada'] <= fin)
                 clasificacion.append({"nombre": perfil['nombre_mister'], "puntos": puntos})
+            
             clasificacion.sort(key=lambda x: x['puntos'], reverse=True)
+            
             for i, item in enumerate(clasificacion): 
                 clasificacion_texto += f"**{i+1}.** {item['nombre']} - {item['puntos']} pts\n"
+            
+            # Llamada a la IA para el análisis del sprint
+            print(f" -> Generando comentario de IA para {nombre}...")
+            comentario_ia = generar_comentario_sprint(nombre, clasificacion)
+            clasificacion_texto += f"\n_{comentario_ia}_"
+            
             reporte_final += titulo + clasificacion_texto + "\n---\n"
     return reporte_final
 
