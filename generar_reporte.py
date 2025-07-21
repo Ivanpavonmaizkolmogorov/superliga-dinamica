@@ -73,14 +73,21 @@ def calcular_clasificacion_sprints(perfiles, jornada_actual):
             reporte_final += titulo + clasificacion_texto + "\n---\n"
     return reporte_final
 
+# REEMPLAZA ESTA FUNCIÓN ENTERA en generar_reporte.py
+
 def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
     if not config_liga or not config_liga.get('premios_valor'): return ""
     print("Calculando reparto de premios...")
     premios_por_manager = {p['nombre_mister']: [] for p in perfiles}
     premios_info = config_liga['premios_valor']
+    
     perfiles_ordenados = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])
+    
+    # 1. Premios Anuales (Campeón y Subcampeón)
     if len(perfiles_ordenados) > 0: premios_por_manager[perfiles_ordenados[0]['nombre_mister']].append(("Campeón Absoluto", premios_info.get("Campeón Absoluto", 0)))
     if len(perfiles_ordenados) > 1: premios_por_manager[perfiles_ordenados[1]['nombre_mister']].append(("Subcampeón", premios_info.get("Subcampeón", 0)))
+
+    # 2. Pareja de Oro
     if parejas:
         clasificacion_parejas = []
         for pareja in parejas:
@@ -97,13 +104,24 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
             for manager_id in pareja_ganadora['ids']:
                 nombre_ganador = next(p['nombre_mister'] for p in perfiles if p['id_manager'] == manager_id)
                 premios_por_manager[nombre_ganador].append(("Pareja de Oro", valor_premio_individual))
+            
+    # 3. Sprints (Se asignan si el sprint ha FINALIZADO o si está EN CURSO)
     sprints = { "Ganador Sprint 1": (1, 10), "Ganador Sprint 2": (11, 20), "Ganador Sprint 3": (21, 30), "Ganador Sprint 4": (31, 38) }
     for nombre_premio, (inicio, fin) in sprints.items():
-        if jornada_actual >= fin:
-            ganador = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= fin))
-            premios_por_manager[ganador['nombre_mister']].append((nombre_premio, premios_info.get(nombre_premio, 0)))
+        # ## INICIO DE LA CORRECCIÓN ##
+        # Comprueba si el sprint ha EMPEZADO
+        if jornada_actual >= inicio:
+            # Calcula el líder actual del sprint (sea provisional o final)
+            lider_sprint = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= jornada_actual))
+            
+            # Asigna el premio (provisional o final)
+            premios_por_manager[lider_sprint['nombre_mister']].append((nombre_premio, premios_info.get(nombre_premio, 0)))
+        # ## FIN DE LA CORRECCIÓN ##
+
+    # 4. Campeón de Invierno
     if jornada_actual >= 19:
         lider_invierno = None
+        # Busca quién fue el líder en la jornada 19
         for p in perfiles:
             historial_j19 = next((h for h in p['historial_temporada'] if h['jornada'] == 19), None)
             if historial_j19 and historial_j19['puesto'] == 1:
@@ -111,11 +129,13 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
         if lider_invierno:
             premios_por_manager[lider_invierno['nombre_mister']].append(("Campeón de Invierno", premios_info.get("Campeón de Invierno", 0)))
     
+    # --- LÓGICA DEL TÍTULO DINÁMICO ---
     titulo = "## 💰 REPARTO FINAL DE PREMIOS 💰\n\n" if jornada_actual == 38 else "## 💰 BOTE PROVISIONAL 💰\n\n"
     premios_texto = ""
     managers_con_premio = {m: p for m, p in premios_por_manager.items() if p}
     if not managers_con_premio:
         return titulo + "_Aún no hay ningún ganador. ¡Todo por decidir!_\n"
+        
     managers_ordenados = sorted(managers_con_premio.items(), key=lambda item: sum(p[1] for p in item[1]), reverse=True)
     for manager, premios in managers_ordenados:
         total_ganado = sum(p[1] for p in premios)
