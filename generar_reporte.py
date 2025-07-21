@@ -9,13 +9,17 @@ from datetime import datetime
 import re
 import git
 
-# --- TUS FUNCIONES DE CÁLCULO (SIN CAMBIOS) ---
+# --- FUNCIONES DE CÁLCULO DE REPORTE ---
+# Cada función devuelve ahora el texto en formato Markdown.
+# La conversión a HTML y el enmarcado se harán después.
+
 def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     if not parejas: return ""
     titulo = "## ⚔️ COMPETICIÓN POR PAREJAS (MEDIA TOTAL) ⚔️\n\n"
     if jornada_actual == 38:
         titulo = "## ⚔️ COMPETICIÓN POR PAREJAS (CLASIFICACIÓN FINAL) ⚔️\n\n"
-    reporte = "\n\n---\n\n" + titulo
+    
+    clasificacion_texto = ""
     clasificacion = []
     for pareja in parejas:
         puntos_totales, miembros_encontrados = 0, 0
@@ -28,22 +32,25 @@ def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
         clasificacion.append({"nombre": pareja['nombre_pareja'], "media": round(media)})
     clasificacion.sort(key=lambda x: x['media'], reverse=True)
     for i, item in enumerate(clasificacion):
-        reporte += f"### {i+1}. {item['nombre']}\n*(Media Total: {item['media']} pts)*\n\n"
-    return reporte
+        clasificacion_texto += f"### {i+1}. {item['nombre']}\n*(Media Total: {item['media']} pts)*\n\n"
+    return titulo + clasificacion_texto
 
 def calcular_clasificacion_sprints(perfiles, jornada_actual):
     sprints = { "Sprint 1 (J1-10)": (1, 10), "Sprint 2 (J11-20)": (11, 20), "Sprint 3 (J21-30)": (21, 30), "Sprint 4 (J31-38)": (31, 38) }
-    reporte = ""
+    reporte_final = ""
     for nombre, (inicio, fin) in sprints.items():
         if jornada_actual >= inicio:
-            reporte += f"\n\n---\n\n## 🚀 CLASIFICACIÓN {nombre.upper()} 🚀\n\n"
+            titulo = f"## 🚀 CLASIFICACIÓN {nombre.upper()} 🚀\n\n"
+            clasificacion_texto = ""
             clasificacion = []
             for perfil in perfiles:
                 puntos = sum(h['puntos_jornada'] for h in perfil['historial_temporada'] if inicio <= h['jornada'] <= fin)
                 clasificacion.append({"nombre": perfil['nombre_mister'], "puntos": puntos})
             clasificacion.sort(key=lambda x: x['puntos'], reverse=True)
-            for i, item in enumerate(clasificacion): reporte += f"**{i+1}.** {item['nombre']} - {item['puntos']} pts\n"
-    return reporte
+            for i, item in enumerate(clasificacion): 
+                clasificacion_texto += f"**{i+1}.** {item['nombre']} - {item['puntos']} pts\n"
+            reporte_final += titulo + clasificacion_texto + "\n---\n"
+    return reporte_final
 
 def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
     if not config_liga or not config_liga.get('premios_valor'): return ""
@@ -82,30 +89,32 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
                 lider_invierno = p; break
         if lider_invierno:
             premios_por_manager[lider_invierno['nombre_mister']].append(("Campeón de Invierno", premios_info.get("Campeón de Invierno", 0)))
+    
     titulo = "## 💰 REPARTO FINAL DE PREMIOS 💰\n\n" if jornada_actual == 38 else "## 💰 BOTE PROVISIONAL 💰\n\n"
-    reporte = "\n\n---\n\n" + titulo
+    premios_texto = ""
     managers_con_premio = {m: p for m, p in premios_por_manager.items() if p}
     if not managers_con_premio:
-        return reporte + "_Aún no hay ningún ganador. ¡Todo por decidir!_\n"
+        return titulo + "_Aún no hay ningún ganador. ¡Todo por decidir!_\n"
     managers_ordenados = sorted(managers_con_premio.items(), key=lambda item: sum(p[1] for p in item[1]), reverse=True)
     for manager, premios in managers_ordenados:
         total_ganado = sum(p[1] for p in premios)
-        reporte += f"### *{manager}:* {total_ganado:.2f} €\n"
+        premios_texto += f"### *{manager}:* {total_ganado:.2f} €\n"
         for nombre, valor in sorted(premios):
-            reporte += f"  - {nombre}: {valor:.2f} €\n"
-    return reporte
+            premios_texto += f"  - {nombre}: {valor:.2f} €\n"
+    return titulo + premios_texto
 
 def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual):
     if not config_liga or not config_liga.get('premios_valor'): return ""
     print("Generando comentarios de la IA para los premios...")
     es_final = (jornada_actual == 38)
-    reporte = "\n\n---\n\n## 🎤 EL MICRÓFONO DEL CRONISTA 🎤\n\n"
+    titulo = "## 🎤 EL MICRÓFONO DEL CRONISTA 🎤\n\n"
+    comentarios_texto = ""
     perfiles_ordenados = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])
     if perfiles_ordenados:
         campeon = perfiles_ordenados[0]
         nombre_premio = "Campeón de Liga" if es_final else "Líder Actual"
         comentario_campeon = generar_comentario_premio(nombre_premio, [campeon['nombre_mister']], jornada_actual, es_final)
-        reporte += f"### {nombre_premio}: {campeon['nombre_mister']}\n_{comentario_campeon}_\n\n"
+        comentarios_texto += f"### {nombre_premio}: {campeon['nombre_mister']}\n_{comentario_campeon}_\n\n"
     if parejas:
         clasificacion_parejas = []
         for pareja in parejas:
@@ -120,17 +129,28 @@ def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actua
             pareja_ganadora = max(clasificacion_parejas, key=lambda x: x['media'])
             nombre_premio_pareja = "Pareja de Oro (Campeones)" if es_final else "Pareja de Oro (Líderes)"
             comentario_pareja = generar_comentario_premio(nombre_premio_pareja, [pareja_ganadora['nombre']], jornada_actual, es_final)
-            reporte += f"### {nombre_premio_pareja}: {pareja_ganadora['nombre']}\n_{comentario_pareja}_\n\n"
+            comentarios_texto += f"### {nombre_premio_pareja}: {pareja_ganadora['nombre']}\n_{comentario_pareja}_\n\n"
     sprints = { "Sprint 1 (J1-10)": (1, 10), "Sprint 2 (J11-20)": (11, 20), "Sprint 3 (J21-30)": (21, 30), "Sprint 4 (J31-38)": (31, 38) }
     for nombre, (inicio, fin) in sprints.items():
         if jornada_actual >= fin:
             ganador = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= fin))
             comentario_sprint = generar_comentario_premio(f"Ganador {nombre}", [ganador['nombre_mister']], jornada_actual, True)
-            reporte += f"### Ganador {nombre}: {ganador['nombre_mister']}\n_{comentario_sprint}_\n\n"
-    return reporte
+            comentarios_texto += f"### Ganador {nombre}: {ganador['nombre_mister']}\n_{comentario_sprint}_\n\n"
+    return titulo + comentarios_texto
 
-# --- FUNCIONES WEB (VERSIÓN CORREGIDA Y SIMPLIFICADA) ---
-def actualizar_web_historico(jornada_actual, reporte_texto):
+# --- FUNCIONES WEB Y DE VENTANA ---
+def obtener_temporada_actual():
+    now = datetime.now()
+    year = now.year
+    if now.month >= 8: return f"{str(year)[-2:]}-{str(year+1)[-2:]}"
+    else: return f"{str(year-1)[-2:]}-{str(year)[-2:]}"
+
+def generar_html_completo(titulo, contenido_html, nivel_profundidad=1):
+    path_css = "../" * nivel_profundidad + "style.css"
+    path_home = "../" * nivel_profundidad + "index.html"
+    return f'<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{titulo}</title><link rel="stylesheet" href="{path_css}"></head><body><div class="container"><h1>{titulo}</h1>{contenido_html}<footer><a href="{path_home}">Volver al Archivo de Temporadas</a><br><span>Reporte generado el {datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")}</span></footer></div></body></html>'
+
+def actualizar_web_historico(jornada_actual, reporte_html_enmarcado):
     print("INFO: Iniciando la actualización del archivo histórico web...")
     temporada = obtener_temporada_actual()
     timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
@@ -141,16 +161,16 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
     path_nojekyll = os.path.join(path_docs, ".nojekyll")
     if not os.path.exists(path_nojekyll):
         with open(path_nojekyll, 'w') as f: pass
-        print("INFO: Creado archivo .nojekyll para asegurar la compatibilidad con GitHub Pages.")
+        print("INFO: Creado archivo .nojekyll.")
     path_css = os.path.join(path_docs, "style.css")
     if not os.path.exists(path_css):
         css_content = """
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Teko:wght@700&display=swap');
         body { font-family: 'Roboto', sans-serif; line-height: 1.6; background-color: #f4f6f9; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 850px; margin: 20px auto; background-color: #fff; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        h1 { font-family: 'Teko', sans-serif; font-size: 3.5em; color: #1a3a6b; text-align: center; padding: 20px 0; margin: 0; background-color: #eef2f7; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom: 3px solid #d0d9e3; }
-        .report-content { padding: 20px 40px; }
-        h2 { font-family: 'Teko', sans-serif; font-size: 2.5em; color: #2c5ba3; border-bottom: 2px solid #2c5ba3; padding-bottom: 10px; margin-top: 40px; }
+        .container { max-width: 850px; margin: 20px auto; padding: 0; }
+        .report-section { background-color: #ffffff; border: 1px solid #e0e4e8; border-radius: 8px; padding: 20px 30px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        h1 { font-family: 'Teko', sans-serif; font-size: 3.5em; color: #1a3a6b; text-align: center; padding: 20px 0; margin-bottom: 20px; }
+        h2 { font-family: 'Teko', sans-serif; font-size: 2.5em; color: #2c5ba3; border-bottom: 2px solid #2c5ba3; padding-bottom: 10px; margin-top: 10px; }
         h3 { font-family: 'Teko', sans-serif; font-size: 1.8em; color: #3e6bb0; margin-top: 25px; }
         strong { font-weight: 700; } em { color: #555; font-style: italic; } p { margin: 0 0 10px 0; }
         hr { border: 0; height: 1px; background: #ddd; margin: 40px 0; }
@@ -158,65 +178,48 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
         li { background-color: #fff; margin: 10px 0; padding: 20px; border-radius: 8px; font-size: 1.2em; transition: all .3s ease; border: 1px solid #e8e8e8; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         li:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
         li a { text-decoration: none; color: #1a3a6b; font-weight: bold; display: block; text-align: center; }
-        footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; background-color: #eef2f7; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border-top: 1px solid #d0d9e3;}
+        footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; background-color: #eef2f7; border-radius:10px; margin-top: 20px;}
         """
         with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
+    
     nombre_archivo_reporte = f"jornada-{jornada_actual}_{timestamp}.html"
     path_reporte = os.path.join(path_temporada, nombre_archivo_reporte)
-    reporte_html = markdown.markdown(reporte_texto, extensions=['nl2br'])
     titulo_reporte = f"Reporte Jornada {jornada_actual}"
-    html_final = generar_html_completo(titulo_reporte, reporte_html, nivel_profundidad=2)
+    html_final = generar_html_completo(titulo_reporte, reporte_html_enmarcado, nivel_profundidad=2)
     with open(path_reporte, "w", encoding="utf-8") as f: f.write(html_final)
     print(f"INFO: Guardado reporte en '{path_reporte}'")
+    
     archivos_en_temporada = [f for f in os.listdir(path_temporada) if f.startswith("jornada-") and f.endswith(".html")]
     def extractor_para_sort(archivo):
-        match_jornada = re.search(r'jornada-(\d+)', archivo)
-        match_fecha = re.search(r'_(\d{8}-\d{6})', archivo)
+        match_jornada = re.search(r'jornada-(\d+)', archivo); match_fecha = re.search(r'_(\d{8}-\d{6})', archivo)
         if match_jornada and match_fecha: return (int(match_jornada.group(1)), match_fecha.group(1))
         return (0, "")
     archivos_en_temporada.sort(key=extractor_para_sort, reverse=True)
+    
     links_html = []
     for archivo in archivos_en_temporada:
         try:
-            num_jornada = re.search(r'jornada-(\d+)', archivo).group(1)
-            fecha_str = re.search(r'_(\d{8}-\d{6})', archivo).group(1)
+            num_jornada = re.search(r'jornada-(\d+)', archivo).group(1); fecha_str = re.search(r'_(\d{8}-\d{6})', archivo).group(1)
             fecha_obj = datetime.strptime(fecha_str, '%Y%m%d-%H%M%S')
             texto_enlace = f"Jornada {num_jornada} (Emitido: {fecha_obj.strftime('%d/%m/%Y %H:%M')})"
             links_html.append(f'<li><a href="{archivo}">{texto_enlace}</a></li>')
         except AttributeError: continue
+            
     contenido_indice = "<ul>" + "".join(links_html) + "</ul>"
     html_index_temporada = generar_html_completo(f"Histórico Temporada {temporada}", contenido_indice, nivel_profundidad=1)
     with open(os.path.join(path_temporada, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_temporada)
     print(f"INFO: Actualizado el índice de la temporada {temporada}.")
+    
     temporadas = sorted([d for d in os.listdir(path_docs) if os.path.isdir(os.path.join(path_docs, d))], reverse=True)
     links_temporadas = "".join([f'<li><a href="{t}/index.html">Temporada {t}</a></li>' for t in temporadas])
     html_index_principal = generar_html_completo("Archivo Histórico de la Superliga", f"<ul>{links_temporadas}</ul>", nivel_profundidad=0)
     with open(os.path.join(path_docs, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_principal)
     print(f"INFO: Actualizado el índice principal de temporadas.")
+    
     url_base = "https://Ivanpavonmaizkolmogorov.github.io/superliga-dinamica"
     url_reporte = f"{url_base}/{temporada}/{nombre_archivo_reporte}"
     return url_reporte
 
-def obtener_temporada_actual():
-    now = datetime.now()
-    year = now.year
-    if now.month >= 8:
-        return f"{str(year)[-2:]}-{str(year+1)[-2:]}"
-    else:
-        return f"{str(year-1)[-2:]}-{str(year)[-2:]}"
-
-def generar_html_completo(titulo, contenido_html, nivel_profundidad=1):
-    path_css = "../" * nivel_profundidad + "style.css"
-    path_home = "../" * nivel_profundidad + "index.html"
-    return f"""
-    <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{titulo}</title><link rel="stylesheet" href="{path_css}"></head><body><div class="container">
-    <h1>{titulo}</h1><div class="report-content">{contenido_html}</div><footer>
-    <a href="{path_home}">Volver al Archivo de Temporadas</a><br>
-    <span>Reporte generado el {datetime.now().strftime('%d/%m/%Y a las %H:%M:%S')}</span></footer></div></body></html>
-    """
-
-# ## RECUPERADO ##: La función para mostrar la ventana con los botones
 def mostrar_ventana_final(reporte_final, url_reporte):
     root = tk.Tk()
     root.title(f"Reporte Generado y Subido a la Web")
@@ -226,13 +229,11 @@ def mostrar_ventana_final(reporte_final, url_reporte):
     text_area.insert(tk.END, reporte_final)
     text_area.config(state="disabled")
     def copy_reporte_to_clipboard():
-        root.clipboard_clear()
-        root.clipboard_append(reporte_final)
+        root.clipboard_clear(); root.clipboard_append(reporte_final)
         copy_reporte_button.config(text="¡Reporte Copiado!", bg="#16a085")
         root.after(2000, lambda: copy_reporte_button.config(text="Copiar Reporte", bg="#3498db"))
     def copy_enlace_to_clipboard():
-        root.clipboard_clear()
-        root.clipboard_append(url_reporte)
+        root.clipboard_clear(); root.clipboard_append(url_reporte)
         copy_enlace_button.config(text="¡Enlace Copiado!", bg="#16a085")
         root.after(2000, lambda: copy_enlace_button.config(text="Copiar Enlace Web", bg="#8e44ad"))
     button_frame = tk.Frame(root)
@@ -244,8 +245,7 @@ def mostrar_ventana_final(reporte_final, url_reporte):
     tk.Button(button_frame, text="Cerrar", font=("Helvetica", 11), command=root.destroy).pack(side="left", padx=10)
     root.mainloop()
 
-# REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
-
+# --- FUNCIÓN MAIN QUE UNE TODO ---
 def main():
     print("--- GENERANDO REPORTE SEMANAL ---")
     perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
@@ -253,34 +253,45 @@ def main():
         print("ERROR: No hay datos de ninguna jornada en 'perfiles.json'."); return
     jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
     
-    # 1. Generar contenido del reporte con formato Markdown para títulos
-    reporte_individual = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
+    # 1. Generar contenido del reporte en texto plano (Markdown)
+    reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
     perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
         cronica = generar_cronica(perfil, ultimo_historial)
-        reporte_individual += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
-                               f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
-                               f"_{cronica}_\n\n")
+        reporte_individual_texto += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
+                                     f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
+                                     f"_{cronica}_\n\n")
 
-    reporte_parejas = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
-    reporte_sprints = calcular_clasificacion_sprints(perfiles, jornada_actual)
-    reporte_reparto_premios = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
-    reporte_comentarios_ia = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
+    reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
+    reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)
+    reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
+    reporte_comentarios_ia_texto = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
     
-    # ## INICIO DE LA CORRECCIÓN ##
+    # 2. Unir las secciones de texto plano para el portapapeles
+    reporte_texto_plano_completo = (reporte_individual_texto + "\n---\n" + 
+                                  reporte_parejas_texto + "\n---\n" + 
+                                  reporte_sprints_texto + 
+                                  reporte_reparto_premios_texto + "\n---\n" +
+                                  reporte_comentarios_ia_texto)
+    
+    # 3. Convertir cada sección a HTML enmarcado
+    secciones_html = [
+        markdown.markdown(reporte_individual_texto, extensions=['nl2br']),
+        markdown.markdown(reporte_parejas_texto, extensions=['nl2br']),
+        markdown.markdown(reporte_sprints_texto, extensions=['nl2br']),
+        markdown.markdown(reporte_reparto_premios_texto, extensions=['nl2br']),
+        markdown.markdown(reporte_comentarios_ia_texto, extensions=['nl2br'])
+    ]
+    reporte_html_enmarcado = "".join([f'<div class="report-section">{seccion}</div>' for seccion in secciones_html if seccion.strip()])
+    
+    # 4. Generar la web y obtener la URL real
+    url_reporte_real = actualizar_web_historico(jornada_actual, reporte_html_enmarcado)
+    
+    # 5. Crear el texto final para el portapapeles
+    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_texto_plano_completo
 
-    # 2. Ensamblar solo el texto del reporte, SIN enlace todavía.
-    reporte_texto_plano = (reporte_individual + reporte_parejas + reporte_sprints + reporte_reparto_premios + reporte_comentarios_ia)
-    
-    # 3. Generar la web y obtener la URL real y definitiva.
-    #    Le pasamos el texto plano para que lo convierta a HTML para la web.
-    url_reporte_real = actualizar_web_historico(jornada_actual, reporte_texto_plano)
-    
-    # 4. Crear el texto final para el portapapeles DESPUÉS de tener la URL correcta.
-    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_texto_plano
-    
-    # 5. Subir cambios a Git
+    # 6. Subir cambios a Git
     try:
         repo = git.Repo(os.getcwd())
         if not repo.is_dirty(untracked_files=True):
@@ -294,18 +305,8 @@ def main():
     except Exception as e:
         print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
 
-    # 6. Mostrar la ventana con los datos finales y correctos
+    # 7. Mostrar la ventana final
     mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
-    
-    # ## FIN DE LA CORRECCIÓN ##
-
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(f"Ha ocurrido un error inesperado en generar_reporte: {e}")
-    finally:
-        print("\n--- PROCESO DE GENERACIÓN DE REPORTE FINALIZADO ---")
 
 if __name__ == "__main__":
     try:
