@@ -286,9 +286,11 @@ def main():
     
     # 5. Crear una versión del texto optimizada para WhatsApp
     reporte_para_whatsapp = reporte_markdown_completo
-    # Elimina los símbolos de título y los convierte en negrita de WhatsApp
-    reporte_para_whatsapp = re.sub(r'##\s*(.*?)\s*\n', r'*\1*\n\n', reporte_para_whatsapp)
+    
+    # >> CORRECCIÓN: Primero se procesan los ### y LUEGO los ##
     reporte_para_whatsapp = re.sub(r'###\s*(.*?)\s*\n', r'*\1*\n', reporte_para_whatsapp)
+    reporte_para_whatsapp = re.sub(r'##\s*(.*?)\s*\n', r'*\1*\n\n', reporte_para_whatsapp)
+
     # Convierte la negrita de Markdown a la de WhatsApp
     reporte_para_whatsapp = reporte_para_whatsapp.replace('**', '*')
     # Elimina los separadores ---
