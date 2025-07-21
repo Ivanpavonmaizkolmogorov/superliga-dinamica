@@ -365,14 +365,27 @@ def main():
     
     try:
         repo = git.Repo(os.getcwd())
-        if not repo.is_dirty(untracked_files=True):
-            print("INFO: No hay cambios para subir a GitHub.")
+        
+        # --- LÓGICA DE GIT MEJORADA ---
+
+        # 1. Obtenemos la ruta completa a la carpeta 'docs'
+        path_docs = os.path.join(os.getcwd(), 'docs')
+
+        # 2. Le decimos a Git que añada SOLAMENTE esa carpeta
+        #    Esto añadirá todos los archivos nuevos o modificados DENTRO de 'docs'
+        repo.git.add(path_docs)
+
+        # 3. Comprobamos si, después de añadir 'docs', hay algo para hacer commit.
+        #    Esto es más seguro que usar is_dirty() al principio.
+        if not repo.index.diff("HEAD"):
+            print("INFO: No hay cambios en la carpeta 'docs' para subir a GitHub.")
         else:
-            print("INFO: Detectados cambios, subiendo a GitHub...")
-            repo.git.add(A=True) 
+            print("INFO: Detectados cambios en los reportes, subiendo a GitHub...")
+            # 4. Hacemos el commit y el push como antes
             repo.index.commit(f"Actualización del reporte web - J{jornada_actual}")
             repo.remote(name='origin').push()
             print("✅ ¡ÉXITO! El repositorio y la web han sido actualizados.")
+
     except Exception as e:
         print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
 
