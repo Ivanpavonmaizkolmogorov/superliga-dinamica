@@ -1,8 +1,8 @@
-# Imports originales
+# Imports originales y añadidos
+import tkinter as tk
+from tkinter import font, scrolledtext
 from gestor_datos import cargar_perfiles, cargar_parejas, cargar_config_liga
 from cronista import generar_cronica, generar_comentario_premio
-
-# ## AÑADIDO ##: Imports necesarios para la generación web y Git
 import os
 import markdown
 from datetime import datetime
@@ -93,7 +93,6 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
             reporte += f"  - {nombre}: {valor:.2f} €\n"
     return reporte
 
-# --- FUNCIÓN DE COMENTARIOS DE LA IA (SIN CAMBIOS) ---
 def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual):
     if not config_liga or not config_liga.get('premios_valor'): return ""
     print("Generando comentarios de la IA para los premios...")
@@ -128,7 +127,7 @@ def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actua
             reporte += f"**Ganador {nombre}: {ganador['nombre_mister']}**\n_{comentario_sprint}_\n\n"
     return reporte
 
-# ## AÑADIDO ##: Las nuevas funciones para generar la web
+# --- FUNCIONES WEB (CON CSS MEJORADO) ---
 def obtener_temporada_actual():
     now = datetime.now()
     year = now.year
@@ -148,8 +147,6 @@ def generar_html_completo(titulo, contenido_html, nivel_profundidad=1):
     <span>Reporte generado el {datetime.now().strftime('%d/%m/%Y a las %H:%M:%S')}</span></footer></div></body></html>
     """
 
-# REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
-
 def actualizar_web_historico(jornada_actual, reporte_texto):
     print("INFO: Iniciando la actualización del archivo histórico web...")
     temporada = obtener_temporada_actual()
@@ -158,62 +155,119 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
     path_docs = os.path.join(path_proyecto, "docs")
     path_temporada = os.path.join(path_docs, temporada)
     os.makedirs(path_temporada, exist_ok=True)
+    
+    # --- ## CSS MEJORADO ## ---
     path_css = os.path.join(path_docs, "style.css")
     if not os.path.exists(path_css):
-        css_content = 'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;background-color:#f0f2f5;color:#1c1e21;margin:0;padding:20px} .container{max-width:800px;margin:0 auto;background-color:#fff;border:1px solid #dddfe2;border-radius:8px;padding:20px 40px;box-shadow:0 4px 8px rgba(0,0,0,.1)} h1,h2,h3{color:#0056b3;border-bottom:2px solid #f0f2f5;padding-bottom:5px;text-align:center} ul{list-style-type:none;padding:0} li{background-color:#f9f9f9;margin:10px 0;padding:15px;border-radius:5px;font-size:1.1em;transition:transform .2s} li:hover{transform:scale(1.02)} li a{text-decoration:none;color:#0056b3;font-weight:700;display:block} .report-content{margin-top:20px} footer{text-align:center;margin-top:30px;font-size:.9em;color:#606770}'
+        css_content = """
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; background-color: #f0f2f5; color: #1c1e21; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background-color: #fff; border: 1px solid #dddfe2; border-radius: 8px; padding: 20px 40px; box-shadow: 0 4px 8px rgba(0,0,0,.1); }
+        h1 { color: #0056b3; border-bottom: 2px solid #f0f2f5; padding-bottom: 5px; text-align: center; }
+        .report-content { 
+            font-family: 'Consolas', 'Courier New', monospace; /* <-- La clave para el formato */
+            background-color: #fdfdfd; 
+            padding: 15px; 
+            border: 1px solid #eee; 
+            border-radius: 5px; 
+            white-space: pre-wrap; /* <-- Respeta los espacios y saltos de línea */
+            word-wrap: break-word;
+        }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #f9f9f9; margin: 10px 0; padding: 15px; border-radius: 5px; font-size: 1.1em; transition: transform .2s; }
+        li:hover { transform: scale(1.02); }
+        li a { text-decoration: none; color: #0056b3; font-weight: 700; display: block; text-align: center; }
+        footer { text-align: center; margin-top: 30px; font-size: .9em; color: #606770; }
+        """
         with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
     
-    nombre_archivo = f"jornada-{jornada_actual}_{timestamp}.html"
-    path_reporte = os.path.join(path_temporada, nombre_archivo)
+    nombre_archivo_relativo = f"{temporada}/jornada-{jornada_actual}_{timestamp}.html"
+    path_reporte = os.path.join(path_docs, nombre_archivo_relativo)
     reporte_html = markdown.markdown(reporte_texto.replace('\n', '<br>'))
     titulo_reporte = f"Reporte Jornada {jornada_actual} (Emitido {timestamp})"
-    html_final = generar_html_completo(titulo_reporte, reporte_html, nivel_profundidad=2)
+    html_final = generar_html_completo(titulo_reporte, f"<pre>{reporte_texto}</pre>", nivel_profundidad=2) # Usamos <pre> para conservar el formato
     with open(path_reporte, "w", encoding="utf-8") as f: f.write(html_final)
     print(f"INFO: Guardado reporte en '{path_reporte}'")
-    
-    # ## INICIO DE LA CORRECCIÓN ##
-    archivos_reporte = [f for f in os.listdir(path_temporada) if f.startswith("jornada-")]
 
-    # Función auxiliar para extraer los datos de forma segura para ordenar
+    # (El resto de la lógica de índices no cambia)
+    archivos_reporte = [f for f in os.listdir(path_temporada) if f.startswith("jornada-")]
     def extractor_para_sort(archivo):
         match_jornada = re.search(r'jornada-(\d+)', archivo)
         match_fecha = re.search(r'_(\d{8}-\d{6})', archivo)
         if match_jornada and match_fecha:
             return (int(match_jornada.group(1)), match_fecha.group(1))
-        return (0, "") # Devuelve un valor por defecto si el archivo no coincide
-
+        return (0, "")
     archivos_reporte.sort(key=extractor_para_sort, reverse=True)
-    
-    # Bucle 'for' para construir los enlaces de forma legible y sin errores
     links_jornadas_html = []
     for archivo in archivos_reporte:
         try:
             num_jornada = re.search(r'jornada-(\d+)', archivo).group(1)
             fecha_str = re.search(r'_(\d{8}-\d{6})', archivo).group(1)
-            
             fecha_obj = datetime.strptime(fecha_str, '%Y%m%d-%H%M%S')
             texto_del_enlace = f"Jornada {num_jornada} (Emitido: {fecha_obj.strftime('%d/%m/%Y %H:%M')})"
-            
             links_jornadas_html.append(f'<li><a href="{archivo}">{texto_del_enlace}</a></li>')
         except AttributeError:
-            # Si un archivo no coincide con el patrón esperado, lo ignoramos
-            print(f"ADVERTENCIA: Archivo '{archivo}' en la carpeta de temporada no tiene el formato esperado.")
+            print(f"ADVERTENCIA: Archivo '{archivo}' no tiene el formato esperado.")
             continue
-            
     contenido_indice_temporada = "<ul>" + "".join(links_jornadas_html) + "</ul>"
-    # ## FIN DE LA CORRECCIÓN ##
-
     html_index_temporada = generar_html_completo(f"Histórico Temporada {temporada}", contenido_indice_temporada, nivel_profundidad=1)
     with open(os.path.join(path_temporada, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_temporada)
     print(f"INFO: Actualizado el índice de la temporada {temporada}.")
-    
     temporadas = sorted([d for d in os.listdir(path_docs) if os.path.isdir(os.path.join(path_docs, d))], reverse=True)
     links_temporadas = "".join([f'<li><a href="{t}/index.html">Temporada {t}</a></li>' for t in temporadas])
     html_index_principal = generar_html_completo("Archivo Histórico de la Superliga", f"<ul>{links_temporadas}</ul>", nivel_profundidad=0)
     with open(os.path.join(path_docs, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_principal)
     print("INFO: Actualizado el índice principal de temporadas.")
+    
+    # Devolvemos la URL completa del reporte generado
+    # Cambia "Ivanpavonmaizkolmogorov" y "superliga-dinamica" por tu usuario y nombre de repo
+    url_base = f"https://Ivanpavonmaizkolmogorov.github.io/superliga-dinamica/"
+    url_reporte = url_base + nombre_archivo_relativo.replace("\\", "/")
+    return url_reporte
 
-# ## REEMPLAZADO ##: La función main para que genere la web en vez de una ventana
+
+# --- ## REINTEGRACIÓN DE LA VENTANA TKINTER CON DOBLE PORTAPAPELES ## ---
+def mostrar_ventana_final(reporte_final, url_reporte):
+    root = tk.Tk()
+    root.title(f"Reporte Generado y Subido a la Web")
+    root.geometry("700x800")
+    
+    # Área de texto para el reporte
+    text_area = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=("Consolas", 10))
+    text_area.pack(expand=True, fill="both", padx=10, pady=10)
+    text_area.insert(tk.END, reporte_final)
+    text_area.config(state="disabled")
+
+    # --- Funciones para los botones ---
+    def copy_reporte_to_clipboard():
+        root.clipboard_clear()
+        root.clipboard_append(reporte_final)
+        copy_reporte_button.config(text="¡Reporte Copiado!", bg="#16a085")
+        root.after(2000, lambda: copy_reporte_button.config(text="Copiar Reporte", bg="#3498db"))
+
+    def copy_enlace_to_clipboard():
+        root.clipboard_clear()
+        root.clipboard_append(url_reporte)
+        copy_enlace_button.config(text="¡Enlace Copiado!", bg="#16a085")
+        root.after(2000, lambda: copy_enlace_button.config(text="Copiar Enlace Web", bg="#8e44ad"))
+
+    # --- Frame para los botones ---
+    button_frame = tk.Frame(root)
+    button_frame.pack(pady=10)
+
+    # Botón para copiar el reporte
+    copy_reporte_button = tk.Button(button_frame, text="Copiar Reporte", font=("Helvetica", 11, "bold"), bg="#3498db", fg="white", command=copy_reporte_to_clipboard)
+    copy_reporte_button.pack(side="left", padx=10)
+    
+    # Botón para copiar el enlace
+    copy_enlace_button = tk.Button(button_frame, text="Copiar Enlace Web", font=("Helvetica", 11, "bold"), bg="#8e44ad", fg="white", command=copy_enlace_to_clipboard)
+    copy_enlace_button.pack(side="left", padx=10)
+
+    # Botón de cierre
+    tk.Button(button_frame, text="Cerrar", font=("Helvetica", 11), command=root.destroy).pack(side="left", padx=10)
+    
+    root.mainloop()
+
+# --- ## FUNCIÓN MAIN MODIFICADA ## ---
 def main():
     print("--- GENERANDO REPORTE SEMANAL ---")
     perfiles = cargar_perfiles()
@@ -226,7 +280,7 @@ def main():
 
     jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
     
-    # Generar todas las secciones de texto del reporte
+    # 1. Generar contenido del reporte
     reporte_individual = f"🏆 ✨ **CRÓNICA DE LA JORNADA {jornada_actual}** ✨ 🏆\n\n"
     perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
     print("Regenerando crónicas con la IA...")
@@ -242,16 +296,17 @@ def main():
     reporte_reparto_premios = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
     reporte_comentarios_ia = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
     
-    reporte_final = (reporte_individual +
-                     reporte_parejas +
-                     reporte_sprints +
-                     reporte_reparto_premios +
-                     reporte_comentarios_ia)
-
-    # Llamar a la nueva lógica para generar la web
-    actualizar_web_historico(jornada_actual, reporte_final)
+    # 2. Ensamblar el texto final del reporte, incluyendo el futuro enlace
+    url_generada = f"https://Ivanpavonmaizkolmogorov.github.io/superliga-dinamica/{obtener_temporada_actual()}/jornada-{jornada_actual}_{datetime.now().strftime('%Y%m%d-%H%M%S')}.html" # Placeholder
+    reporte_final_con_enlace = f"Enlace al reporte web: {url_generada}\n\n" + (reporte_individual + reporte_parejas + reporte_sprints + reporte_reparto_premios + reporte_comentarios_ia)
     
-    # Usar Git para subir los cambios al repositorio
+    # 3. Generar la web y obtener la URL real
+    url_reporte_real = actualizar_web_historico(jornada_actual, reporte_final_con_enlace)
+    
+    # 4. Actualizar el texto final con la URL correcta
+    reporte_final_actualizado = reporte_final_con_enlace.replace(url_generada, url_reporte_real)
+
+    # 5. Subir cambios a Git
     try:
         repo = git.Repo(os.getcwd())
         if not repo.is_dirty(untracked_files=True):
@@ -265,7 +320,9 @@ def main():
     except Exception as e:
         print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
 
-# ## REEMPLAZADO ##: El bloque de ejecución final
+    # 6. Mostrar la ventana con el reporte y los botones de copiado
+    mostrar_ventana_final(reporte_final_actualizado, url_reporte_real)
+
 if __name__ == "__main__":
     try:
         main()
