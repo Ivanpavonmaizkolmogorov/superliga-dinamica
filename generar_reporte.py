@@ -149,8 +149,6 @@ def generar_html_completo(titulo, contenido_html, nivel_profundidad=1):
 
 # REEMPLAZA ESTAS DOS FUNCIONES EN generar_reporte.py
 
-# REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
-
 def actualizar_web_historico(jornada_actual, reporte_markdown):
     """
     Función que recibe el texto en MARKDOWN y se encarga de TODA la conversión a HTML.
@@ -170,37 +168,26 @@ def actualizar_web_historico(jornada_actual, reporte_markdown):
         print("INFO: Creado archivo .nojekyll.")
         
     path_css = os.path.join(path_docs, "style.css")
+    if not os.path.exists(path_css):
+        css_content = """
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Teko:wght@700&display=swap');
+        body { font-family: 'Roboto', sans-serif; line-height: 1.6; background-color: #f4f6f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 850px; margin: 20px auto; padding: 0; }
+        .report-section { background-color: #ffffff; border: 1px solid #e0e4e8; border-radius: 8px; padding: 20px 30px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        h1 { font-family: 'Teko', sans-serif; font-size: 3.5em; color: #1a3a6b; text-align: center; padding: 20px 0; margin-bottom: 20px; }
+        h2 { font-family: 'Teko', sans-serif; font-size: 2.5em; color: #2c5ba3; border-bottom: 2px solid #2c5ba3; padding-bottom: 10px; margin-top: 10px; }
+        h3 { font-family: 'Teko', sans-serif; font-size: 1.8em; color: #3e6bb0; margin-top: 25px; }
+        strong { font-weight: 700; } em { color: #555; font-style: italic; } p { margin: 0 0 10px 0; }
+        hr { border: 0; height: 1px; background: #ddd; margin: 40px 0; }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #fff; margin: 10px 0; padding: 20px; border-radius: 8px; font-size: 1.2em; transition: all .3s ease; border: 1px solid #e8e8e8; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        li:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        li a { text-decoration: none; color: #1a3a6b; font-weight: bold; display: block; text-align: center; }
+        footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; background-color: #eef2f7; border-radius:10px; margin-top: 20px;}
+        """
+        with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
     
-    # ## INICIO DEL CSS COMPACTO ##
-    css_content = """
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Teko:wght@700&display=swap');
-    body { font-family: 'Roboto', sans-serif; line-height: 1.5; background-color: #f4f6f9; color: #333; margin: 0; padding: 20px; } /* Reducido line-height */
-    .container { max-width: 850px; margin: 20px auto; padding: 0; }
-    .report-section { 
-        background-color: #ffffff; 
-        border: 1px solid #e0e4e8; 
-        border-radius: 8px; 
-        padding: 15px 25px; /* Reducido padding */
-        margin-bottom: 15px; /* Reducido margen inferior */
-        box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
-    }
-    h1 { font-family: 'Teko', sans-serif; font-size: 3em; color: #1a3a6b; text-align: center; padding: 15px 0; margin-bottom: 15px; } /* Reducido padding y margen */
-    h2 { font-family: 'Teko', sans-serif; font-size: 2.2em; color: #2c5ba3; border-bottom: 2px solid #2c5ba3; padding-bottom: 5px; margin-top: 5px; margin-bottom: 10px; } /* Reducido todo */
-    h3 { font-family: 'Teko', sans-serif; font-size: 1.6em; color: #3e6bb0; margin-top: 15px; margin-bottom: 5px;} /* Reducido todo */
-    strong { font-weight: 700; } 
-    em { color: #555; font-style: italic; } 
-    p { margin: 0 0 8px 0; } /* Reducido margen de párrafo */
-    hr { border: 0; height: 1px; background: #ddd; margin: 25px 0; } /* Reducido margen */
-    ul { list-style-type: none; padding: 0; }
-    li { background-color: #fff; margin: 10px 0; padding: 20px; border-radius: 8px; font-size: 1.2em; transition: all .3s ease; border: 1px solid #e8e8e8; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    li:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-    li a { text-decoration: none; color: #1a3a6b; font-weight: bold; display: block; text-align: center; }
-    footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; background-color: #eef2f7; border-radius:10px; margin-top: 20px;}
-    """
-    # ## FIN DEL CSS COMPACTO ##
-
-    with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
-    
+    # ## CORRECCIÓN CLAVE: La conversión y el enmarcado se hacen aquí, al final. ##
     secciones = reporte_markdown.split('\n---\n')
     secciones_html = [markdown.markdown(s, extensions=['nl2br']) for s in secciones]
     reporte_html_enmarcado = "".join([f'<div class="report-section">{seccion}</div>' for seccion in secciones_html if seccion.strip()])
@@ -238,9 +225,7 @@ def actualizar_web_historico(jornada_actual, reporte_markdown):
     print(f"INFO: Actualizado el índice principal de temporadas.")
     url_base = "https://Ivanpavonmaizkolmogorov.github.io/superliga-dinamica"
     url_reporte = f"{url_base}/{temporada}/{nombre_archivo_reporte}"
-    
-    # Devuelve también el CSS para poder usarlo en el PDF
-    return url_reporte, css_content
+    return url_reporte
 
 def main():
     print("--- GENERANDO REPORTE SEMANAL ---")
