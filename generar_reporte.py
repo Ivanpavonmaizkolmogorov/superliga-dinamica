@@ -75,6 +75,8 @@ def calcular_clasificacion_sprints(perfiles, jornada_actual):
 
 # REEMPLAZA ESTA FUNCIÓN ENTERA en generar_reporte.py
 
+# REEMPLAZA ESTA FUNCIÓN ENTERA en generar_reporte.py
+
 def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
     if not config_liga or not config_liga.get('premios_valor'): return ""
     print("Calculando reparto de premios...")
@@ -105,23 +107,29 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
                 nombre_ganador = next(p['nombre_mister'] for p in perfiles if p['id_manager'] == manager_id)
                 premios_por_manager[nombre_ganador].append(("Pareja de Oro", valor_premio_individual))
             
-    # 3. Sprints (Se asignan si el sprint ha FINALIZADO o si está EN CURSO)
+    # 3. Sprints
     sprints = { "Ganador Sprint 1": (1, 10), "Ganador Sprint 2": (11, 20), "Ganador Sprint 3": (21, 30), "Ganador Sprint 4": (31, 38) }
     for nombre_premio, (inicio, fin) in sprints.items():
-        # ## INICIO DE LA CORRECCIÓN ##
-        # Comprueba si el sprint ha EMPEZADO
         if jornada_actual >= inicio:
-            # Calcula el líder actual del sprint (sea provisional o final)
+            # ## INICIO DE LA MODIFICACIÓN ##
+            
+            # Decide el nombre del premio: final o provisional
+            if jornada_actual >= fin:
+                nombre_premio_final = nombre_premio
+            else:
+                nombre_premio_final = f"Líder Prov. Sprint {nombre_premio.split(' ')[2]}"
+            
+            # Calcula el líder actual del sprint
             lider_sprint = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= jornada_actual))
             
-            # Asigna el premio (provisional o final)
-            premios_por_manager[lider_sprint['nombre_mister']].append((nombre_premio, premios_info.get(nombre_premio, 0)))
-        # ## FIN DE LA CORRECCIÓN ##
+            # Asigna el premio con el nombre correcto
+            premios_por_manager[lider_sprint['nombre_mister']].append((nombre_premio_final, premios_info.get(nombre_premio, 0)))
+
+            # ## FIN DE LA MODIFICACIÓN ##
 
     # 4. Campeón de Invierno
     if jornada_actual >= 19:
         lider_invierno = None
-        # Busca quién fue el líder en la jornada 19
         for p in perfiles:
             historial_j19 = next((h for h in p['historial_temporada'] if h['jornada'] == 19), None)
             if historial_j19 and historial_j19['puesto'] == 1:
