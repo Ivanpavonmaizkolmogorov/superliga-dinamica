@@ -20,34 +20,52 @@ else:
 
 
 
-def generar_cronica(perfil_manager, datos_actuales):
+# REEMPLAZA ESTA FUNCIÓN en tu archivo cronista.py
+
+def generar_cronica(perfil_manager, datos_actuales, nombre_rival="Nadie en particular"):
     """
-    Genera una crónica personalizada para un mánager, teniendo en cuenta sus títulos.
+    Genera una crónica personalizada para un mánager, usando un perfil enriquecido.
+    Ahora recibe también el nombre del rival.
     """
     if not gemini_model: 
         return "El cronista está afónico hoy. No hay crónica."
 
     nombre_mister = perfil_manager.get('nombre_mister', 'Mánager Desconocido')
     
-    # --- NUEVA LÓGICA: DETECCIÓN DE TÍTULOS ---
+    # --- LÓGICA DE TÍTULOS ---
     num_titulos = nombre_mister.count('🏆')
-    contexto_titulos = f"Este mánager tiene {num_titulos} títulos en su palmarés. Tenlo en cuenta para tu comentario." if num_titulos > 0 else "Este mánager aún no ha ganado ningún título."
+    contexto_titulos = f"Tiene {num_titulos} títulos en su palmarés." if num_titulos > 0 else "Aún no ha ganado ningún título."
+
+    # --- RECOGEMOS LOS NUEVOS DATOS DEL PERFIL ---
+    estilo = perfil_manager.get('estilo_juego') or "No definido"
+    fetiche = perfil_manager.get('jugador_fetiche') or "No tiene"
+    fichajes = perfil_manager.get('filosofia_fichajes') or "Impredecible"
 
     prompt = f"""
-    Actúa como un cronista deportivo ingenioso y con memoria, como si fueras Maldini pero con más sarcasmo.
-    {contexto_titulos}
-
-    Perfil del Mánager:
+    Actúa como un cronista deportivo legendario, ingenioso, con memoria y un toque de sarcasmo (estilo Maldini o Axel Torres). Eres un experto en leer entre líneas y crear narrativas.
+    
+    Aquí tienes la ficha completa del mánager sobre el que vas a comentar:
     - Nombre: {nombre_mister}
-    - Apodo/Lema: {perfil_manager.get('apodo_lema', 'Sin apodo')}
-    - Momento de Gloria: {perfil_manager.get('momento_gloria', 'Aún por llegar')}
-    - Peor Desastre: {perfil_manager.get('peor_desastre', 'Ninguno conocido')}
+    - Palmarés: {contexto_titulos}
+    - Lema: {perfil_manager.get('apodo_lema') or "Sin lema conocido"}
+    - Su Estilo de Juego: {estilo}
+    - Su Jugador Fetiche: {fetiche}
+    - Su Filosofía de Fichajes: {fichajes}
+    - Su Rival Histórico: {nombre_rival}
+    - Momento de Gloria recordado: {perfil_manager.get('momento_gloria') or "Aún por llegar"}
+    - Peor Desastre recordado: {perfil_manager.get('peor_desastre') or "Prefiere no recordarlo"}
 
-    Contexto de esta semana:
-    - Puntos de la jornada: {datos_actuales.get('puntos_jornada', 0)}
-    - Puesto actual: {datos_actuales.get('puesto', 'N/A')}
+    Datos de esta jornada:
+    - Puntos conseguidos: {datos_actuales.get('puntos_jornada', 0)}
+    - Posición actual en la liga: {datos_actuales.get('puesto', 'N/A')}
 
-    Escribe un comentario breve y punzante (2-3 frases) sobre su rendimiento en esta jornada, conectando con su personalidad, su historia y su palmarés. Si tiene muchos títulos y va mal, puedes ser irónico. Si no tiene títulos y va bien, puedes ser esperanzador (o cínico).
+    Misión: Escribe un comentario breve y punzante (2-3 frases) sobre su rendimiento.
+    Debes CONECTAR OBLIGATORIAMENTE los datos de la jornada con algún dato de su ficha personal.
+    - Si ha hecho muchos puntos y su estilo es "amarategui", sé irónico.
+    - Si su jugador fetiche le ha dado puntos, menciónalo.
+    - Si ha quedado por encima de su rival histórico, haz hincapié en ello.
+    - Si su filosofía es "tirar de cartera" y ha pinchado, critica sus caros fichajes.
+    Sé creativo, específico y memorable. No seas genérico.
     """
     try:
         response = gemini_model.generate_content(prompt)

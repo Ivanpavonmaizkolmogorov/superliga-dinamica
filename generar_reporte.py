@@ -305,6 +305,8 @@ def actualizar_web_historico(jornada_actual, reporte_markdown):
     url_reporte = f"{url_base}/{temporada}/{nombre_archivo_reporte}"
     return url_reporte
 
+# REEMPLAZA ESTA FUNCIÓN en tu archivo generar_reporte.py
+
 def main():
     print("--- GENERANDO REPORTE SEMANAL ---")
     perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
@@ -312,31 +314,48 @@ def main():
         print("ERROR: No hay datos de ninguna jornada en 'perfiles.json'."); return
     jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
     
-    # 1. Generar cada sección del reporte como texto Markdown
+    # 1. Generar contenido del reporte en texto plano (Markdown)
     reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
     perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
-        cronica = generar_cronica(perfil, ultimo_historial)
+        
+        # ## INICIO DE LA MODIFICACIÓN ##
+        # Buscamos el nombre del rival a partir de su ID
+        nombre_del_rival = "Nadie en particular"
+        id_rival = perfil.get('rival_historico')
+        if id_rival:
+            for p_rival in perfiles:
+                if p_rival.get('id_manager') == id_rival:
+                    nombre_del_rival = p_rival.get('nombre_mister')
+                    break
+        
+        # Le pasamos el nombre del rival a la función del cronista
+        cronica = generar_cronica(perfil, ultimo_historial, nombre_del_rival)
+        # ## FIN DE LA MODIFICACIÓN ##
+
         reporte_individual_texto += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
                                      f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
                                      f"_{cronica}_\n\n")
+
+    # (El resto de la función sigue exactamente igual)
     reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
     reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)
     reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
     reporte_comentarios_ia_texto = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
     
-    # 2. Unir todas las secciones de Markdown con un separador
     reporte_markdown_completo = (reporte_individual_texto + "\n---\n" + 
-                                 reporte_parejas_texto + "\n---\n" + 
-                                 reporte_sprints_texto + 
-                                 reporte_reparto_premios_texto + "\n---\n" +
-                                 reporte_comentarios_ia_texto)
+                                  reporte_parejas_texto + "\n---\n" + 
+                                  reporte_sprints_texto + 
+                                  reporte_reparto_premios_texto + "\n---\n" +
+                                  reporte_comentarios_ia_texto)
 
-    # 3. Generar la web y obtener la URL real (pasando el Markdown completo)
-    url_reporte_real = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
+    url_reporte_real, reporte_html_enmarcado, css_string = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
     
-    # 4. Crear la versión del texto para WhatsApp
+    titulo_pdf = f"Reporte Superliga - Jornada {jornada_actual}"
+    html_para_pdf = generar_html_completo(titulo_pdf, reporte_html_enmarcado, para_pdf=True)
+    default_pdf_filename = f"Reporte_J{jornada_actual}_{datetime.now().strftime('%Y%m%d')}.pdf"
+
     reporte_para_whatsapp = reporte_markdown_completo
     reporte_para_whatsapp = re.sub(r'###\s*(.*?)\s*\n', r'*\1*\n', reporte_para_whatsapp)
     reporte_para_whatsapp = re.sub(r'##\s*(.*?)\s*\n', r'*\1*\n\n', reporte_para_whatsapp)
@@ -344,7 +363,6 @@ def main():
     reporte_para_whatsapp = reporte_para_whatsapp.replace('\n---\n', '\n')
     reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_para_whatsapp
     
-    # 5. Subir cambios a Git
     try:
         repo = git.Repo(os.getcwd())
         if not repo.is_dirty(untracked_files=True):
@@ -357,6 +375,8 @@ def main():
             print("✅ ¡ÉXITO! El repositorio y la web han sido actualizados.")
     except Exception as e:
         print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
+
+    mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real, html_para_pdf, css_string, default_pdf_filename)
 
     # 6. Mostrar la ventana final
     mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
