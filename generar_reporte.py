@@ -9,10 +9,7 @@ from datetime import datetime
 import re
 import git
 
-# --- FUNCIONES DE CÁLCULO DE REPORTE ---
-# Cada función devuelve ahora el texto en formato Markdown.
-# La conversión a HTML y el enmarcado se harán después.
-
+# --- FUNCIONES DE CÁLCULO DE REPORTE (SIN CAMBIOS) ---
 def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     if not parejas: return ""
     titulo = "## ⚔️ COMPETICIÓN POR PAREJAS (MEDIA TOTAL) ⚔️\n\n"
@@ -138,7 +135,7 @@ def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actua
             comentarios_texto += f"### Ganador {nombre}: {ganador['nombre_mister']}\n_{comentario_sprint}_\n\n"
     return titulo + comentarios_texto
 
-# --- FUNCIONES WEB Y DE VENTANA ---
+# --- FUNCIONES WEB Y DE VENTANA (SIN CAMBIOS) ---
 def obtener_temporada_actual():
     now = datetime.now()
     year = now.year
@@ -150,7 +147,7 @@ def generar_html_completo(titulo, contenido_html, nivel_profundidad=1):
     path_home = "../" * nivel_profundidad + "index.html"
     return f'<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{titulo}</title><link rel="stylesheet" href="{path_css}"></head><body><div class="container"><h1>{titulo}</h1>{contenido_html}<footer><a href="{path_home}">Volver al Archivo de Temporadas</a><br><span>Reporte generado el {datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")}</span></footer></div></body></html>'
 
-def actualizar_web_historico(jornada_actual, reporte_html_enmarcado):
+def actualizar_web_historico(jornada_actual, secciones_html):
     print("INFO: Iniciando la actualización del archivo histórico web...")
     temporada = obtener_temporada_actual()
     timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
@@ -181,6 +178,8 @@ def actualizar_web_historico(jornada_actual, reporte_html_enmarcado):
         footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; background-color: #eef2f7; border-radius:10px; margin-top: 20px;}
         """
         with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
+    
+    reporte_html_enmarcado = "".join([f'<div class="report-section">{seccion}</div>' for seccion in secciones_html if seccion.strip()])
     
     nombre_archivo_reporte = f"jornada-{jornada_actual}_{timestamp}.html"
     path_reporte = os.path.join(path_temporada, nombre_archivo_reporte)
@@ -220,16 +219,16 @@ def actualizar_web_historico(jornada_actual, reporte_html_enmarcado):
     url_reporte = f"{url_base}/{temporada}/{nombre_archivo_reporte}"
     return url_reporte
 
-def mostrar_ventana_final(reporte_final, url_reporte):
+def mostrar_ventana_final(reporte_para_whatsapp, url_reporte):
     root = tk.Tk()
     root.title(f"Reporte Generado y Subido a la Web")
     root.geometry("700x800")
     text_area = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=("Consolas", 10))
     text_area.pack(expand=True, fill="both", padx=10, pady=10)
-    text_area.insert(tk.END, reporte_final)
+    text_area.insert(tk.END, reporte_para_whatsapp)
     text_area.config(state="disabled")
     def copy_reporte_to_clipboard():
-        root.clipboard_clear(); root.clipboard_append(reporte_final)
+        root.clipboard_clear(); root.clipboard_append(reporte_para_whatsapp)
         copy_reporte_button.config(text="¡Reporte Copiado!", bg="#16a085")
         root.after(2000, lambda: copy_reporte_button.config(text="Copiar Reporte", bg="#3498db"))
     def copy_enlace_to_clipboard():
@@ -238,7 +237,7 @@ def mostrar_ventana_final(reporte_final, url_reporte):
         root.after(2000, lambda: copy_enlace_button.config(text="Copiar Enlace Web", bg="#8e44ad"))
     button_frame = tk.Frame(root)
     button_frame.pack(pady=10)
-    copy_reporte_button = tk.Button(button_frame, text="Copiar Reporte", font=("Helvetica", 11, "bold"), bg="#3498db", fg="white", command=copy_reporte_to_clipboard)
+    copy_reporte_button = tk.Button(button_frame, text="Copiar Reporte para WhatsApp", font=("Helvetica", 11, "bold"), bg="#25D366", fg="white", command=copy_reporte_to_clipboard)
     copy_reporte_button.pack(side="left", padx=10)
     copy_enlace_button = tk.Button(button_frame, text="Copiar Enlace Web", font=("Helvetica", 11, "bold"), bg="#8e44ad", fg="white", command=copy_enlace_to_clipboard)
     copy_enlace_button.pack(side="left", padx=10)
@@ -268,30 +267,40 @@ def main():
     reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
     reporte_comentarios_ia_texto = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
     
-    # 2. Unir las secciones de texto plano para el portapapeles
-    reporte_texto_plano_completo = (reporte_individual_texto + "\n---\n" + 
+    # 2. Unir las secciones de Markdown para la web
+    reporte_markdown_completo = (reporte_individual_texto + "\n---\n" + 
                                   reporte_parejas_texto + "\n---\n" + 
                                   reporte_sprints_texto + 
                                   reporte_reparto_premios_texto + "\n---\n" +
                                   reporte_comentarios_ia_texto)
-    
+
     # 3. Convertir cada sección a HTML enmarcado
-    secciones_html = [
-        markdown.markdown(reporte_individual_texto, extensions=['nl2br']),
-        markdown.markdown(reporte_parejas_texto, extensions=['nl2br']),
-        markdown.markdown(reporte_sprints_texto, extensions=['nl2br']),
-        markdown.markdown(reporte_reparto_premios_texto, extensions=['nl2br']),
-        markdown.markdown(reporte_comentarios_ia_texto, extensions=['nl2br'])
-    ]
+    secciones_html = [markdown.markdown(s, extensions=['nl2br']) for s in reporte_markdown_completo.split('\n---\n')]
     reporte_html_enmarcado = "".join([f'<div class="report-section">{seccion}</div>' for seccion in secciones_html if seccion.strip()])
     
     # 4. Generar la web y obtener la URL real
     url_reporte_real = actualizar_web_historico(jornada_actual, reporte_html_enmarcado)
     
-    # 5. Crear el texto final para el portapapeles
-    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_texto_plano_completo
-
-    # 6. Subir cambios a Git
+    # ## INICIO DE LA CORRECCIÓN PARA WHATSAPP ##
+    
+    # 5. Crear una versión del texto optimizada para WhatsApp
+    reporte_para_whatsapp = reporte_markdown_completo
+    # Convertir títulos H2 a negrita
+    reporte_para_whatsapp = re.sub(r'## (.*?)\n', r'*\1*\n', reporte_para_whatsapp)
+    # Convertir títulos H3 a negrita
+    reporte_para_whatsapp = re.sub(r'### (.*?)\n', r'*\1*\n', reporte_para_whatsapp)
+    # Convertir **negrita** a *negrita* de WhatsApp
+    reporte_para_whatsapp = re.sub(r'\*\*(.*?)\*\*', r'*\1*', reporte_para_whatsapp)
+    # Dejar _cursiva_ como está, ya que WhatsApp la entiende
+    # Eliminar separadores ---
+    reporte_para_whatsapp = reporte_para_whatsapp.replace('\n---\n', '\n')
+    
+    # 6. Crear el texto final para el portapapeles
+    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_para_whatsapp
+    
+    # ## FIN DE LA CORRECCIÓN ##
+    
+    # 7. Subir cambios a Git
     try:
         repo = git.Repo(os.getcwd())
         if not repo.is_dirty(untracked_files=True):
@@ -305,7 +314,7 @@ def main():
     except Exception as e:
         print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
 
-    # 7. Mostrar la ventana final
+    # 8. Mostrar la ventana final con el texto para WhatsApp
     mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
 
 if __name__ == "__main__":
