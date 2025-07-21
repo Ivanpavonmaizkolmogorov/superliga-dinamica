@@ -150,10 +150,12 @@ def generar_html_completo(titulo, contenido_html, nivel_profundidad=1):
 
 # REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
 
+# REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
+
 def actualizar_web_historico(jornada_actual, reporte_texto):
     """
     Función principal que orquesta la creación y actualización de todos los archivos HTML.
-    VERSIÓN CORREGIDA Y SIMPLIFICADA.
+    VERSIÓN CON LA CORRECCIÓN .nojekyll.
     """
     print("INFO: Iniciando la actualización del archivo histórico web...")
     temporada = obtener_temporada_actual()
@@ -165,6 +167,14 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
     path_temporada = os.path.join(path_docs, temporada)
     os.makedirs(path_temporada, exist_ok=True)
     
+    # ## LA SOLUCIÓN MÁS PROBABLE ##
+    # Crea un archivo .nojekyll en la carpeta /docs para desactivar el procesador de GitHub Pages
+    path_nojekyll = os.path.join(path_docs, ".nojekyll")
+    if not os.path.exists(path_nojekyll):
+        with open(path_nojekyll, 'w') as f:
+            pass # Archivo vacío
+        print("INFO: Creado archivo .nojekyll para asegurar la compatibilidad con GitHub Pages.")
+
     # --- CSS (sin cambios) ---
     path_css = os.path.join(path_docs, "style.css")
     if not os.path.exists(path_css):
@@ -188,21 +198,17 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
         """
         with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
     
-    # --- Lógica de Generación HTML (CORREGIDA Y SIMPLIFICADA) ---
-    
-    # ## SIMPLIFICADO ##: El nombre del archivo ahora es mucho más limpio.
+    # --- Lógica de Generación HTML (sin cambios) ---
     nombre_archivo = f"jornada-{jornada_actual}_{timestamp}.html"
     path_reporte = os.path.join(path_temporada, nombre_archivo)
-    
     reporte_html = markdown.markdown(reporte_texto, extensions=['nl2br'])
     titulo_reporte = f"Reporte Jornada {jornada_actual}"
     html_final = generar_html_completo(titulo_reporte, reporte_html, nivel_profundidad=2)
     with open(path_reporte, "w", encoding="utf-8") as f: f.write(html_final)
     print(f"INFO: Guardado reporte en '{path_reporte}'")
 
-    # ## SIMPLIFICADO ##: La forma de buscar archivos ahora es más simple y correcta.
+    # --- Lógica de Índices y URL (sin cambios) ---
     archivos_reporte = [f for f in os.listdir(path_temporada) if f.startswith("jornada-")]
-    
     def extractor_para_sort(archivo):
         match_jornada = re.search(r'jornada-(\d+)', archivo)
         match_fecha = re.search(r'_(\d{8}-\d{6})', archivo)
@@ -210,7 +216,6 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
             return (int(match_jornada.group(1)), match_fecha.group(1))
         return (0, "")
     archivos_reporte.sort(key=extractor_para_sort, reverse=True)
-    
     links_jornadas_html = []
     for archivo in archivos_reporte:
         try:
@@ -222,20 +227,17 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
         except AttributeError:
             print(f"ADVERTENCIA: Archivo '{archivo}' no tiene el formato esperado.")
             continue
-            
     contenido_indice_temporada = "<ul>" + "".join(links_jornadas_html) + "</ul>"
     html_index_temporada = generar_html_completo(f"Histórico Temporada {temporada}", contenido_indice_temporada, nivel_profundidad=1)
     with open(os.path.join(path_temporada, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_temporada)
     print(f"INFO: Actualizado el índice de la temporada {temporada}.")
     
-    # --- Lógica de índice principal y URL (CORREGIDA Y SIMPLIFICADA) ---
     temporadas = sorted([d for d in os.listdir(path_docs) if os.path.isdir(os.path.join(path_docs, d))], reverse=True)
     links_temporadas = "".join([f'<li><a href="{t}/index.html">Temporada {t}</a></li>' for t in temporadas])
     html_index_principal = generar_html_completo("Archivo Histórico de la Superliga", f"<ul>{links_temporadas}</ul>", nivel_profundidad=0)
     with open(os.path.join(path_docs, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_principal)
     print(f"INFO: Actualizado el índice principal de temporadas.")
     
-    # ## SIMPLIFICADO ##: La construcción de la URL ahora es más directa.
     nombre_archivo_relativo = f"{temporada}/{nombre_archivo}"
     url_base = f"https://Ivanpavonmaizkolmogorov.github.io/superliga-dinamica/"
     url_reporte = url_base + nombre_archivo_relativo.replace("\\", "/")
