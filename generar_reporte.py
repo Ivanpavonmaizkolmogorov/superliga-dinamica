@@ -244,7 +244,8 @@ def mostrar_ventana_final(reporte_final, url_reporte):
     tk.Button(button_frame, text="Cerrar", font=("Helvetica", 11), command=root.destroy).pack(side="left", padx=10)
     root.mainloop()
 
-# ## CORREGIDO ##: La función main que une todo el proceso
+# REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
+
 def main():
     print("--- GENERANDO REPORTE SEMANAL ---")
     perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
@@ -267,15 +268,18 @@ def main():
     reporte_reparto_premios = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
     reporte_comentarios_ia = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
     
-    # 2. Ensamblar el texto final que se usará para la web y el portapapeles
+    # ## INICIO DE LA CORRECCIÓN ##
+
+    # 2. Ensamblar solo el texto del reporte, SIN enlace todavía.
     reporte_texto_plano = (reporte_individual + reporte_parejas + reporte_sprints + reporte_reparto_premios + reporte_comentarios_ia)
     
-    # 3. Generar la web y obtener la URL real
+    # 3. Generar la web y obtener la URL real y definitiva.
+    #    Le pasamos el texto plano para que lo convierta a HTML para la web.
     url_reporte_real = actualizar_web_historico(jornada_actual, reporte_texto_plano)
     
-    # 4. Crear el texto final para el portapapeles, ahora con la URL correcta
-    reporte_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_texto_plano
-
+    # 4. Crear el texto final para el portapapeles DESPUÉS de tener la URL correcta.
+    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_texto_plano
+    
     # 5. Subir cambios a Git
     try:
         repo = git.Repo(os.getcwd())
@@ -290,8 +294,18 @@ def main():
     except Exception as e:
         print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
 
-    # 6. Mostrar la ventana con el reporte y los botones de copiado
-    mostrar_ventana_final(reporte_para_clipboard, url_reporte_real)
+    # 6. Mostrar la ventana con los datos finales y correctos
+    mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
+    
+    # ## FIN DE LA CORRECCIÓN ##
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print(f"Ha ocurrido un error inesperado en generar_reporte: {e}")
+    finally:
+        print("\n--- PROCESO DE GENERACIÓN DE REPORTE FINALIZADO ---")
 
 if __name__ == "__main__":
     try:
