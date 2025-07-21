@@ -148,51 +148,61 @@ def generar_html_completo(titulo, contenido_html, nivel_profundidad=1):
     <span>Reporte generado el {datetime.now().strftime('%d/%m/%Y a las %H:%M:%S')}</span></footer></div></body></html>
     """
 
+# REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
+
 def actualizar_web_historico(jornada_actual, reporte_texto):
+    """
+    Función principal que orquesta la creación y actualización de todos los archivos HTML.
+    VERSIÓN CORREGIDA Y SIMPLIFICADA.
+    """
     print("INFO: Iniciando la actualización del archivo histórico web...")
     temporada = obtener_temporada_actual()
     timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
     path_proyecto = os.getcwd()
+
+    # --- Rutas ---
     path_docs = os.path.join(path_proyecto, "docs")
     path_temporada = os.path.join(path_docs, temporada)
     os.makedirs(path_temporada, exist_ok=True)
     
-    # --- ## CSS DE ESTILO PROFESIONAL ## ---
+    # --- CSS (sin cambios) ---
     path_css = os.path.join(path_docs, "style.css")
-    css_content = """
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Teko:wght@700&display=swap');
-    body { font-family: 'Roboto', sans-serif; line-height: 1.6; background-color: #f4f6f9; color: #333; margin: 0; padding: 20px; }
-    .container { max-width: 850px; margin: 20px auto; background-color: #fff; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-    h1 { font-family: 'Teko', sans-serif; font-size: 3.5em; color: #1a3a6b; text-align: center; padding: 20px 0; margin: 0; background-color: #eef2f7; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom: 3px solid #d0d9e3; }
-    .report-content { padding: 20px 40px; }
-    h2 { font-family: 'Teko', sans-serif; font-size: 2.5em; color: #2c5ba3; border-bottom: 2px solid #2c5ba3; padding-bottom: 10px; margin-top: 40px; }
-    h3 { font-family: 'Teko', sans-serif; font-size: 1.8em; color: #3e6bb0; margin-top: 25px; }
-    strong { font-weight: 700; }
-    em { color: #555; font-style: italic; }
-    p { margin: 0 0 10px 0; }
-    hr { border: 0; height: 1px; background: #ddd; margin: 40px 0; }
-    ul { list-style-type: none; padding: 0; }
-    li { background-color: #fff; margin: 10px 0; padding: 20px; border-radius: 8px; font-size: 1.2em; transition: all .3s ease; border: 1px solid #e8e8e8; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    li:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-    li a { text-decoration: none; color: #1a3a6b; font-weight: bold; display: block; text-align: center; }
-    footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; background-color: #eef2f7; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border-top: 1px solid #d0d9e3;}
-    """
-    with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
+    if not os.path.exists(path_css):
+        css_content = """
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Teko:wght@700&display=swap');
+        body { font-family: 'Roboto', sans-serif; line-height: 1.6; background-color: #f4f6f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 850px; margin: 20px auto; background-color: #fff; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        h1 { font-family: 'Teko', sans-serif; font-size: 3.5em; color: #1a3a6b; text-align: center; padding: 20px 0; margin: 0; background-color: #eef2f7; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom: 3px solid #d0d9e3; }
+        .report-content { padding: 20px 40px; }
+        h2 { font-family: 'Teko', sans-serif; font-size: 2.5em; color: #2c5ba3; border-bottom: 2px solid #2c5ba3; padding-bottom: 10px; margin-top: 40px; }
+        h3 { font-family: 'Teko', sans-serif; font-size: 1.8em; color: #3e6bb0; margin-top: 25px; }
+        strong { font-weight: 700; }
+        em { color: #555; font-style: italic; }
+        p { margin: 0 0 10px 0; }
+        hr { border: 0; height: 1px; background: #ddd; margin: 40px 0; }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #fff; margin: 10px 0; padding: 20px; border-radius: 8px; font-size: 1.2em; transition: all .3s ease; border: 1px solid #e8e8e8; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        li:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        li a { text-decoration: none; color: #1a3a6b; font-weight: bold; display: block; text-align: center; }
+        footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; background-color: #eef2f7; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border-top: 1px solid #d0d9e3;}
+        """
+        with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
     
-    # --- ## LÓGICA DE GENERACIÓN HTML (CORREGIDA) ## ---
-    # Convertimos todo el reporte de Markdown a HTML. 
-    # La librería se encarga de los ** y los saltos de línea.
+    # --- Lógica de Generación HTML (CORREGIDA Y SIMPLIFICADA) ---
+    
+    # ## SIMPLIFICADO ##: El nombre del archivo ahora es mucho más limpio.
+    nombre_archivo = f"jornada-{jornada_actual}_{timestamp}.html"
+    path_reporte = os.path.join(path_temporada, nombre_archivo)
+    
     reporte_html = markdown.markdown(reporte_texto, extensions=['nl2br'])
-    
-    nombre_archivo_relativo = f"{temporada}/{os.path.basename(path_temporada)}-{jornada_actual}_{timestamp}.html"
-    path_reporte = os.path.join(path_docs, nombre_archivo_relativo)
     titulo_reporte = f"Reporte Jornada {jornada_actual}"
     html_final = generar_html_completo(titulo_reporte, reporte_html, nivel_profundidad=2)
     with open(path_reporte, "w", encoding="utf-8") as f: f.write(html_final)
     print(f"INFO: Guardado reporte en '{path_reporte}'")
 
-    # (El resto de la lógica de índices no cambia)
-    archivos_reporte = [f for f in os.listdir(path_temporada) if f.startswith(f"{os.path.basename(path_temporada)}-jornada-")]
+    # ## SIMPLIFICADO ##: La forma de buscar archivos ahora es más simple y correcta.
+    archivos_reporte = [f for f in os.listdir(path_temporada) if f.startswith("jornada-")]
+    
     def extractor_para_sort(archivo):
         match_jornada = re.search(r'jornada-(\d+)', archivo)
         match_fecha = re.search(r'_(\d{8}-\d{6})', archivo)
@@ -200,6 +210,7 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
             return (int(match_jornada.group(1)), match_fecha.group(1))
         return (0, "")
     archivos_reporte.sort(key=extractor_para_sort, reverse=True)
+    
     links_jornadas_html = []
     for archivo in archivos_reporte:
         try:
@@ -211,18 +222,21 @@ def actualizar_web_historico(jornada_actual, reporte_texto):
         except AttributeError:
             print(f"ADVERTENCIA: Archivo '{archivo}' no tiene el formato esperado.")
             continue
+            
     contenido_indice_temporada = "<ul>" + "".join(links_jornadas_html) + "</ul>"
     html_index_temporada = generar_html_completo(f"Histórico Temporada {temporada}", contenido_indice_temporada, nivel_profundidad=1)
     with open(os.path.join(path_temporada, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_temporada)
     print(f"INFO: Actualizado el índice de la temporada {temporada}.")
     
+    # --- Lógica de índice principal y URL (CORREGIDA Y SIMPLIFICADA) ---
     temporadas = sorted([d for d in os.listdir(path_docs) if os.path.isdir(os.path.join(path_docs, d))], reverse=True)
     links_temporadas = "".join([f'<li><a href="{t}/index.html">Temporada {t}</a></li>' for t in temporadas])
     html_index_principal = generar_html_completo("Archivo Histórico de la Superliga", f"<ul>{links_temporadas}</ul>", nivel_profundidad=0)
     with open(os.path.join(path_docs, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_principal)
     print(f"INFO: Actualizado el índice principal de temporadas.")
     
-    # Devolvemos la URL completa del reporte generado
+    # ## SIMPLIFICADO ##: La construcción de la URL ahora es más directa.
+    nombre_archivo_relativo = f"{temporada}/{nombre_archivo}"
     url_base = f"https://Ivanpavonmaizkolmogorov.github.io/superliga-dinamica/"
     url_reporte = url_base + nombre_archivo_relativo.replace("\\", "/")
     return url_reporte
