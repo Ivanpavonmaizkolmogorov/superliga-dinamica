@@ -244,7 +244,8 @@ def mostrar_ventana_final(reporte_para_whatsapp, url_reporte):
     tk.Button(button_frame, text="Cerrar", font=("Helvetica", 11), command=root.destroy).pack(side="left", padx=10)
     root.mainloop()
 
-# --- FUNCIÓN MAIN QUE UNE TODO ---
+# REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
+
 def main():
     print("--- GENERANDO REPORTE SEMANAL ---")
     perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
@@ -274,7 +275,7 @@ def main():
                                   reporte_reparto_premios_texto + "\n---\n" +
                                   reporte_comentarios_ia_texto)
 
-    # 3. Convertir cada sección a HTML enmarcado
+    # 3. Convertir cada sección a HTML enmarcado para la web
     secciones_html = [markdown.markdown(s, extensions=['nl2br']) for s in reporte_markdown_completo.split('\n---\n')]
     reporte_html_enmarcado = "".join([f'<div class="report-section">{seccion}</div>' for seccion in secciones_html if seccion.strip()])
     
@@ -285,14 +286,12 @@ def main():
     
     # 5. Crear una versión del texto optimizada para WhatsApp
     reporte_para_whatsapp = reporte_markdown_completo
-    # Convertir títulos H2 a negrita
-    reporte_para_whatsapp = re.sub(r'## (.*?)\n', r'*\1*\n', reporte_para_whatsapp)
-    # Convertir títulos H3 a negrita
-    reporte_para_whatsapp = re.sub(r'### (.*?)\n', r'*\1*\n', reporte_para_whatsapp)
-    # Convertir **negrita** a *negrita* de WhatsApp
-    reporte_para_whatsapp = re.sub(r'\*\*(.*?)\*\*', r'*\1*', reporte_para_whatsapp)
-    # Dejar _cursiva_ como está, ya que WhatsApp la entiende
-    # Eliminar separadores ---
+    # Elimina los símbolos de título y los convierte en negrita de WhatsApp
+    reporte_para_whatsapp = re.sub(r'##\s*(.*?)\s*\n', r'*\1*\n\n', reporte_para_whatsapp)
+    reporte_para_whatsapp = re.sub(r'###\s*(.*?)\s*\n', r'*\1*\n', reporte_para_whatsapp)
+    # Convierte la negrita de Markdown a la de WhatsApp
+    reporte_para_whatsapp = reporte_para_whatsapp.replace('**', '*')
+    # Elimina los separadores ---
     reporte_para_whatsapp = reporte_para_whatsapp.replace('\n---\n', '\n')
     
     # 6. Crear el texto final para el portapapeles
