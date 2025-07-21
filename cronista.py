@@ -209,17 +209,27 @@ def generar_comentario_parejas(clasificacion):
         print(f"Error al generar comentario de parejas: {e}")
         return "Una alianza poderosa se está forjando, pero el cronista aún no descifra cuál."
 
-def generar_comentario_sprint(nombre_sprint, clasificacion):
+# REEMPLAZA ESTA FUNCIÓN EN cronista.py
+
+def generar_comentario_sprint(nombre_sprint, clasificacion, jornada_actual, inicio_sprint, fin_sprint):
     """
     Genera un comentario analizando la clasificación de un sprint.
-    Recibe el nombre del sprint y la lista completa de su clasificación.
+    Ahora es consciente del progreso del sprint.
     """
     global gemini_model
     if not gemini_model or not clasificacion:
         return "El cronista está tomando tiempos para ver quién es el más rápido."
 
+    # Determinar el estado del sprint
+    if jornada_actual >= fin_sprint:
+        estado_sprint = f"Ha finalizado en la jornada {jornada_actual}. ¡Este es el resultado definitivo!"
+    elif jornada_actual == inicio_sprint:
+        estado_sprint = f"Acaba de comenzar en la jornada {jornada_actual}. ¡Se apaga el semáforo!"
+    else:
+        estado_sprint = f"Está en curso en la jornada {jornada_actual} de un total de {fin_sprint - inicio_sprint + 1} jornadas."
+
     top_managers_texto = ""
-    for i, manager in enumerate(clasificacion[:3]): # Tomamos el top 3
+    for i, manager in enumerate(clasificacion[:3]):
         nombre = manager.get('nombre', 'Mánager Desconocido')
         puntos = manager.get('puntos', 0)
         top_managers_texto += f"- Posición {i+1}: {nombre} ({puntos} pts)\n"
@@ -228,13 +238,16 @@ def generar_comentario_sprint(nombre_sprint, clasificacion):
     Actúa como un comentarista de Fórmula 1, analizando una carrera corta (un sprint). Eres rápido, incisivo y te fijas en el estado de forma.
     Te proporciono el top 3 de la clasificación del sprint "{nombre_sprint}".
 
-    Clasificación del Sprint:
+    Estado del Sprint: {estado_sprint}
+
+    Clasificación actual del Sprint:
     {top_managers_texto}
 
-    Genera un comentario de 2 frases sobre el rendimiento en este tramo específico de la temporada.
-    - Enfócate en quién está "on fire" o quién ha dado la sorpresa.
-    - Si la carrera es apretada, habla de la lucha por la "pole position".
-    - Menciona por su nombre al menos al líder del sprint.
+    Genera un comentario de 2 frases sobre la situación:
+    - Si acaba de empezar, habla de quién ha salido mejor y quiénes son los primeros líderes.
+    - Si está en curso, analiza quién mantiene el ritmo y si hay posibles remontadas.
+    - Si ha finalizado, felicita al ganador y comenta sobre su rendimiento en este tramo.
+    Sé siempre consciente del contexto (si ha terminado o no) para no dar un veredicto final antes de tiempo.
     """
     try:
         response = gemini_model.generate_content(prompt)

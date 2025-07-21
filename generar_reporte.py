@@ -46,6 +46,8 @@ def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
 # En generar_reporte.py, dentro de calcular_clasificacion_sprints
 
 # REEMPLAZA ESTA FUNCIÓN ENTERA
+# REEMPLAZA ESTA FUNCIÓN EN generar_reporte.py
+
 def calcular_clasificacion_sprints(perfiles, jornada_actual):
     sprints = { "Sprint 1 (J1-10)": (1, 10), "Sprint 2 (J11-20)": (11, 20), "Sprint 3 (J21-30)": (21, 30), "Sprint 4 (J31-38)": (31, 38) }
     reporte_final = ""
@@ -63,9 +65,9 @@ def calcular_clasificacion_sprints(perfiles, jornada_actual):
             for i, item in enumerate(clasificacion): 
                 clasificacion_texto += f"**{i+1}.** {item['nombre']} - {item['puntos']} pts\n"
             
-            # Llamada a la IA para el análisis del sprint
+            # Llamada a la IA con el contexto temporal
             print(f" -> Generando comentario de IA para {nombre}...")
-            comentario_ia = generar_comentario_sprint(nombre, clasificacion)
+            comentario_ia = generar_comentario_sprint(nombre, clasificacion, jornada_actual, inicio, fin)
             clasificacion_texto += f"\n_{comentario_ia}_"
             
             reporte_final += titulo + clasificacion_texto + "\n---\n"
