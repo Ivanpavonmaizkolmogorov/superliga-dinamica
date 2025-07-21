@@ -147,18 +147,26 @@ def generar_html_completo(titulo, contenido_html, nivel_profundidad=1):
     path_home = "../" * nivel_profundidad + "index.html"
     return f'<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{titulo}</title><link rel="stylesheet" href="{path_css}"></head><body><div class="container"><h1>{titulo}</h1>{contenido_html}<footer><a href="{path_home}">Volver al Archivo de Temporadas</a><br><span>Reporte generado el {datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")}</span></footer></div></body></html>'
 
-def actualizar_web_historico(jornada_actual, secciones_html):
+# REEMPLAZA ESTAS DOS FUNCIONES EN generar_reporte.py
+
+def actualizar_web_historico(jornada_actual, reporte_markdown):
+    """
+    Función que recibe el texto en MARKDOWN y se encarga de TODA la conversión a HTML.
+    """
     print("INFO: Iniciando la actualización del archivo histórico web...")
     temporada = obtener_temporada_actual()
     timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
     path_proyecto = os.getcwd()
+
     path_docs = os.path.join(path_proyecto, "docs")
     path_temporada = os.path.join(path_docs, temporada)
     os.makedirs(path_temporada, exist_ok=True)
+    
     path_nojekyll = os.path.join(path_docs, ".nojekyll")
     if not os.path.exists(path_nojekyll):
         with open(path_nojekyll, 'w') as f: pass
         print("INFO: Creado archivo .nojekyll.")
+        
     path_css = os.path.join(path_docs, "style.css")
     if not os.path.exists(path_css):
         css_content = """
@@ -179,6 +187,9 @@ def actualizar_web_historico(jornada_actual, secciones_html):
         """
         with open(path_css, "w", encoding="utf-8") as f: f.write(css_content)
     
+    # ## CORRECCIÓN CLAVE: La conversión y el enmarcado se hacen aquí, al final. ##
+    secciones = reporte_markdown.split('\n---\n')
+    secciones_html = [markdown.markdown(s, extensions=['nl2br']) for s in secciones]
     reporte_html_enmarcado = "".join([f'<div class="report-section">{seccion}</div>' for seccion in secciones_html if seccion.strip()])
     
     nombre_archivo_reporte = f"jornada-{jornada_actual}_{timestamp}.html"
@@ -188,13 +199,13 @@ def actualizar_web_historico(jornada_actual, secciones_html):
     with open(path_reporte, "w", encoding="utf-8") as f: f.write(html_final)
     print(f"INFO: Guardado reporte en '{path_reporte}'")
     
+    # (El resto de la lógica para actualizar índices no cambia)
     archivos_en_temporada = [f for f in os.listdir(path_temporada) if f.startswith("jornada-") and f.endswith(".html")]
     def extractor_para_sort(archivo):
         match_jornada = re.search(r'jornada-(\d+)', archivo); match_fecha = re.search(r'_(\d{8}-\d{6})', archivo)
         if match_jornada and match_fecha: return (int(match_jornada.group(1)), match_fecha.group(1))
         return (0, "")
     archivos_en_temporada.sort(key=extractor_para_sort, reverse=True)
-    
     links_html = []
     for archivo in archivos_en_temporada:
         try:
@@ -203,21 +214,74 @@ def actualizar_web_historico(jornada_actual, secciones_html):
             texto_enlace = f"Jornada {num_jornada} (Emitido: {fecha_obj.strftime('%d/%m/%Y %H:%M')})"
             links_html.append(f'<li><a href="{archivo}">{texto_enlace}</a></li>')
         except AttributeError: continue
-            
     contenido_indice = "<ul>" + "".join(links_html) + "</ul>"
     html_index_temporada = generar_html_completo(f"Histórico Temporada {temporada}", contenido_indice, nivel_profundidad=1)
     with open(os.path.join(path_temporada, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_temporada)
     print(f"INFO: Actualizado el índice de la temporada {temporada}.")
-    
     temporadas = sorted([d for d in os.listdir(path_docs) if os.path.isdir(os.path.join(path_docs, d))], reverse=True)
     links_temporadas = "".join([f'<li><a href="{t}/index.html">Temporada {t}</a></li>' for t in temporadas])
     html_index_principal = generar_html_completo("Archivo Histórico de la Superliga", f"<ul>{links_temporadas}</ul>", nivel_profundidad=0)
     with open(os.path.join(path_docs, "index.html"), "w", encoding="utf-8") as f: f.write(html_index_principal)
     print(f"INFO: Actualizado el índice principal de temporadas.")
-    
     url_base = "https://Ivanpavonmaizkolmogorov.github.io/superliga-dinamica"
     url_reporte = f"{url_base}/{temporada}/{nombre_archivo_reporte}"
     return url_reporte
+
+def main():
+    print("--- GENERANDO REPORTE SEMANAL ---")
+    perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
+    if not perfiles or not perfiles[0].get('historial_temporada'):
+        print("ERROR: No hay datos de ninguna jornada en 'perfiles.json'."); return
+    jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
+    
+    # 1. Generar cada sección del reporte como texto Markdown
+    reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
+    perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
+    for perfil in perfiles:
+        ultimo_historial = perfil['historial_temporada'][-1]
+        cronica = generar_cronica(perfil, ultimo_historial)
+        reporte_individual_texto += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
+                                     f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
+                                     f"_{cronica}_\n\n")
+    reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
+    reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)
+    reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
+    reporte_comentarios_ia_texto = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
+    
+    # 2. Unir todas las secciones de Markdown con un separador
+    reporte_markdown_completo = (reporte_individual_texto + "\n---\n" + 
+                                 reporte_parejas_texto + "\n---\n" + 
+                                 reporte_sprints_texto + 
+                                 reporte_reparto_premios_texto + "\n---\n" +
+                                 reporte_comentarios_ia_texto)
+
+    # 3. Generar la web y obtener la URL real (pasando el Markdown completo)
+    url_reporte_real = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
+    
+    # 4. Crear la versión del texto para WhatsApp
+    reporte_para_whatsapp = reporte_markdown_completo
+    reporte_para_whatsapp = re.sub(r'###\s*(.*?)\s*\n', r'*\1*\n', reporte_para_whatsapp)
+    reporte_para_whatsapp = re.sub(r'##\s*(.*?)\s*\n', r'*\1*\n\n', reporte_para_whatsapp)
+    reporte_para_whatsapp = reporte_para_whatsapp.replace('**', '*')
+    reporte_para_whatsapp = reporte_para_whatsapp.replace('\n---\n', '\n')
+    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_para_whatsapp
+    
+    # 5. Subir cambios a Git
+    try:
+        repo = git.Repo(os.getcwd())
+        if not repo.is_dirty(untracked_files=True):
+            print("INFO: No hay cambios para subir a GitHub.")
+        else:
+            print("INFO: Detectados cambios, subiendo a GitHub...")
+            repo.git.add(A=True) 
+            repo.index.commit(f"Actualización del reporte web - J{jornada_actual}")
+            repo.remote(name='origin').push()
+            print("✅ ¡ÉXITO! El repositorio y la web han sido actualizados.")
+    except Exception as e:
+        print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
+
+    # 6. Mostrar la ventana final
+    mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
 
 def mostrar_ventana_final(reporte_para_whatsapp, url_reporte):
     root = tk.Tk()
