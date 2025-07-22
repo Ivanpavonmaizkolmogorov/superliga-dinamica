@@ -17,7 +17,26 @@ from telegram.ext import (
     ContextTypes,
     CallbackQueryHandler,
 )
+import unicodedata # <-- ¡NUEVA IMPORTACIÓN para quitar tildes!
+import logging 
 
+# --- FUNCIÓN DE AYUDA PARA NORMALIZAR TEXTO ---
+def normalizar_texto(texto: str) -> str:
+    """Convierte un texto a minúsculas y le quita las tildes."""
+    # Transforma a una forma donde los acentos son caracteres separados
+    nfkd_form = unicodedata.normalize('NFD', texto.lower())
+    # Devuelve solo los caracteres que no son acentos
+    return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+# --- 2. CONFIGURACIÓN INICIAL Y CONSTANTES ---
+
+# --- ¡NUEVO! Configuración del Logging ---
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logger = logging.getLogger(__name__)
 # --- 2. CONFIGURACIÓN INICIAL Y CONSTANTES ---
 
 # Carga las variables de entorno (claves secretas)
@@ -37,7 +56,47 @@ else:
 PERFILES_PATH = 'perfiles.json'
 DECLARACIONES_PATH = 'declaraciones.json'
 
+# --- ¡LISTA DE PALABRAS CLAVE MEJORADA Y AMPLIADA! ---
+# Ahora todas las palabras están en minúsculas y SIN tildes.
+PALABRAS_CLAVE_INTERES = [
+    # --- 1. Bravuconadas / Venirse Arriba ---
+    'abusica', 'abuson', 'arrasar', 'arraso', 'bisho', 'bisha', 'campeon', 
+    'el mejor', 'er puto amo', 'estoy que me salgo', 'facil', 'fasi', 'ganamos', 
+    'ganao', 'ganar', 'ganare', 'gane', 'gano', 'imparable', 'invencible', 
+    'lide', 'lider', 'liderato', 'maki', 'makina', 'maquina', 'maquinaria', 
+    'maquinon', 'mejor', 'nadie me gana', 'os gano', 'os reviento', 'paliza', 
+    'paseito', 'paseo', 'rey', 'repaso', 'reviento', 'sobrao', 'sobrado', 
+    'ta chupao', 'victoria', 
 
+    # --- 2. Quejas / Polémicas / Lloriqueos ---
+    'amañao', 'amañado', 'arbitraje', 'arbitro', 'cherra', 'chiripa', 'chorra', 
+    'churre', 'comprao', 'comprado', 'er var', 'excusa', 'guensa', 'injusticia', 
+    'injusto', 'llorando', 'llorar', 'llorera', 'llorica', 'lloron', 'me cago en', 
+    'mierda', 'no veas', 'potra', 'puta', 'robao', 'robado', 'robaron', 'robo', 
+    'suerte', 'tiene cohone', 'tongo', 'trampa', 'var', 'vaya tela', 'verguensa', 
+    'verguenza',
+
+    # --- 3. Insultos / Piques / "Trash Talk" ---
+    'acabao', 'acabado', 'bcazas', 'bocazas', 'cenutrio', 'cerdaca', 'cerda', 
+    'cerdo', 'cerdon', 'cojo', 'cono', 'eres malisimo', 'esmayao', 'fantasma', 
+    'horrible', 'humo', 'illo', 'jartible', 'malaje', 'malo', 'malisimo', 'manco', 
+    'manta', 'matao', 'merluso', 'muerto', 'pa casa', 'pa tu casa', 'paquete de', 
+    'paquete', 'paqueton', 'papafrita', 'pejcao', 'penoso', 'petardo', 'porcon', 
+    'puerca', 'remando', 'remar', 'retirate', 'sieso', 'tieso', 'tuercebotas', 
+    'vendemotos',
+
+    # --- 4. Mercado / Fichajes / Los Tacos ---
+    'birlar', 'clausula', 'clausulazo', 'compro', 'dinero', 'fichado', 'fichaje', 
+    'fichao', 'fichar', 'levantar', 'mercado', 'millones', 'pasta', 'pelas', 
+    'puja', 'pujar', 'robar jugador', 'soltar la gallina', 'vendido', 'vendo', 
+    'vender', 
+
+    # --- 5. Táctica / El Equipo ---
+    'alineacion', 'banquillazo', 'banquillo', 'chupar banquillo', 'dique seco', 
+    'equipo', 'equipaso', 'equipucho', 'formacion', 'jugadores', 'lesion', 
+    'lesionao', 'lesionado', 'mister', 'planteamiento', 'roto', 'tactica'
+]
+MIN_MESSAGE_LENGTH = 7 # Longitud mínima de un mensaje para ser considerado
 # --- 3. FUNCIONES DE AYUDA (MANEJO DE ARCHIVOS) ---
 
 def cargar_perfiles():
@@ -194,20 +253,58 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             
         context.user_data.clear()
 
-async def guardar_declaracion(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Guarda cualquier mensaje de texto como una declaración oficial si el usuario está registrado."""
-    user = update.effective_user
-    perfiles = cargar_perfiles()
-    nombre_mister_registrado = next((p['nombre_mister'] for p in perfiles if p.get('telegram_user_id') == user.id), None)
-    
-    if not nombre_mister_registrado:
-        await update.message.reply_text("No estás registrado. Por favor, usa /register para vincular tu cuenta primero.")
-        return
-    
-    texto_recibido = update.message.text
-    print(f"Guardando declaración de {nombre_mister_registrado}: '{texto_recibido}'")
+# En primer_test_bot.py
 
-    nueva_declaracion = { "telegram_user_id": user.id, "nombre_mister": nombre_mister_registrado, "declaracion": texto_recibido, "timestamp": datetime.now().isoformat()}
+# En primer_test_bot.py
+
+# REEMPLAZA TU FUNCIÓN guardar_declaracion COMPLETA CON ESTA VERSIÓN
+async def guardar_declaracion(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Guarda mensajes de texto si cumplen los criterios de relevancia,
+    verificando la identidad del usuario ANTES de proceder.
+    """
+    user = update.effective_user
+    texto_recibido = update.message.text
+    
+    timestamp_log = datetime.now().strftime('%H:%M:%S.%f')
+    print(f"\n[{timestamp_log}] MENSAJE RECIBIDO de '{user.first_name}': '{texto_recibido}'")
+
+    # --- 1. VERIFICACIÓN DE IDENTIDAD ---
+    # Es lo primero que hacemos. Si no sabemos quién es, no seguimos.
+    perfiles = cargar_perfiles()
+    nombre_mister_registrado = None
+    
+    for perfil in perfiles:
+        if perfil.get('telegram_user_id') == user.id:
+            nombre_mister_registrado = perfil['nombre_mister']
+            break
+            
+    if not nombre_mister_registrado:
+        print(f"[{timestamp_log}] INFO: Mensaje ignorado (el usuario '{user.first_name}' no está registrado).")
+        return # Detenemos la función aquí.
+
+    # --- 2. FILTRADO DE CONTENIDO ---
+    # Solo si el usuario está registrado, nos molestamos en analizar su mensaje.
+    texto_normalizado = normalizar_texto(texto_recibido)
+
+    if not any(palabra in texto_normalizado for palabra in PALABRAS_CLAVE_INTERES):
+        print(f"[{timestamp_log}] INFO: Mensaje de '{nombre_mister_registrado}' ignorado (no relevante).")
+        return
+
+    if len(texto_recibido) < MIN_MESSAGE_LENGTH:
+        print(f"[{timestamp_log}] INFO: Mensaje de '{nombre_mister_registrado}' ignorado (demasiado corto).")
+        return
+
+    # --- 3. GUARDADO EN JSON ---
+    # Si hemos llegado hasta aquí, el mensaje es válido y el usuario está verificado.
+    print(f"[{timestamp_log}] ✅ GUARDANDO declaración de '{nombre_mister_registrado}': '{texto_recibido}'")
+
+    nueva_declaracion = {
+        "telegram_user_id": user.id,
+        "nombre_mister": nombre_mister_registrado,
+        "declaracion": texto_recibido,
+        "timestamp": datetime.now().isoformat()
+    }
     
     try:
         with open(DECLARACIONES_PATH, 'r', encoding='utf-8') as f:
@@ -219,31 +316,38 @@ async def guardar_declaracion(update: Update, context: ContextTypes.DEFAULT_TYPE
     
     with open(DECLARACIONES_PATH, 'w', encoding='utf-8') as f:
         json.dump(declaraciones, f, indent=4, ensure_ascii=False)
-        
-    await update.message.reply_text('📝 ¡Declaración registrada!')
 
 # --- 6. FUNCIÓN PRINCIPAL (main) ---
 
 def main() -> None:
-    """Inicia el bot y configura todos los manejadores."""
+    """Inicia el bot y configura todos los manejadores de forma limpia."""
+    
+    # Carga el TOKEN desde el archivo .env
+    load_dotenv()
     TOKEN = os.getenv("TELEGRAM_TOKEN")
+    
     if not TOKEN:
+        # Usamos logger en lugar de print para los errores críticos
+        logger.critical("Error Crítico: No se encontró el TELEGRAM_TOKEN en el archivo .env")
         print("Error Crítico: No se encontró el TELEGRAM_TOKEN en el archivo .env")
         return
 
+    # Crea la aplicación del bot
     application = Application.builder().token(TOKEN).build()
     
-    # Añadimos los manejadores para los comandos
+    # 1. Añadimos los manejadores para los COMANDOS
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("register", register_command))
     application.add_handler(CommandHandler("micronica", micronica))
     
-    # Añadimos el manejador para los botones
+    # 2. Añadimos el manejador para los BOTONES
     application.add_handler(CallbackQueryHandler(button_callback))
     
-    # Añadimos el manejador para los mensajes de texto (debe ser el último)
+    # 3. Añadimos UN ÚNICO manejador para los MENSAJES DE TEXTO
+    #    Este debe ser el último manejador de mensajes que añadas.
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, guardar_declaracion))
     
+    # Inicia el bot
     print("Bot del Cronista iniciado. ¡Listo para la acción!")
     application.run_polling()
 

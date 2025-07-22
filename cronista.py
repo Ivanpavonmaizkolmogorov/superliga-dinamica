@@ -313,22 +313,6 @@ def generar_comentario_sprint(nombre_sprint, clasificacion, jornada_actual, inic
 # --- LISTA DE PALABRAS CLAVE (EL "RADAR DEL SALSEO") ---
 # Esta lista es fundamental. Puedes y debes ampliarla con el tiempo.
 # Incluye abreviaturas, jerga, etc.
-PALABRAS_CLAVE_INTERES = [
-    # Bravuconadas / Confianza
-    'gano', 'ganaré', 'arraso', 'paseo', 'fácil', 'nadie me gana', 'líder', 
-    'campeón', 'mejor', 'imparable', 'invencible', 'sobrado',
-    
-    # Quejas / Polémica
-    'robo', 'robaron', 'árbitro', 'var', 'vergüenza', 'trampa', 'injusto', 
-    'suerte', 'potra', 'chorra', 'cherra',
-    
-    # Insultos / Piques
-    'paquete', 'malo', 'paquetón', 'manco', 'penoso', 'llorón', 'llorica', 
-    'bocazas', 'bcazas', 'fantasma',
-    
-    # Mercado / Táctica
-    'fichaje', 'fichar', 'vender', 'vendo', 'alineación', 'lesión', 'lesionado'
-]
 
 def generar_introduccion_semanal(perfiles, jornada_actual):
     """
@@ -397,8 +381,8 @@ def generar_introduccion_semanal(perfiles, jornada_actual):
     # --- !! LÍNEA DE PRUEBA TEMPORAL !! ---
     # Descomenta esta línea para saltarte la llamada a la IA y probar la integración
     # Coméntala de nuevo cuando la API vuelva a funcionar.
-    print("INFO: [MODO PRUEBA] Saltando llamada a la IA y devolviendo texto falso.")
-    return "## 🎙️ LA TÁCTICA DE LA BERENJENA\n\n_El mercado de fichajes se ha visto sacudido por la audaz declaración de Iván sobre su 'berenjena voladora'. ¿Genialidad o locura? Solo los puntos del fin de semana dictarán sentencia._\n"
+    # print("INFO: [MODO PRUEBA] Saltando llamada a la IA y devolviendo texto falso.")
+    # return "## 🎙️ LA TÁCTICA DE LA BERENJENA\n\n_El mercado de fichajes se ha visto sacudido por la audaz declaración de Iván sobre su 'berenjena voladora'. ¿Genialidad o locura? Solo los puntos del fin de semana dictarán sentencia._\n"
     # --- FIN DE LA LÍNEA DE PRUEBA ---
     try:
         print(" -> Generando introducción de la IA...")
@@ -425,7 +409,7 @@ def generar_introduccion_semanal(perfiles, jornada_actual):
     
 # --- BLOQUE DE PRUEBA UNITARIA ---
 # Este código solo se ejecuta si lanzamos este archivo directamente
-if __name__ == '__main__':
+""" if __name__ == '__main__':
     print("--- INICIANDO PRUEBA UNITARIA DE LA INTRODUCCIÓN ---")
     
     # 1. Cargamos las claves desde el .env (necesario para la IA)
@@ -450,4 +434,4 @@ if __name__ == '__main__':
     except FileNotFoundError:
         print("ERROR: Para probar, asegúrate de que 'perfiles.json' y 'declaraciones.json' existen en esta carpeta.")
     except Exception as e:
-        print(f"La prueba ha fallado con un error: {e}")
+        print(f"La prueba ha fallado con un error: {e}") """
