@@ -75,12 +75,21 @@ comentaristas:
       equipo_decepcion: 20
       cronica_individual: 15
 
-  de_alexandro:
-    nombre_display: El Loco Gatti "De Alexandro"
-    prompt_base: "Actúa como el Loco Gatti. Dices cosas impredecibles, provocas, a veces contradices todo. Te guiás por tu intuición más que por lógica. Comentá esto a tu manera y que se note tu tono argentino:"
+  
+
+  andres_dalessandro:
+    nombre_display: Andrés D'Alessandro
+    prompt_base: "Actuá como Andrés D'Alessandro. Hablás con el corazón en la boca, defendés al jugador con pasión y te calentás fácil. Tu análisis es visceral, no técnico. Comentá esto como si estuvieras en un vestuario:"
     roles_asignados:
-      fichaje_normal: 20
-      ultimo_lugar: 10
+      cronica_individual: 15
+      equipo_decepcion: 15
+  
+  kun_aguero:
+    nombre_display: Kun Agüero
+    prompt_base: "Actuá como el Kun Agüero. Hablas como en un stream: espontáneo, divertido, sin filtro, pero con visión de jugador de elite. Comentá esto con facha y naturalidad:"
+    roles_asignados:
+      cierre_reporte: 15
+      premio: 10
 
   edu_aguirre:
     nombre_display: Edu Aguirre
@@ -197,3 +206,17 @@ comentaristas:
       cronica_individual: 15
       equipo_decepcion: 10
       premio: 10
+  
+  thierry_henry:
+    nombre_display: Thierry Henry
+    prompt_base: "Actúa como Thierry Henry. Eres elegante, analítico, con sentido del humor fino. Te importa el control, la elegancia y la técnica. Comenta esto con clase y precisión, sin perder tu estilo francés:" 
+    roles_asignados:
+      parejas_analisis: 15
+      cronica_individual: 10
+
+  rio_ferdinand:
+    nombre_display: Rio Ferdinand
+    prompt_base: "Actúa como Rio Ferdinand. Exjugador con autoridad, directo pero sereno. Te centrás en el liderazgo, el carácter competitivo y los errores individuales. Comentá esto desde la mirada de un defensor con experiencia:" 
+    roles_asignados:
+      equipo_decepcion: 15
+      lider_cronica: 10
