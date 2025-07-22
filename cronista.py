@@ -1,14 +1,13 @@
-# cronista.py (Versión Final con Nombres de Emergencia y Detección de Títulos)
+# cronista.py (Versión con lógica de prioridad)
 
 import json
 import random
-import google.generativeai as genai
-from config import GEMINI_API_KEY
 import re
-from datetime import datetime, timedelta # <-- ¡AQUÍ ESTÁ LA SOLUCIÓN!
+from datetime import datetime, timedelta
+from config import GEMINI_API_KEY
+import google.generativeai as genai
 
-
-# --- INICIALIZACIÓN DEL MODELO DE IA ---
+# --- INICIALIZACIÓN Y CONFIGURACIÓN ---
 gemini_model = None
 if GEMINI_API_KEY:
     try:
@@ -18,107 +17,188 @@ if GEMINI_API_KEY:
     except Exception as e:
         print(f"ADVERTENCIA: No se pudo configurar la API de Gemini. Error: {e}")
 else:
-    print("ADVERTENCIA: No se encontró GEMINI_API_KEY. Las crónicas no se generarán.")
-
+    print("ADVERTENCIA: No se encontró GEMINI_API_KEY.")
 
 PALABRAS_CLAVE_INTERES = [
-    # --- Mercado / Fichajes ---
     'ficho', 'fichaje', 'oferta', 'ofrezco', 'vendo', 'venta', 'compro', 
     'compra', 'clausula', 'clausulazo', 'mercado', 'millones', 'pasta', 
-    'puja', 'pujar', 'vendido',
-
-    # --- Piques / "Trash Talk" ---
-    'paquete', 'manco', 'robo', 'tongo', 'suerte', 'lloron', 'malo', 
-    'malisimo', 'gano', 'gane', 'reviento', 'paliza', 'lider',
-
-    # --- Lesiones / Táctica ---
+    'puja', 'pujar', 'vendido', 'paquete', 'manco', 'robo', 'tongo', 'suerte', 
+    'lloron', 'malo', 'malisimo', 'gano', 'gane', 'reviento', 'paliza', 'lider',
     'lesion', 'lesionado', 'roto', 'banquillo', 'alineacion', 'tactica'
 ]
 
-# REEMPLAZA ESTA FUNCIÓN en tu archivo cronista.py
+# --- FUNCIONES AUXILIARES PARA LA LÓGICA DE PRIORIDAD ---
 
-# Asegúrate de que tienes 'import json' al principio de tu archivo cronista.py
-import json
+def _find_root_message(message_id, declarations_map):
+    current_id = message_id
+    while True:
+        message = declarations_map.get(current_id)
+        if not message or not message.get("reply_to_message_id"): break
+        parent_id = message["reply_to_message_id"]
+        if parent_id not in declarations_map: break
+        current_id = parent_id
+    return current_id
 
-# ... (resto de tus importaciones y la configuración de gemini_model) ...
+def _group_declarations_into_threads(all_declarations):
+    declarations_map = {d["message_id"]: d for d in all_declarations if d.get("message_id")}
+    threads = {}
+    for declaration in all_declarations:
+        if not declaration.get("message_id"): continue
+        root_id = _find_root_message(declaration["message_id"], declarations_map)
+        if root_id not in threads: threads[root_id] = []
+        threads[root_id].append(declaration)
+    for root_id in threads:
+        threads[root_id].sort(key=lambda d: d["timestamp"])
+    return list(threads.values())
 
-def generar_cronica(perfil_manager, datos_actuales, nombre_rival="Nadie en particular"):
-    """
-    Genera una crónica personalizada para un mánager, usando un perfil enriquecido
-    y AHORA también sus últimas declaraciones de Telegram.
-    """
-    if not gemini_model: 
-        return "El cronista está afónico hoy. No hay crónica."
-
-    # --- INICIO DE LA MODIFICACIÓN: LEER DECLARACIONES.JSON ---
+def _buscar_declaracion_reciente(manager_ids, todas_declaraciones, ids_ya_usadas):
+    """Busca la declaración más reciente de una lista de mánagers, evitando las ya usadas."""
+    fecha_limite = datetime.now() - timedelta(days=7)
     
-    ultima_declaracion = "Este mánager ha optado por un prudente silencio esta semana."
-    telegram_user_id = perfil_manager.get("telegram_user_id")
+    if not isinstance(manager_ids, list):
+        manager_ids = [manager_ids]
 
-    if telegram_user_id:
-        try:
-            with open('declaraciones.json', 'r', encoding='utf-8') as f:
-                declaraciones = json.load(f)
+    for d in sorted(todas_declaraciones, key=lambda x: x['timestamp'], reverse=True):
+        if d.get("telegram_user_id") in manager_ids and \
+           d.get("message_id") not in ids_ya_usadas and \
+           datetime.fromisoformat(d['timestamp']) > fecha_limite:
+            return d
             
-            # Buscamos la última declaración de este usuario específico recorriendo la lista al revés
-            for declaracion in reversed(declaraciones):
-                if declaracion.get("telegram_user_id") == telegram_user_id:
-                    ultima_declaracion = declaracion["declaracion"]
-                    break
-        except (FileNotFoundError, json.JSONDecodeError):
-            # Si el archivo no existe o está vacío, no hacemos nada y usamos el mensaje por defecto.
-            pass
-            
-    # --- FIN DE LA MODIFICACIÓN ---
+    return None
+
+# --- FUNCIONES DE GENERACIÓN DE TEXTO (ACTUALIZADAS) ---
+
+def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
+    """
+    PRIORIDAD ALTA: Busca conversaciones jugosas.
+    DEVUELVE: una tupla (texto_generado, set_de_ids_usados)
+    """
+    if not gemini_model:
+        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista está afónico._\n", set())
+
+    todos_los_hilos = _group_declarations_into_threads(todas_declaraciones)
+    hilos_relevantes = []
+    ids_usados = set()
+    fecha_limite = datetime.now() - timedelta(days=7)
+
+    for hilo in todos_los_hilos:
+        actividad_reciente = any(datetime.fromisoformat(d['timestamp']) > fecha_limite for d in hilo)
+        if not actividad_reciente: continue
+
+        if any(palabra in d.get('declaracion', '').lower() for d in hilo for palabra in PALABRAS_CLAVE_INTERES):
+            hilos_relevantes.append(hilo)
+            for d in hilo: ids_usados.add(d['message_id'])
+
+    if not hilos_relevantes:
+        return ("## 🎙️ El Vestuario Habla\n\n_Semana de calma tensa._\n", set())
+
+    transcripcion = ""
+    for i, hilo in enumerate(hilos_relevantes):
+        transcripcion += f"--- Hilo de Conversación {i+1} ---\n"
+        for d in hilo:
+            prefijo = "  -> (en respuesta) " if d.get("reply_to_message_id") else ""
+            transcripcion += f"{prefijo}- {d['nombre_mister']}: \"{d['declaracion']}\"\n"
+        transcripcion += "---\n\n"
+
+    lider_actual = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])[0]
+    prompt = f"""
+    Eres el Editor Jefe de un programa deportivo. Tu misión es escribir una introducción impactante para el reporte de la Jornada {jornada_actual}.
+    Te presento las conversaciones más "calientes" de la semana. Los mensajes con "->" son respuestas.
+    {transcripcion}
+    Dato clave: El líder actual es {lider_actual['nombre_mister']}.
+    Elige la conversación más jugosa y realiza dos tareas:
+    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta y potente.
+    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta el hilo más significativo.
+    Tu respuesta debe tener el formato:
+    TÍTULO: [Tu título aquí]
+    ANÁLISIS: [Tu párrafo de análisis aquí]
+    """
+    try:
+        print(" -> Generando introducción (Prioridad Alta)...")
+        response = gemini_model.generate_content(prompt)
+        titulo = "El Vestuario Habla"
+        analisis = response.text
+        match_titulo = re.search(r"TÍTULO: (.*)", response.text, re.IGNORECASE)
+        match_analisis = re.search(r"ANÁLISIS: (.*)", response.text, re.IGNORECASE | re.DOTALL)
+        if match_titulo: titulo = match_titulo.group(1).strip()
+        if match_analisis: analisis = match_analisis.group(1).strip()
+        return (f"## 🎙️ {titulo}\n\n_{analisis}_\n", ids_usados)
+    except Exception as e:
+        print(f"Error al generar la introducción de la IA: {e}")
+        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista tuvo problemas técnicos._\n", set())
+
+def generar_cronica(perfil_manager, datos_actuales, nombre_rival, todas_declaraciones, ids_ya_usadas):
+    """
+    PRIORIDAD BAJA: Busca la última declaración disponible para un mánager.
+    NOTA: La firma ha cambiado para recibir el contexto completo.
+    """
+    if not gemini_model: return "El cronista está afónico hoy."
+    
+    declaracion_reciente = _buscar_declaracion_reciente(
+        perfil_manager.get("telegram_user_id"), 
+        todas_declaraciones, 
+        ids_ya_usadas
+    )
+    
+    ultima_declaracion = declaracion_reciente['declaracion'] if declaracion_reciente else "ha mantenido un prudente silencio esta semana."
 
     nombre_mister = perfil_manager.get('nombre_mister', 'Mánager Desconocido')
-    
-    num_titulos = nombre_mister.count('🏆')
-    contexto_titulos = f"Tiene {num_titulos} títulos en su palmarés." if num_titulos > 0 else "Aún no ha ganado ningún título."
-
-    estilo = perfil_manager.get('estilo_juego') or "No definido"
-    fetiche = perfil_manager.get('jugador_fetiche') or "No tiene"
-    fichajes = perfil_manager.get('filosofia_fichajes') or "Impredecible"
-
-    # --- INICIO DE LA MODIFICACIÓN: PROMPT MEJORADO ---
-
     prompt = f"""
-    Actúa como un cronista deportivo legendario, ingenioso y con memoria (estilo Maldini o Axel Torres). Tienes acceso a todo: datos, perfiles y las declaraciones del vestuario (el chat de la liga).
-    
-    Aquí tienes la ficha completa del mánager sobre el que vas a comentar:
+    Actúa como un cronista deportivo legendario y sarcástico.
+    Analiza al mánager:
     - Nombre: {nombre_mister}
-    - Palmarés: {contexto_titulos}
-    - Lema: {perfil_manager.get('apodo_lema') or "Sin lema conocido"}
-    - Su Estilo de Juego: {estilo}
-    - Su Jugador Fetiche: {fetiche}
-    - Su Filosofía de Fichajes: {fichajes}
-    - Su Rival Histórico: {nombre_rival}
-    - Momento de Gloria recordado: {perfil_manager.get('momento_gloria') or "Aún por llegar"}
-    - Peor Desastre recordado: {perfil_manager.get('peor_desastre') or "Prefiere no recordarlo"}
+    - Puntos esta jornada: {datos_actuales.get('puntos_jornada', 0)}
+    - Su última declaración disponible fue: "{ultima_declaracion}"
 
-    Datos de esta jornada:
-    - Puntos conseguidos: {datos_actuales.get('puntos_jornada', 0)}
-    - Posición actual en la liga: {datos_actuales.get('puesto', 'N/A')}
-
-    DECLARACIÓN MÁS RECIENTE DEL MÁNAGER (obtenida del chat de la liga):
-    - "{ultima_declaracion}"
-
-    Misión: Escribe un comentario breve y punzante (2-3 frases) sobre su rendimiento.
-    Debes CONECTAR OBLIGATORIAMENTE los datos de la jornada con algún dato de su ficha personal O, preferiblemente, con su última declaración.
-    - Si su declaración fue arrogante y pinchó, resáltalo. ("Sus palabras prometían un huracán, pero en el campo solo vimos una llovizna de 40 puntos").
-    - Si se quejó de un jugador y ese jugador le dio puntos, sé irónico. ("Parece que el 'paquete' del que hablaba sí sabía cómo encontrar la red").
-    - Si su filosofía es "tirar de cartera" y en el chat dijo que "el dinero no da la felicidad", pero ganó, comenta la ironía.
-    Sé creativo, específico y memorable.
+    Misión: Escribe una crónica breve (2-3 frases). Conecta su rendimiento con su última declaración.
     """
-    
-    # --- FIN DE LA MODIFICACIÓN ---
-
     try:
         response = gemini_model.generate_content(prompt)
         return response.text.strip()
     except Exception as e:
         print(f"Error al generar crónica para {nombre_mister}: {e}")
-        return "El cronista se ha quedado sin palabras por alguna razón..."
+        return "El cronista se ha quedado sin palabras."
+
+# --- OTRAS FUNCIONES DE CRONISTA (PUEDEN QUEDAR IGUAL O ADAPTARSE EN EL FUTURO) ---
+# Por ahora, las funciones de Sprints y Parejas no usarán declaraciones para simplificar.
+# Si en el futuro quieres añadirles contexto, seguirían el mismo patrón que 'generar_cronica'.
+
+def generar_comentario_parejas(clasificacion):
+    # Esta función se mantiene simple por ahora
+    if not gemini_model: return "El cronista está estudiando las sinergias."
+    # ... (código original de generar_comentario_parejas)
+    top_parejas_texto = ""
+    for i, pareja in enumerate(clasificacion[:3]):
+        nombre = pareja.get('nombre', 'Pareja Desconocida')
+        media = pareja.get('media', 0)
+        top_parejas_texto += f"- Posición {i+1}: {nombre} (Media: {media} pts)\n"
+    prompt = f"""Actúa como un analista experto. Te doy el top 3 de parejas. Analiza la situación brevemente (2-3 frases). {top_parejas_texto}"""
+    try:
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"Error al generar comentario de parejas: {e}")
+        return "Una alianza poderosa se está forjando."
+
+def generar_comentario_sprint(nombre_sprint, clasificacion, jornada_actual, inicio_sprint, fin_sprint):
+    # Esta función se mantiene simple por ahora
+    if not gemini_model: return "El cronista está tomando tiempos."
+    # ... (código original de generar_comentario_sprint)
+    estado_sprint = ... # Tu lógica para determinar el estado
+    top_managers_texto = ""
+    for i, manager in enumerate(clasificacion[:3]):
+        nombre = manager.get('nombre', 'Mánager Desconocido')
+        puntos = manager.get('puntos', 0)
+        top_managers_texto += f"- Posición {i+1}: {nombre} ({puntos} pts)\n"
+    prompt = f"""Actúa como comentarista de F1. Analiza el sprint '{nombre_sprint}'. Estado: {estado_sprint}. Clasificación: {top_managers_texto}."""
+    try:
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"Error al generar comentario de sprint: {e}")
+        return "Los mánagers aprietan el acelerador."
+
+# ... (El resto de tus funciones como crear_nombre_emergencia, etc., van aquí sin cambios)
 
 
 # En cronista.py
@@ -362,98 +442,68 @@ def generar_comentario_sprint(nombre_sprint, clasificacion, jornada_actual, inic
 # Esta lista es fundamental. Puedes y debes ampliarla con el tiempo.
 # Incluye abreviaturas, jerga, etc.
 
-def generar_introduccion_semanal(perfiles, jornada_actual):
+# Reemplaza tu función generar_introduccion_semanal entera por esta:
+
+def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
     """
-    Genera una introducción semanal, agrupando las declaraciones en conversaciones
-    para darle un contexto más rico a la IA.
+    PRIORIDAD ALTA: Busca conversaciones jugosas.
+    DEVUELVE: una tupla (texto_generado, set_de_ids_usados)
     """
     if not gemini_model:
-        return ""
+        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista está afónico._\n", set())
 
-    # --- 1. CARGAR Y AGRUPAR DECLARACIONES EN HILOS DE CONVERSACIÓN ---
-    try:
-        with open('declaraciones.json', 'r', encoding='utf-8') as f:
-            todas_las_declaraciones = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return "## 🎙️ El Vestuario Habla\n\n_Semana de reflexión en la liga. Silencio en los banquillos._\n"
-
-    # Usamos la nueva función para agrupar todo en hilos
-    todos_los_hilos = _group_declarations_into_threads(todas_las_declaraciones)
+    # Ya no necesita leer el archivo, recibe 'todas_declaraciones' como argumento
+    todos_los_hilos = _group_declarations_into_threads(todas_declaraciones)
     
-    # --- 2. FILTRAR HILOS RELEVANTES DE LA ÚLTIMA SEMANA ---
     hilos_relevantes = []
+    ids_usados = set()
     fecha_limite = datetime.now() - timedelta(days=7)
 
     for hilo in todos_los_hilos:
-        hilo_es_relevante = False
-        actividad_reciente = False
-        
-        for declaracion in hilo:
-            # Comprobamos si alguna declaración del hilo es reciente
-            if datetime.fromisoformat(declaracion['timestamp']) > fecha_limite:
-                actividad_reciente = True
-            
-            # Comprobamos si alguna declaración tiene palabras clave
-            texto_declaracion = declaracion.get('declaracion', '').lower()
-            if any(palabra in texto_declaracion for palabra in PALABRAS_CLAVE_INTERES):
-                hilo_es_relevante = True
+        actividad_reciente = any(datetime.fromisoformat(d['timestamp']) > fecha_limite for d in hilo)
+        if not actividad_reciente: continue
 
-        if hilo_es_relevante and actividad_reciente:
+        if any(palabra in d.get('declaracion', '').lower() for d in hilo for palabra in PALABRAS_CLAVE_INTERES):
             hilos_relevantes.append(hilo)
+            for d in hilo: ids_usados.add(d['message_id'])
 
     if not hilos_relevantes:
-        return "## 🎙️ El Vestuario Habla\n\n_Semana de calma tensa. Nadie ha querido mostrar sus cartas._\n"
+        return ("## 🎙️ El Vestuario Habla\n\n_Semana de calma tensa._\n", set())
 
-    # --- 3. PREPARAR LA TRANSCRIPCIÓN CON FORMATO DE CONVERSACIÓN ---
     transcripcion = ""
     for i, hilo in enumerate(hilos_relevantes):
         transcripcion += f"--- Hilo de Conversación {i+1} ---\n"
         for d in hilo:
-            # Determinamos si es una respuesta para añadir contexto visual
             prefijo = "  -> (en respuesta) " if d.get("reply_to_message_id") else ""
             transcripcion += f"{prefijo}- {d['nombre_mister']}: \"{d['declaracion']}\"\n"
         transcripcion += "---\n\n"
 
-    # --- 4. CONSTRUCCIÓN DEL PROMPT MEJORADO PARA LA IA ---
     lider_actual = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])[0]
-    
     prompt = f"""
-    Eres el Editor Jefe de un programa deportivo sobre una liga fantasy. Eres agudo y experto en detectar "salseo".
-    Tu misión es escribir una introducción impactante para el reporte de la Jornada {jornada_actual}.
-
-    A continuación, te presento las conversaciones más "calientes" de la semana, agrupadas en hilos. Los mensajes con "->" son respuestas a otros.
+    Eres el Editor Jefe de un programa deportivo. Tu misión es escribir una introducción impactante para el reporte de la Jornada {jornada_actual}.
+    Te presento las conversaciones más "calientes" de la semana. Los mensajes con "->" son respuestas.
     {transcripcion}
     Dato clave: El líder actual es {lider_actual['nombre_mister']}.
-
-    Analiza estas conversaciones. No comentes cada una, elige la más jugosa (un pique, una negociación, una queja que quedó en nada...).
-    Realiza estas dos tareas:
-    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta y potente que resuma el drama o la polémica principal.
-    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta el hilo más significativo. Explica la interacción entre los mánagers.
-
-    Tu respuesta debe tener el formato exacto:
+    Elige la conversación más jugosa y realiza dos tareas:
+    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta y potente.
+    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta el hilo más significativo.
+    Tu respuesta debe tener el formato:
     TÍTULO: [Tu título aquí]
     ANÁLISIS: [Tu párrafo de análisis aquí]
     """
-    
     try:
-        print(" -> Generando introducción de la IA con contexto de conversaciones...")
+        print(" -> Generando introducción (Prioridad Alta)...")
         response = gemini_model.generate_content(prompt)
-        
-        # Procesamos la respuesta (tu código de regex para TÍTULO/ANÁLISIS ya es correcto)
         titulo = "El Vestuario Habla"
         analisis = response.text
         match_titulo = re.search(r"TÍTULO: (.*)", response.text, re.IGNORECASE)
         match_analisis = re.search(r"ANÁLISIS: (.*)", response.text, re.IGNORECASE | re.DOTALL)
-        if match_titulo:
-            titulo = match_titulo.group(1).strip()
-        if match_analisis:
-            analisis = match_analisis.group(1).strip()
-        return f"## 🎙️ {titulo}\n\n_{analisis}_\n"
+        if match_titulo: titulo = match_titulo.group(1).strip()
+        if match_analisis: analisis = match_analisis.group(1).strip()
+        return (f"## 🎙️ {titulo}\n\n_{analisis}_\n", ids_usados)
     except Exception as e:
         print(f"Error al generar la introducción de la IA: {e}")
-        return ""
-
-# En: cronista.py
+        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista tuvo problemas técnicos._\n", set())
 
 def _find_root_message(message_id, declarations_map):
     """Navega hacia atrás en una conversación para encontrar el mensaje raíz."""
