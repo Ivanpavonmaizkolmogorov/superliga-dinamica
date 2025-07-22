@@ -433,11 +433,29 @@ def main():
     perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
-        cronica = generar_cronica(perfil, ultimo_historial)
-        reporte_individual_texto += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
-                                     f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
-                                     f"_{cronica}_\n\n")
+        
+        # --- INICIO DE LA NUEVA LÓGICA ---
+        
+        # Buscamos el nombre del rival a partir de su ID
+        nombre_del_rival = "Nadie en particular" # Valor por defecto
+        id_rival = perfil.get('rival_historico') # Usamos .get() por seguridad
+        
+        if id_rival:
+            # Buscamos en toda la lista de perfiles hasta encontrar al rival
+            for p_rival in perfiles:
+                if p_rival.get('id_manager') == id_rival:
+                    nombre_del_rival = p_rival.get('nombre_mister', 'Un rival misterioso')
+                    break # Dejamos de buscar una vez encontrado
+        
+        # Ahora llamamos a generar_cronica con TODA la información necesaria
+        cronica = generar_cronica(perfil, ultimo_historial, nombre_del_rival)
+        
+        # --- FIN DE LA NUEVA LÓGICA ---
 
+        reporte_individual_texto += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
+                                    f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
+                                    f"_{cronica}_\n\n")
+        
     reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
     reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)
     reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
