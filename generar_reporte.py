@@ -364,10 +364,12 @@ def main():
     url_reporte_real = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
 
     # 2. Construimos el mensaje corto para Telegram.
+# En generar_reporte.py, dentro de main()
+
+    # 2. Construimos el mensaje corto para Telegram con formato de enlace seguro.
     mensaje_para_telegram = (
         f"📰 **¡Ya está disponible el reporte de la Jornada {jornada_actual}!** 📰\n\n"
-        f"Puedes leerlo online y ver todos los detalles en el siguiente enlace:\n\n"
-        f"➡️ {url_reporte_real}"
+        f"Puedes leerlo online y ver todos los detalles [pulsando aquí]({url_reporte_real})."
     )
 
     # --- INICIO DEL BLOQUE DE DEPURACIÓN ---
@@ -465,8 +467,7 @@ def main():
     # 2. Construimos el mensaje corto para Telegram.
     mensaje_para_telegram = (
         f"📰 **¡Ya está disponible el reporte de la Jornada {jornada_actual}!** 📰\n\n"
-        f"Puedes leerlo online y ver todos los detalles en el siguiente enlace:\n\n"
-        f"➡️ {url_reporte_real}"
+        f"Puedes leerlo online y ver todos los detalles [pulsando aquí]({url_reporte_real})."
     )
 
     # --- INICIO DEL BLOQUE DE DEPURACIÓN ---

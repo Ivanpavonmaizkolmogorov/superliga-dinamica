@@ -13,34 +13,24 @@ CHAT_ID = os.getenv("TELEGRAM_GROUP_ID") # Usaremos una nueva variable de entorn
 
 # En telegram_sender.py
 
+# En telegram_sender.py
+
+# En telegram_sender.py
+
 async def send_telegram_message(message_text):
-    """
-    Envía un mensaje de texto a Telegram, saneando caracteres problemáticos
-    para el formato Markdown.
-    """
     if not TELEGRAM_TOKEN or not CHAT_ID:
-        print("ERROR en telegram_sender: Faltan TELEGRAM_TOKEN o TELEGRAM_GROUP_ID en .env")
+        print("ERROR en telegram_sender: Faltan variables en .env")
         return False
 
     try:
         bot = Bot(token=TELEGRAM_TOKEN)
         
-        # --- INICIO DE LA MODIFICACIÓN: SANEAR EL TEXTO ---
-        # Reemplazamos los caracteres que más problemas dan en Markdown V1 de Telegram.
-        # Un guion bajo suelto es el culpable más común. Lo reemplazamos por un espacio.
-        # Hacemos esto para evitar que nombres como "raul_piru_" rompan el formato.
-        texto_saneado = message_text.replace('_', ' ')
-        # --- FIN DE LA MODIFICACIÓN ---
-
-        max_len = 4096
-        if len(texto_saneado) <= max_len:
-            await bot.send_message(chat_id=CHAT_ID, text=texto_saneado, parse_mode=ParseMode.MARKDOWN)
-        else:
-            print("INFO: El mensaje es muy largo, se enviará en varias partes.")
-            parts = [texto_saneado[i:i+max_len] for i in range(0, len(texto_saneado), max_len)]
-            for part in parts:
-                await bot.send_message(chat_id=CHAT_ID, text=part, parse_mode=ParseMode.MARKDOWN)
-                await asyncio.sleep(1)
+        # Simplemente enviamos el texto tal cual lo recibimos
+        await bot.send_message(
+            chat_id=CHAT_ID, 
+            text=message_text, 
+            parse_mode=ParseMode.MARKDOWN
+        )
 
         print("-> Mensaje enviado a Telegram con éxito.")
         return True
