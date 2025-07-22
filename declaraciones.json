@@ -1,80 +1,18 @@
 [
     {
+        "message_id": 45,
+        "reply_to_message_id": null,
         "telegram_user_id": 2078045747,
-        "nombre_mister": "Iván",
-        "declaracion": "Esto es una prueba para el cronista",
-        "timestamp": "2025-07-22T00:21:17.997531"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "El fichaje de la berenjena voladora será clave para mi victoria esta jornada",
-        "timestamp": "2025-07-22T01:50:42.076976"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "Os reviento seguro",
-        "timestamp": "2025-07-22T03:32:22.534548"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "Os reviento seguro",
-        "timestamp": "2025-07-22T03:32:22.536542"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "El clausulazo de ayer no te lo esperabas eh",
-        "timestamp": "2025-07-22T03:37:17.057343"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "El clausulazo de ayer no te lo esperabas eh",
-        "timestamp": "2025-07-22T03:37:17.058346"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "Te he roto en pedazos",
-        "timestamp": "2025-07-22T03:41:00.774413"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "Te he roto en pedazos",
-        "timestamp": "2025-07-22T03:41:00.777414"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "nombre_mister": "Aquí va el nombre del mánager (debes obtenerlo de tus perfiles)",
         "declaracion": "El cláusula o no estaba prevista",
-        "timestamp": "2025-07-22T03:43:39.292609"
+        "timestamp": "2025-07-22T04:18:01.394576"
     },
     {
+        "message_id": 46,
+        "reply_to_message_id": 45,
         "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "El cláusula o no estaba prevista",
-        "timestamp": "2025-07-22T03:43:39.292609"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "El sprint lo ganó seguro",
-        "timestamp": "2025-07-22T03:46:10.684251"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "El sprint lo ganó seguro",
-        "timestamp": "2025-07-22T03:46:10.686255"
-    },
-    {
-        "telegram_user_id": 2078045747,
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "Eres un buen paquete de competición",
-        "timestamp": "2025-07-22T03:53:18.119401"
+        "nombre_mister": "Aquí va el nombre del mánager (debes obtenerlo de tus perfiles)",
+        "declaracion": "No eres ni muy paquete",
+        "timestamp": "2025-07-22T04:18:29.008576"
     }
 ]

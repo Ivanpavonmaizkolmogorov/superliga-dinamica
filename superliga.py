@@ -7,6 +7,7 @@ import sys
 import threading
 import subprocess
 from gestor_datos import cargar_perfiles
+import queue
 
 # --- CLASE DE LA INTERFAZ GRÁFICA (VISTA) ---
 # REEMPLAZA ESTA CLASE ENTERA en tu archivo superliga.py
@@ -41,6 +42,8 @@ class MainPanel(tk.Frame):
             'run_jornada': ("5. Procesar Nueva Jornada", "#2980b9"),
             'generar_reporte': ("6. Generar Reporte Semanal", "#f39c12"),
             'simular': ("Simular Jornada(s)", "#27ae60"),
+                       # --- AÑADE ESTA LÍNEA ---
+            'limpiar_declaraciones': ("Limpiar Declaraciones", "#95a5a6"),
             'reset_season': ("Reiniciar Temporada", "#e74c3c")
         }
 
@@ -94,7 +97,9 @@ class SuperligaController:
             'simular': 'simulador.py',
             'config_liga': 'configurar_liga.py',
             'reset_season': 'reiniciar_temporada.py',
-            'generar_reporte': 'generar_reporte.py' # <-- CONEXIÓN DEL NUEVO BOTÓN
+            'generar_reporte': 'generar_reporte.py', # <-- CONEXIÓN DEL NUEVO BOTÓN
+            # --- AÑADE ESTA LÍNEA ---
+            'limpiar_declaraciones': 'limpiar_declaraciones.py'
         }
         
         script_a_lanzar = action_map.get(action_name)

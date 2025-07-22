@@ -295,14 +295,23 @@ async def guardar_declaracion(update: Update, context: ContextTypes.DEFAULT_TYPE
         print(f"[{timestamp_log}] INFO: Mensaje de '{nombre_mister_registrado}' ignorado (demasiado corto).")
         return
 
+
     # --- 3. GUARDADO EN JSON ---
     # Si hemos llegado hasta aquí, el mensaje es válido y el usuario está verificado.
     print(f"[{timestamp_log}] ✅ GUARDANDO declaración de '{nombre_mister_registrado}': '{texto_recibido}'")
 
+    # La parte clave es la creación del diccionario que se va a guardar
+    message = update.message
+
     nueva_declaracion = {
-        "telegram_user_id": user.id,
+        # ---- DATOS NUEVOS Y ESENCIALES ----
+        "message_id": message.message_id,
+        "reply_to_message_id": message.reply_to_message.message_id if message.reply_to_message else None,
+        
+        # ---- Tus datos actuales ----
+        "telegram_user_id": message.from_user.id,
         "nombre_mister": nombre_mister_registrado,
-        "declaracion": texto_recibido,
+        "declaracion": message.text,
         "timestamp": datetime.now().isoformat()
     }
     
