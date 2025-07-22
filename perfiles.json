@@ -1,26 +1,79 @@
 [
     {
+        "id_manager": "8524310",
+        "nombre_mister": "king revolution 💪⚽",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 80,
+                "puesto": 1,
+                "puntos_totales": 80
+            }
+        ]
+    },
+    {
+        "id_manager": "7107051",
+        "nombre_mister": "Perico",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 79,
+                "puesto": 2,
+                "puntos_totales": 79
+            }
+        ]
+    },
+    {
+        "id_manager": "13305509",
+        "nombre_mister": "PIRI",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 75,
+                "puesto": 3,
+                "puntos_totales": 75
+            }
+        ]
+    },
+    {
+        "id_manager": "7106544",
+        "nombre_mister": "THE ELEVATOR💪🏆",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 67,
+                "puesto": 4,
+                "puntos_totales": 67
+            }
+        ]
+    },
+    {
+        "id_manager": "7101774",
+        "nombre_mister": "The 👑",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 67,
+                "puesto": 5,
+                "puntos_totales": 67
+            }
+        ]
+    },
+    {
         "id_manager": "7106479",
         "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
         "apodo_lema": "El saboteador",
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 57,
-                "puesto": 0,
-                "puntos_totales": 57
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 77,
-                "puesto": 0,
-                "puntos_totales": 134
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 80,
-                "puesto": 1,
-                "puntos_totales": 214
+                "puntos_jornada": 59,
+                "puesto": 6,
+                "puntos_totales": 59
             }
         ],
         "momento_gloria": "doblete, dos años seguidos ganando el titulo de campeon",
@@ -38,246 +91,9 @@
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 68,
-                "puesto": 0,
-                "puntos_totales": 68
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 60,
-                "puesto": 0,
-                "puntos_totales": 128
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 69,
-                "puesto": 2,
-                "puntos_totales": 197
-            }
-        ]
-    },
-    {
-        "id_manager": "7112166",
-        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 39
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 114
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 82,
-                "puesto": 3,
-                "puntos_totales": 196
-            }
-        ]
-    },
-    {
-        "id_manager": "13305509",
-        "nombre_mister": "PIRI",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 63,
-                "puesto": 0,
-                "puntos_totales": 63
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 55,
-                "puesto": 0,
-                "puntos_totales": 118
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 72,
-                "puesto": 4,
-                "puntos_totales": 190
-            }
-        ]
-    },
-    {
-        "id_manager": "8524310",
-        "nombre_mister": "king revolution 💪⚽",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 27,
-                "puesto": 0,
-                "puntos_totales": 27
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 102
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 83,
-                "puesto": 5,
-                "puntos_totales": 185
-            }
-        ]
-    },
-    {
-        "id_manager": "14574192",
-        "nombre_mister": "Jortru",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 51,
-                "puesto": 0,
-                "puntos_totales": 51
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 66,
-                "puesto": 0,
-                "puntos_totales": 117
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 48,
-                "puesto": 6,
-                "puntos_totales": 165
-            }
-        ]
-    },
-    {
-        "id_manager": "10361479",
-        "nombre_mister": "raul_piru_",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 35,
-                "puesto": 0,
-                "puntos_totales": 35
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 62,
-                "puesto": 0,
-                "puntos_totales": 97
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 66,
+                "puntos_jornada": 59,
                 "puesto": 7,
-                "puntos_totales": 163
-            }
-        ]
-    },
-    {
-        "id_manager": "7110624",
-        "nombre_mister": "Al Hansi Flick 🏆🏆",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 37
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 61,
-                "puesto": 0,
-                "puntos_totales": 98
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 61,
-                "puesto": 8,
-                "puntos_totales": 159
-            }
-        ]
-    },
-    {
-        "id_manager": "7106544",
-        "nombre_mister": "THE ELEVATOR💪🏆",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 49
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 55,
-                "puesto": 0,
-                "puntos_totales": 104
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 55,
-                "puesto": 9,
-                "puntos_totales": 159
-            }
-        ]
-    },
-    {
-        "id_manager": "8539397",
-        "nombre_mister": "Panda’s Team 🏆",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 61,
-                "puesto": 0,
-                "puntos_totales": 61
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 94
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 54,
-                "puesto": 10,
-                "puntos_totales": 148
-            }
-        ]
-    },
-    {
-        "id_manager": "7108124",
-        "nombre_mister": "Rafatobalo",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 55,
-                "puesto": 0,
-                "puntos_totales": 55
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 61,
-                "puesto": 0,
-                "puntos_totales": 116
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 32,
-                "puesto": 11,
-                "puntos_totales": 148
+                "puntos_totales": 59
             }
         ]
     },
@@ -288,21 +104,87 @@
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 33,
-                "puesto": 0,
-                "puntos_totales": 33
-            },
+                "puntos_jornada": 56,
+                "puesto": 8,
+                "puntos_totales": 56
+            }
+        ]
+    },
+    {
+        "id_manager": "14574192",
+        "nombre_mister": "Jortru",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
             {
-                "jornada": 2,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 61
-            },
+                "jornada": 1,
+                "puntos_jornada": 47,
+                "puesto": 9,
+                "puntos_totales": 47
+            }
+        ]
+    },
+    {
+        "id_manager": "7110624",
+        "nombre_mister": "Al Hansi Flick 🏆🏆",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
             {
-                "jornada": 3,
-                "puntos_jornada": 81,
+                "jornada": 1,
+                "puntos_jornada": 47,
+                "puesto": 10,
+                "puntos_totales": 47
+            }
+        ]
+    },
+    {
+        "id_manager": "7108124",
+        "nombre_mister": "Rafatobalo",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 47,
+                "puesto": 11,
+                "puntos_totales": 47
+            }
+        ]
+    },
+    {
+        "id_manager": "10361479",
+        "nombre_mister": "raul_piru_",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 39,
                 "puesto": 12,
-                "puntos_totales": 142
+                "puntos_totales": 39
+            }
+        ]
+    },
+    {
+        "id_manager": "7112166",
+        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 38,
+                "puesto": 13,
+                "puntos_totales": 38
+            }
+        ]
+    },
+    {
+        "id_manager": "8539397",
+        "nombre_mister": "Panda’s Team 🏆",
+        "apodo_lema": "El Novato",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 32,
+                "puesto": 14,
+                "puntos_totales": 32
             }
         ]
     },
@@ -313,71 +195,9 @@
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 28
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 62,
-                "puesto": 0,
-                "puntos_totales": 90
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 43,
-                "puesto": 13,
-                "puntos_totales": 133
-            }
-        ]
-    },
-    {
-        "id_manager": "7101774",
-        "nombre_mister": "The 👑",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
                 "puntos_jornada": 29,
-                "puesto": 0,
-                "puntos_totales": 29
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 54,
-                "puesto": 0,
-                "puntos_totales": 83
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 35,
-                "puesto": 14,
-                "puntos_totales": 118
-            }
-        ]
-    },
-    {
-        "id_manager": "7107051",
-        "nombre_mister": "Perico",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 62,
-                "puesto": 0,
-                "puntos_totales": 62
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 93
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 25,
                 "puesto": 15,
-                "puntos_totales": 118
+                "puntos_totales": 29
             }
         ]
     }
