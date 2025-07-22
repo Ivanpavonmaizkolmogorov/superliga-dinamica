@@ -8,6 +8,9 @@ import markdown
 from datetime import datetime
 import re
 import git
+import asyncio
+from telegram_sender import send_telegram_message
+
 
 # --- FUNCIONES DE CÁLCULO DE REPORTE (SIN CAMBIOS) ---
 # En generar_reporte.py, dentro de calcular_clasificacion_parejas
@@ -305,131 +308,9 @@ def actualizar_web_historico(jornada_actual, reporte_markdown):
     url_reporte = f"{url_base}/{temporada}/{nombre_archivo_reporte}"
     return url_reporte
 
-# REEMPLAZA ESTA FUNCIÓN en tu archivo generar_reporte.py
+# En generar_reporte.py
 
-def main():
-    print("--- GENERANDO REPORTE SEMANAL ---")
-    perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
-    if not perfiles or not perfiles[0].get('historial_temporada'):
-        print("ERROR: No hay datos de ninguna jornada en 'perfiles.json'."); return
-    jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
-    
-    # --- INICIO DE LA MODIFICACIÓN ---
-    
-    # 1. Generamos la nueva introducción ANTES que nada
-    introduccion_ia = generar_introduccion_semanal(perfiles, jornada_actual)
-    
-    # --- FIN DE LA MODIFICACIÓN ---
-
-
-    # 1. Generar contenido del reporte en texto plano (Markdown)
-    reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
-    perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
-    for perfil in perfiles:
-        ultimo_historial = perfil['historial_temporada'][-1]
-        
-        # ## INICIO DE LA MODIFICACIÓN ##
-        # Buscamos el nombre del rival a partir de su ID
-        nombre_del_rival = "Nadie en particular"
-        id_rival = perfil.get('rival_historico')
-        if id_rival:
-            for p_rival in perfiles:
-                if p_rival.get('id_manager') == id_rival:
-                    nombre_del_rival = p_rival.get('nombre_mister')
-                    break
-        
-        # Le pasamos el nombre del rival a la función del cronista
-        cronica = generar_cronica(perfil, ultimo_historial, nombre_del_rival)
-        # ## FIN DE LA MODIFICACIÓN ##
-
-        reporte_individual_texto += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
-                                     f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
-                                     f"_{cronica}_\n\n")
-
-    # (El resto de la función sigue exactamente igual)
-    reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
-    reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)
-    reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
-    reporte_comentarios_ia_texto = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
-    
-    reporte_markdown_completo = (reporte_individual_texto + "\n---\n" + 
-                                  reporte_parejas_texto + "\n---\n" + 
-                                  reporte_sprints_texto + 
-                                  reporte_reparto_premios_texto + "\n---\n" +
-                                  reporte_comentarios_ia_texto)
-
-    url_reporte_real, reporte_html_enmarcado, css_string = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
-    
-    titulo_pdf = f"Reporte Superliga - Jornada {jornada_actual}"
-    html_para_pdf = generar_html_completo(titulo_pdf, reporte_html_enmarcado, para_pdf=True)
-    default_pdf_filename = f"Reporte_J{jornada_actual}_{datetime.now().strftime('%Y%m%d')}.pdf"
-
-    reporte_para_whatsapp = reporte_markdown_completo
-    reporte_para_whatsapp = re.sub(r'###\s*(.*?)\s*\n', r'*\1*\n', reporte_para_whatsapp)
-    reporte_para_whatsapp = re.sub(r'##\s*(.*?)\s*\n', r'*\1*\n\n', reporte_para_whatsapp)
-    reporte_para_whatsapp = reporte_para_whatsapp.replace('**', '*')
-    reporte_para_whatsapp = reporte_para_whatsapp.replace('\n---\n', '\n')
-    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_para_whatsapp
-    
-    try:
-        repo = git.Repo(os.getcwd())
-        
-        # --- LÓGICA DE GIT MEJORADA ---
-
-        # 1. Obtenemos la ruta completa a la carpeta 'docs'
-        path_docs = os.path.join(os.getcwd(), 'docs')
-
-        # 2. Le decimos a Git que añada SOLAMENTE esa carpeta
-        #    Esto añadirá todos los archivos nuevos o modificados DENTRO de 'docs'
-        repo.git.add(path_docs)
-
-        # 3. Comprobamos si, después de añadir 'docs', hay algo para hacer commit.
-        #    Esto es más seguro que usar is_dirty() al principio.
-        if not repo.index.diff("HEAD"):
-            print("INFO: No hay cambios en la carpeta 'docs' para subir a GitHub.")
-        else:
-            print("INFO: Detectados cambios en los reportes, subiendo a GitHub...")
-            # 4. Hacemos el commit y el push como antes
-            repo.index.commit(f"Actualización del reporte web - J{jornada_actual}")
-            repo.remote(name='origin').push()
-            print("✅ ¡ÉXITO! El repositorio y la web han sido actualizados.")
-
-    except Exception as e:
-        print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
-
-    mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real, html_para_pdf, css_string, default_pdf_filename)
-
-    # 6. Mostrar la ventana final
-    mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
-
-def mostrar_ventana_final(reporte_para_whatsapp, url_reporte):
-    root = tk.Tk()
-    root.title(f"Reporte Generado y Subido a la Web")
-    root.geometry("700x800")
-    text_area = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=("Consolas", 10))
-    text_area.pack(expand=True, fill="both", padx=10, pady=10)
-    text_area.insert(tk.END, reporte_para_whatsapp)
-    text_area.config(state="disabled")
-    def copy_reporte_to_clipboard():
-        root.clipboard_clear(); root.clipboard_append(reporte_para_whatsapp)
-        copy_reporte_button.config(text="¡Reporte Copiado!", bg="#16a085")
-        root.after(2000, lambda: copy_reporte_button.config(text="Copiar Reporte", bg="#3498db"))
-    def copy_enlace_to_clipboard():
-        root.clipboard_clear(); root.clipboard_append(url_reporte)
-        copy_enlace_button.config(text="¡Enlace Copiado!", bg="#16a085")
-        root.after(2000, lambda: copy_enlace_button.config(text="Copiar Enlace Web", bg="#8e44ad"))
-    button_frame = tk.Frame(root)
-    button_frame.pack(pady=10)
-    copy_reporte_button = tk.Button(button_frame, text="Copiar Reporte para WhatsApp", font=("Helvetica", 11, "bold"), bg="#25D366", fg="white", command=copy_reporte_to_clipboard)
-    copy_reporte_button.pack(side="left", padx=10)
-    copy_enlace_button = tk.Button(button_frame, text="Copiar Enlace Web", font=("Helvetica", 11, "bold"), bg="#8e44ad", fg="white", command=copy_enlace_to_clipboard)
-    copy_enlace_button.pack(side="left", padx=10)
-    tk.Button(button_frame, text="Cerrar", font=("Helvetica", 11), command=root.destroy).pack(side="left", padx=10)
-    root.mainloop()
-
-# REEMPLAZA ESTA FUNCIÓN ENTERA EN generar_reporte.py
-
-# Reemplaza la función main() completa en tu archivo generar_reporte.py con esta versión.
+# En generar_reporte.py
 
 def main():
     print("--- [PUNTO DE CONTROL 1] INICIANDO GENERACIÓN DE REPORTE ---")
@@ -442,28 +323,18 @@ def main():
     jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
     print(f"--- [PUNTO DE CONTROL 2] Datos cargados para la Jornada {jornada_actual} ---")
     
-    # --- Bloque de llamada a la introducción con depuración ---
-    introduccion_ia = "" # Inicializamos la variable por si la función falla
+    # --- Generación del contenido del reporte ---
+    introduccion_ia = ""
     try:
-        print("--- [PUNTO DE CONTROL 3] A punto de llamar a generar_introduccion_semanal ---")
         introduccion_ia = generar_introduccion_semanal(perfiles, jornada_actual)
-        print("--- [PUNTO DE CONTROL 4] La función generar_introduccion_semanal ha finalizado ---")
-        # Imprime los primeros 80 caracteres de la respuesta para verificar
-        # 1. Hacemos el recorte y el reemplazo primero y lo guardamos
-        contenido_limpio = introduccion_ia[:80].replace('\n', ' ')
-        # 2. Ahora imprimimos la variable limpia, sin backslashes en el f-string
-        print(f"    -> Contenido recibido: '{contenido_limpio}...'")
     except Exception as e:
-        print(f"¡¡¡ERROR CRÍTICO!!! La llamada a generar_introduccion_semanal ha fallado con el error: {e}")
-        # Aunque falle, nos aseguramos de que la variable exista para no romper el script más adelante
-        introduccion_ia = "## 🎙️ El Vestuario Habla\n\n_El Cronista ha tenido problemas técnicos con la introducción._\n"
+        print(f"¡ERROR! La llamada a generar_introduccion_semanal ha fallado: {e}")
+        introduccion_ia = "## 🎙️ El Vestuario Habla\n\n_El Cronista ha tenido problemas técnicos._\n"
     
-    # --- Generación del resto del reporte (tu código original) ---
     reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
     perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
-        
         nombre_del_rival = "Nadie en particular"
         id_rival = perfil.get('rival_historico')
         if id_rival:
@@ -471,9 +342,7 @@ def main():
                 if p_rival.get('id_manager') == id_rival:
                     nombre_del_rival = p_rival.get('nombre_mister', 'Un rival misterioso')
                     break
-        
         cronica = generar_cronica(perfil, ultimo_historial, nombre_del_rival)
-        
         reporte_individual_texto += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
                                      f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
                                      f"_{cronica}_\n\n")
@@ -481,39 +350,47 @@ def main():
     reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
     reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)
     reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
-    reporte_comentarios_ia_texto = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
     
-    # --- Unión del reporte final ---
-    print("--- [PUNTO DE CONTROL 5] A punto de construir el reporte_markdown_completo ---")
     reporte_markdown_completo = (introduccion_ia + "\n---\n" + 
-                                  reporte_individual_texto + "\n---\n" + 
-                                  reporte_parejas_texto + "\n---\n" + 
-                                  reporte_sprints_texto + 
-                                  reporte_reparto_premios_texto + "\n---\n" +
-                                  reporte_comentarios_ia_texto)
-    
-    # --- Conversión a HTML y Web (tu código original) ---
-    # La llamada a actualizar_web_historico ahora solo devuelve la URL, he corregido esto
-    # basándome en tu código anterior que parecía tener un error aquí.
-    url_reporte_real = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
-    
-    # No necesitas estas líneas si actualizar_web_historico ya hace la conversión internamente.
-    # secciones_html = [markdown.markdown(s, extensions=['nl2br']) for s in reporte_markdown_completo.split('\n---\n')]
-    # reporte_html_enmarcado = "".join([f'<div class="report-section">{seccion}</div>' for seccion in secciones_html if seccion.strip()])
-    
-    # --- Preparación para WhatsApp y PDF (tu código original) ---
-    # titulo_pdf = f"Reporte Superliga - Jornada {jornada_actual}"
-    # html_para_pdf = generar_html_completo(titulo_pdf, reporte_html_enmarcado, para_pdf=True)
-    # default_pdf_filename = f"Reporte_J{jornada_actual}_{datetime.now().strftime('%Y%m%d')}.pdf"
+                                 reporte_individual_texto + "\n---\n" + 
+                                 reporte_parejas_texto + "\n---\n" + 
+                                 reporte_sprints_texto + 
+                                 reporte_reparto_premios_texto)
 
-    reporte_para_whatsapp = reporte_markdown_completo
-    reporte_para_whatsapp = re.sub(r'###\s*(.*?)\s*\n', r'*\1*\n', reporte_para_whatsapp)
-    reporte_para_whatsapp = re.sub(r'##\s*(.*?)\s*\n', r'*\1*\n\n', reporte_para_whatsapp)
-    reporte_para_whatsapp = reporte_para_whatsapp.replace('**', '*')
-    reporte_para_whatsapp = reporte_para_whatsapp.replace('\n---\n', '\n')
-    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_para_whatsapp
+    # --- LÓGICA DE PUBLICACIÓN Y DEPURACIÓN ---
+
+    # 1. Generamos la URL de la web.
+    print("--- [PUNTO DE CONTROL 6] Actualizando la web para obtener el enlace...")
+    url_reporte_real = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
+
+    # 2. Construimos el mensaje corto para Telegram.
+    mensaje_para_telegram = (
+        f"📰 **¡Ya está disponible el reporte de la Jornada {jornada_actual}!** 📰\n\n"
+        f"Puedes leerlo online y ver todos los detalles en el siguiente enlace:\n\n"
+        f"➡️ {url_reporte_real}"
+    )
+
+    # --- INICIO DEL BLOQUE DE DEPURACIÓN ---
+    print("\n" + "="*50)
+    print("--- DEPURACIÓN ANTES DE ENVIAR A TELEGRAM ---")
+    print(f"El valor de 'url_reporte_real' es: >>>{url_reporte_real}<<<")
+    print("="*50 + "\n")
+    # --- FIN DEL BLOQUE DE DEPURACIÓN ---
+
+    # 3. Enviamos el mensaje a Telegram.
+    print("\n--- [PUNTO DE CONTROL 7] Intentando publicar el reporte en Telegram...")
+    try:
+        enviado_con_exito = asyncio.run(send_telegram_message(mensaje_para_telegram))
+        if enviado_con_exito:
+            print("--- [PUNTO DE CONTROL 8] ¡Publicación en Telegram completada con éxito!")
+        else:
+            print("--- [PUNTO DE CONTROL 8] ERROR: La publicación en Telegram ha fallado.")
+    except Exception as e:
+        print(f"--- [PUNTO DE CONTROL 8] ERROR CRÍTICO al intentar enviar a Telegram: {e}")
     
-    # --- Lógica de Git (tu código original, con la corrección que hicimos) ---
+    # --- Código restante para Git y la ventana final ---
+    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_markdown_completo
+    
     try:
         repo = git.Repo(os.getcwd())
         path_docs = os.path.join(os.getcwd(), 'docs')
@@ -528,10 +405,105 @@ def main():
     except Exception as e:
         print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
 
-    # --- Mostrar ventana final (tu código original) ---
-    # Parece que mostrar_ventana_final necesita más argumentos, los he comentado para evitar errores
-    # Asegúrate de que los argumentos que le pasas aquí coinciden con su definición
-    # mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real, html_para_pdf, css_string, default_pdf_filename)
+    mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
+
+# Reemplaza la función main() completa en tu archivo generar_reporte.py con esta versión.
+
+# En generar_reporte.py
+
+def main():
+    print("--- [PUNTO DE CONTROL 1] INICIANDO GENERACIÓN DE REPORTE ---")
+    perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
+    
+    if not perfiles or not perfiles[0].get('historial_temporada'):
+        print("ERROR: No hay datos de ninguna jornada en 'perfiles.json'. El proceso se detiene.")
+        return
+        
+    jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
+    print(f"--- [PUNTO DE CONTROL 2] Datos cargados para la Jornada {jornada_actual} ---")
+    
+    # --- Generación del contenido del reporte ---
+    introduccion_ia = ""
+    try:
+        introduccion_ia = generar_introduccion_semanal(perfiles, jornada_actual)
+    except Exception as e:
+        print(f"¡ERROR! La llamada a generar_introduccion_semanal ha fallado: {e}")
+        introduccion_ia = "## 🎙️ El Vestuario Habla\n\n_El Cronista ha tenido problemas técnicos._\n"
+    
+    reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
+    perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
+    for perfil in perfiles:
+        ultimo_historial = perfil['historial_temporada'][-1]
+        nombre_del_rival = "Nadie en particular"
+        id_rival = perfil.get('rival_historico')
+        if id_rival:
+            for p_rival in perfiles:
+                if p_rival.get('id_manager') == id_rival:
+                    nombre_del_rival = p_rival.get('nombre_mister', 'Un rival misterioso')
+                    break
+        cronica = generar_cronica(perfil, ultimo_historial, nombre_del_rival)
+        reporte_individual_texto += (f"### {ultimo_historial['puesto']}. {perfil['nombre_mister']} ({ultimo_historial['puntos_totales']} pts)\n"
+                                     f"**Jornada:** {ultimo_historial['puntos_jornada']} pts\n\n"
+                                     f"_{cronica}_\n\n")
+        
+    reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
+    reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)
+    reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
+    
+    reporte_markdown_completo = (introduccion_ia + "\n---\n" + 
+                                 reporte_individual_texto + "\n---\n" + 
+                                 reporte_parejas_texto + "\n---\n" + 
+                                 reporte_sprints_texto + 
+                                 reporte_reparto_premios_texto)
+
+    # --- LÓGICA DE PUBLICACIÓN Y DEPURACIÓN ---
+
+    # 1. Generamos la URL de la web.
+    print("--- [PUNTO DE CONTROL 6] Actualizando la web para obtener el enlace...")
+    url_reporte_real = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
+
+    # 2. Construimos el mensaje corto para Telegram.
+    mensaje_para_telegram = (
+        f"📰 **¡Ya está disponible el reporte de la Jornada {jornada_actual}!** 📰\n\n"
+        f"Puedes leerlo online y ver todos los detalles en el siguiente enlace:\n\n"
+        f"➡️ {url_reporte_real}"
+    )
+
+    # --- INICIO DEL BLOQUE DE DEPURACIÓN ---
+    print("\n" + "="*50)
+    print("--- DEPURACIÓN ANTES DE ENVIAR A TELEGRAM ---")
+    print(f"El valor de 'url_reporte_real' es: >>>{url_reporte_real}<<<")
+    print("="*50 + "\n")
+    # --- FIN DEL BLOQUE DE DEPURACIÓN ---
+
+    # 3. Enviamos el mensaje a Telegram.
+    print("\n--- [PUNTO DE CONTROL 7] Intentando publicar el reporte en Telegram...")
+    try:
+        enviado_con_exito = asyncio.run(send_telegram_message(mensaje_para_telegram))
+        if enviado_con_exito:
+            print("--- [PUNTO DE CONTROL 8] ¡Publicación en Telegram completada con éxito!")
+        else:
+            print("--- [PUNTO DE CONTROL 8] ERROR: La publicación en Telegram ha fallado.")
+    except Exception as e:
+        print(f"--- [PUNTO DE CONTROL 8] ERROR CRÍTICO al intentar enviar a Telegram: {e}")
+    
+    # --- Código restante para Git y la ventana final ---
+    reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_markdown_completo
+    
+    try:
+        repo = git.Repo(os.getcwd())
+        path_docs = os.path.join(os.getcwd(), 'docs')
+        repo.git.add(path_docs)
+        if not repo.index.diff("HEAD"):
+            print("INFO: No hay cambios en la carpeta 'docs' para subir a GitHub.")
+        else:
+            print("INFO: Detectados cambios en los reportes, subiendo a GitHub...")
+            repo.index.commit(f"Actualización del reporte web - J{jornada_actual}")
+            repo.remote(name='origin').push()
+            print("✅ ¡ÉXITO! El repositorio y la web han sido actualizados.")
+    except Exception as e:
+        print(f"❌ ERROR al intentar subir los cambios con Git: {e}")
+
     mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
 
 if __name__ == "__main__":

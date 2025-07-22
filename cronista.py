@@ -21,7 +21,19 @@ else:
     print("ADVERTENCIA: No se encontró GEMINI_API_KEY. Las crónicas no se generarán.")
 
 
+PALABRAS_CLAVE_INTERES = [
+    # --- Mercado / Fichajes ---
+    'ficho', 'fichaje', 'oferta', 'ofrezco', 'vendo', 'venta', 'compro', 
+    'compra', 'clausula', 'clausulazo', 'mercado', 'millones', 'pasta', 
+    'puja', 'pujar', 'vendido',
 
+    # --- Piques / "Trash Talk" ---
+    'paquete', 'manco', 'robo', 'tongo', 'suerte', 'lloron', 'malo', 
+    'malisimo', 'gano', 'gane', 'reviento', 'paliza', 'lider',
+
+    # --- Lesiones / Táctica ---
+    'lesion', 'lesionado', 'roto', 'banquillo', 'alineacion', 'tactica'
+]
 
 # REEMPLAZA ESTA FUNCIÓN en tu archivo cronista.py
 
