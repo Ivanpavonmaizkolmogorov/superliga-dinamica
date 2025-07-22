@@ -392,10 +392,14 @@ def generar_introduccion_semanal(perfiles, jornada_actual):
     ANÁLISIS: [Tu párrafo de análisis aquí]
     """
 
-    # --- 4. LLAMADA A LA IA Y FORMATEO DE LA SALIDA ---
-        # !! LÍNEA DE PRUEBA TEMPORAL !!
+    prompt = f"""..."""
+
+    # --- !! LÍNEA DE PRUEBA TEMPORAL !! ---
     # Descomenta esta línea para saltarte la llamada a la IA y probar la integración
-    return "## 🎙️ TÍTULO DE PRUEBA\n\n_Este es el análisis de prueba para verificar que todo se integra bien._\n"
+    # Coméntala de nuevo cuando la API vuelva a funcionar.
+    print("INFO: [MODO PRUEBA] Saltando llamada a la IA y devolviendo texto falso.")
+    return "## 🎙️ LA TÁCTICA DE LA BERENJENA\n\n_El mercado de fichajes se ha visto sacudido por la audaz declaración de Iván sobre su 'berenjena voladora'. ¿Genialidad o locura? Solo los puntos del fin de semana dictarán sentencia._\n"
+    # --- FIN DE LA LÍNEA DE PRUEBA ---
     try:
         print(" -> Generando introducción de la IA...")
         response = gemini_model.generate_content(prompt)
