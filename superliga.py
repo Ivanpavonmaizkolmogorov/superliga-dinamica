@@ -41,6 +41,7 @@ class MainPanel(tk.Frame):
             'formar_parejas': ("4. Formar Parejas", "#8e44ad"),
             'run_jornada': ("5. Procesar Nueva Jornada", "#2980b9"),
             'generar_reporte': ("6. Generar Reporte Semanal", "#f39c12"),
+            'gestionar_cronistas': ("Gestionar Comentaristas", "#9b59b6"),
             'simular': ("Simular Jornada(s)", "#27ae60"),
                        # --- AÑADE ESTA LÍNEA ---
             'limpiar_declaraciones': ("Limpiar Declaraciones", "#95a5a6"),
@@ -99,6 +100,7 @@ class SuperligaController:
             'reset_season': 'reiniciar_temporada.py',
             'generar_reporte': 'generar_reporte.py', # <-- CONEXIÓN DEL NUEVO BOTÓN
             # --- AÑADE ESTA LÍNEA ---
+            'gestionar_cronistas': 'gestionar_cronistas.py',
             'limpiar_declaraciones': 'limpiar_declaraciones.py'
         }
         
