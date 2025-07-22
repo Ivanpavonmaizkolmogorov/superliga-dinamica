@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import font, scrolledtext
 from gestor_datos import cargar_perfiles, cargar_parejas, cargar_config_liga
-from cronista import generar_cronica, generar_comentario_premio, generar_comentario_parejas, generar_comentario_sprint
+from cronista import generar_cronica, generar_comentario_premio, generar_comentario_parejas, generar_comentario_sprint, generar_introduccion_semanal
 import os
 import markdown
 from datetime import datetime
@@ -314,6 +314,14 @@ def main():
         print("ERROR: No hay datos de ninguna jornada en 'perfiles.json'."); return
     jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
     
+    # --- INICIO DE LA MODIFICACIÓN ---
+    
+    # 1. Generamos la nueva introducción ANTES que nada
+    introduccion_ia = generar_introduccion_semanal(perfiles, jornada_actual)
+    
+    # --- FIN DE LA MODIFICACIÓN ---
+
+
     # 1. Generar contenido del reporte en texto plano (Markdown)
     reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
     perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])

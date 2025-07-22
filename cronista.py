@@ -4,6 +4,9 @@ import json
 import random
 import google.generativeai as genai
 from config import GEMINI_API_KEY
+import re
+from datetime import datetime, timedelta # <-- ¡AQUÍ ESTÁ LA SOLUCIÓN!
+
 
 # --- INICIALIZACIÓN DEL MODELO DE IA ---
 gemini_model = None
@@ -304,3 +307,143 @@ def generar_comentario_sprint(nombre_sprint, clasificacion, jornada_actual, inic
     except Exception as e:
         print(f"Error al generar comentario de sprint: {e}")
         return "Los mánagers aprietan el acelerador, pero el cronista aún no tiene claro quién ganará la carrera."
+
+# En cronista.py
+
+# --- LISTA DE PALABRAS CLAVE (EL "RADAR DEL SALSEO") ---
+# Esta lista es fundamental. Puedes y debes ampliarla con el tiempo.
+# Incluye abreviaturas, jerga, etc.
+PALABRAS_CLAVE_INTERES = [
+    # Bravuconadas / Confianza
+    'gano', 'ganaré', 'arraso', 'paseo', 'fácil', 'nadie me gana', 'líder', 
+    'campeón', 'mejor', 'imparable', 'invencible', 'sobrado',
+    
+    # Quejas / Polémica
+    'robo', 'robaron', 'árbitro', 'var', 'vergüenza', 'trampa', 'injusto', 
+    'suerte', 'potra', 'chorra', 'cherra',
+    
+    # Insultos / Piques
+    'paquete', 'malo', 'paquetón', 'manco', 'penoso', 'llorón', 'llorica', 
+    'bocazas', 'bcazas', 'fantasma',
+    
+    # Mercado / Táctica
+    'fichaje', 'fichar', 'vender', 'vendo', 'alineación', 'lesión', 'lesionado'
+]
+
+def generar_introduccion_semanal(perfiles, jornada_actual):
+    """
+    Genera una introducción narrativa para el reporte semanal, buscando
+    la declaración más relevante y pidiendo a la IA que la comente.
+    """
+    if not gemini_model:
+        return "" # Si no hay IA, no hay introducción.
+
+    # --- 1. FILTRADO DE DECLARACIONES POR FECHA Y RELEVANCIA ---
+    
+    declaraciones_relevantes = []
+    fecha_limite = datetime.now() - timedelta(days=7)
+
+    try:
+        with open('declaraciones.json', 'r', encoding='utf-8') as f:
+            todas_las_declaraciones = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        # Si no hay declaraciones, no podemos generar introducción
+        return "## 🎙️ El Vestuario Habla\n\n_Semana de reflexión en la liga. Silencio en los banquillos a la espera de la próxima batalla._\n"
+
+    for declaracion in todas_las_declaraciones:
+        fecha_declaracion = datetime.fromisoformat(declaracion['timestamp'])
+        if fecha_declaracion > fecha_limite:
+            # Comprobamos si la declaración contiene alguna de nuestras palabras clave
+            texto_declaracion = declaracion.get('declaracion', '').lower()
+            if any(palabra in texto_declaracion for palabra in PALABRAS_CLAVE_INTERES):
+                declaraciones_relevantes.append(declaracion)
+
+    if not declaraciones_relevantes:
+        return "## 🎙️ El Vestuario Habla\n\n_Semana de reflexión en la liga. Silencio en los banquillos a la espera de la próxima batalla._\n"
+
+    # --- 2. PREPARACIÓN DE LA TRANSCRIPCIÓN PARA LA IA ---
+    
+    transcripcion = ""
+    for d in declaraciones_relevantes:
+        transcripcion += f"- {d['nombre_mister']}: \"{d['declaracion']}\"\n"
+
+    # --- 3. CONSTRUCCIÓN DEL PROMPT PARA LA IA "EDITOR JEFE" ---
+
+    # Buscamos datos clave de la jornada (ej. el líder)
+    lider_actual = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])[0]
+    
+    prompt = f"""
+    Eres el Editor Jefe de un programa deportivo sobre una liga fantasy, conocido por tu estilo dramático y agudo.
+    Tu misión es escribir una introducción impactante para el reporte de la Jornada {jornada_actual}.
+
+    A continuación, te presento un resumen de las declaraciones más "calientes" del chat de la liga esta semana:
+    ---
+    {transcripcion}
+    ---
+
+    Dato clave de la jornada: El líder actual es {lider_actual['nombre_mister']}.
+
+    Basándote EXCLUSIVAMENTE en las declaraciones proporcionadas y en el dato del líder, realiza estas dos tareas:
+    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta, potente y periodística que capture la esencia de la semana.
+    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta la declaración o el cruce de declaraciones más significativo. Explica la polémica, la bravuconada o la queja más interesante y conéctala si es posible con el líder actual o algún evento importante.
+
+    Tu respuesta debe tener el siguiente formato exacto:
+    TÍTULO: [Tu título aquí]
+    ANÁLISIS: [Tu párrafo de análisis aquí]
+    """
+
+    # --- 4. LLAMADA A LA IA Y FORMATEO DE LA SALIDA ---
+        # !! LÍNEA DE PRUEBA TEMPORAL !!
+    # Descomenta esta línea para saltarte la llamada a la IA y probar la integración
+    return "## 🎙️ TÍTULO DE PRUEBA\n\n_Este es el análisis de prueba para verificar que todo se integra bien._\n"
+    try:
+        print(" -> Generando introducción de la IA...")
+        response = gemini_model.generate_content(prompt)
+        
+        # Procesamos la respuesta de la IA para separarla en título y análisis
+        titulo = "El Vestuario Habla"
+        analisis = response.text # Valor por defecto
+
+        match_titulo = re.search(r"TÍTULO: (.*)", response.text, re.IGNORECASE)
+        match_analisis = re.search(r"ANÁLISIS: (.*)", response.text, re.IGNORECASE | re.DOTALL)
+
+        if match_titulo:
+            titulo = match_titulo.group(1).strip()
+        if match_analisis:
+            analisis = match_analisis.group(1).strip()
+
+        # Devolvemos el texto formateado en Markdown
+        return f"## 🎙️ {titulo}\n\n_{analisis}_\n"
+        
+    except Exception as e:
+        print(f"Error al generar la introducción de la IA: {e}")
+        return "" # Si falla, no añadimos nada al reporte
+    
+# --- BLOQUE DE PRUEBA UNITARIA ---
+# Este código solo se ejecuta si lanzamos este archivo directamente
+if __name__ == '__main__':
+    print("--- INICIANDO PRUEBA UNITARIA DE LA INTRODUCCIÓN ---")
+    
+    # 1. Cargamos las claves desde el .env (necesario para la IA)
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    # 2. Simulamos los datos que recibiría la función
+    #    Cargamos los perfiles reales para que la prueba sea realista
+    try:
+        with open('perfiles.json', 'r', encoding='utf-8') as f:
+            perfiles_de_prueba = json.load(f)
+        jornada_de_prueba = 4 # Pon un número de jornada cualquiera
+        
+        # 3. Llamamos a la función que queremos probar
+        introduccion = generar_introduccion_semanal(perfiles_de_prueba, jornada_de_prueba)
+        
+        # 4. Imprimimos el resultado
+        print("\n--- RESULTADO GENERADO ---\n")
+        print(introduccion)
+        print("\n--- FIN DE LA PRUEBA ---")
+
+    except FileNotFoundError:
+        print("ERROR: Para probar, asegúrate de que 'perfiles.json' y 'declaraciones.json' existen en esta carpeta.")
+    except Exception as e:
+        print(f"La prueba ha fallado con un error: {e}")
