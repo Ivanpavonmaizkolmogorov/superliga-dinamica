@@ -1,41 +1,58 @@
 [
   {
-    "nombre_pareja": "José y Perico Racing",
+    "nombre_pareja": "king y Pericles Team",
     "id_managers": [
-      "14307371",
-      "7107051"
+      "8524310",
+      "7106472"
     ],
     "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
   },
   {
-    "nombre_pareja": "The y THE FC",
+    "nombre_pareja": "Perico y Jortru FC & Co.",
     "id_managers": [
-      "7101774",
-      "7106544"
+      "7107051",
+      "14574192",
+      "14307371"
     ],
     "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
   },
   {
-    "nombre_pareja": "Pericles y Al FC",
+    "nombre_pareja": "PIRI y Al CF",
     "id_managers": [
-      "7106472",
+      "13305509",
       "7110624"
     ],
     "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
   },
   {
-    "nombre_pareja": "Francis y Carlo United",
+    "nombre_pareja": "THE y Rafatobalo CF",
     "id_managers": [
-      "12112883",
-      "7106479"
+      "7106544",
+      "7108124"
     ],
     "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
   },
   {
-    "nombre_pareja": "Pandas y PIRI Racing",
+    "nombre_pareja": "The y raulpiru Racing",
     "id_managers": [
-      "8539397",
-      "13305509"
+      "7101774",
+      "10361479"
+    ],
+    "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
+  },
+  {
+    "nombre_pareja": "Carlo y The FC",
+    "id_managers": [
+      "7106479",
+      "7112166"
+    ],
+    "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
+  },
+  {
+    "nombre_pareja": "Francis y Pandas United",
+    "id_managers": [
+      "12112883",
+      "8539397"
     ],
     "justificacion": "El cronista estaba afónico, así que los mánagers fundaron su propio club de emergencia."
   }

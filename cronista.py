@@ -123,25 +123,50 @@ def generar_cronica(perfil_manager, datos_actuales, nombre_rival="Nadie en parti
 
 # En cronista.py
 
-def generar_nombre_equipo_ia_thread(perfiles_equipo, resultado_queue):
+# En cronista.py
+
+# En cronista.py
+
+def generar_nombre_equipo_ia_thread(perfiles_equipo, perfiles_todos, resultado_queue):
     """
-    Genera el nombre del equipo. Si la IA falla, crea un nombre de emergencia único.
-    AHORA TIENE EN CUENTA LOS NUEVOS CAMPOS DEL PERFIL.
+    Genera el nombre del equipo, AHORA con los nuevos campos del perfil y
+    con contexto sobre los títulos de toda la liga.
     """
     if not gemini_model:
         nombre, justificacion = crear_nombre_emergencia(perfiles_equipo)
         resultado_queue.put({"nombre_equipo": nombre, "justificacion": justificacion})
         return
 
+    # --- 1. CÁLCULO DEL CONTEXTO GENERAL DE LA LIGA ---
+    total_managers = len(perfiles_todos)
+    managers_con_titulos = 0
+    max_titulos = 0
+    manager_mas_laureado = "Nadie"
+
+    for perfil in perfiles_todos:
+        nombre = perfil.get('nombre_mister', '')
+        num_titulos = nombre.count('🏆')
+        if num_titulos > 0:
+            managers_con_titulos += 1
+        if num_titulos > max_titulos:
+            max_titulos = num_titulos
+            manager_mas_laureado = nombre
+
+    contexto_general_liga = (
+        f"Contexto General de la Liga:\n"
+        f"- Total de mánagers: {total_managers}.\n"
+        f"- Mánagers que han ganado algún título: {managers_con_titulos}.\n"
+        f"- El mánager más laureado es {manager_mas_laureado} con {max_titulos} títulos.\n"
+    )
+
+    # --- 2. PREPARACIÓN DE PERFILES INDIVIDUALES (CON LOS NUEVOS CAMPOS) ---
     descripcion_miembros = ""
-    titulos_totales = 0
+    titulos_totales_pareja = 0
     for i, perfil in enumerate(perfiles_equipo):
         nombre = perfil.get('nombre_mister', 'Mánager Desconocido')
         num_titulos = nombre.count('🏆')
-        titulos_totales += num_titulos
+        titulos_totales_pareja += num_titulos
         
-        # --- INICIO DE LA MODIFICACIÓN ---
-        # Añadimos los nuevos campos al "dossier" del mánager.
         descripcion_miembros += (
             f"\n--- Perfil del Mánager {i+1} ---\n"
             f"Nombre: {nombre} (Ha ganado {num_titulos} títulos)\n"
@@ -152,27 +177,31 @@ def generar_nombre_equipo_ia_thread(perfiles_equipo, resultado_queue):
             f"Momento de Gloria: {perfil.get('momento_gloria', 'Aún por llegar')}\n"
             f"Peor Desastre: {perfil.get('peor_desastre', 'Ninguno conocido')}\n"
         )
-        # --- FIN DE LA MODIFICACIÓN ---
 
-    contexto_titulos_equipo = f"En total, este equipo acumula {titulos_totales} títulos entre sus miembros."
+    contexto_titulos_equipo = f"En total, este equipo acumula {titulos_totales_pareja} títulos entre sus miembros."
 
+    # --- 3. CONSTRUCCIÓN DEL PROMPT MEJORADO ---
     prompt = f"""
-    Actúa como un experto en marketing deportivo y un periodista creativo. Tu tarea es bautizar a un nuevo equipo de una liga fantasy.
-    
+    Actúa como un experto en marketing deportivo. Tu tarea es bautizar a un nuevo equipo de una liga fantasy.
+
+    {contexto_general_liga}
     A continuación, te doy los perfiles completos de los mánagers que forman este equipo.
     {descripcion_miembros}
     
     {contexto_titulos_equipo}
-    Analiza la combinación de sus características (estilos, filosofías, lemas, etc.). Basándote en la sinergia o el contraste entre ellos, crea un nombre de equipo que sea ingenioso, potente o divertido.
+    Analiza la combinación de sus características (estilos, filosofías, lemas, etc.) y su palmarés COMPARÁNDOLO con el contexto general de la liga. 
+    - Si sus títulos son significativos para la liga, resáltalo.
+    - Si son aspirantes sin títulos en una liga con pocos campeones, enfócalo en su ambición.
+    Crea un nombre de equipo ingenioso y una justificación que demuestre que entiendes su estatus dentro de la competición.
     
     Tu respuesta DEBE ser únicamente un objeto JSON con el siguiente formato:
     {{
       "nombre_equipo": "El Nombre Que Inventes",
-      "justificacion": "Una explicación breve y creativa de por qué elegiste ese nombre, conectando las nuevas características de los mánagers."
+      "justificacion": "Una explicación breve y creativa de por qué elegiste ese nombre, usando el contexto general."
     }}
     """
     
-    print("     -> Pidiendo a la IA que bautice a este equipo... (hilo en ejecución)")
+    print("     -> Pidiendo a la IA que bautice a este equipo (con contexto)...")
     try:
         response = gemini_model.generate_content(prompt)
         clean_response = response.text.strip().replace("```json", "").replace("```", "")
@@ -182,7 +211,6 @@ def generar_nombre_equipo_ia_thread(perfiles_equipo, resultado_queue):
         print(f"     -> ERROR en el hilo de la IA: {e}")
         nombre, justificacion = crear_nombre_emergencia(perfiles_equipo)
         resultado_queue.put({"nombre_equipo": nombre, "justificacion": justificacion})
-
 
 def crear_nombre_emergencia(perfiles):
     """

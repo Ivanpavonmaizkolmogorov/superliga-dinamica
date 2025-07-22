@@ -101,14 +101,17 @@ class DraftWizardApp:
         self.resultado_queue = queue.Queue()
         self.thread_ia = threading.Thread(
             target=self.call_ia_in_thread, 
-            args=([capitan, elegido], self.resultado_queue)
+            args=([capitan, elegido], self.managers, self.resultado_queue)
         )
         self.thread_ia.start()
         self.root.after(100, self.check_ia_thread, capitan, elegido)
 
-    def call_ia_in_thread(self, perfiles_equipo, q):
+    # En gui_wizard.py
+
+    def call_ia_in_thread(self, perfiles_equipo, perfiles_todos, q):
         from cronista import generar_nombre_equipo_ia_thread
-        generar_nombre_equipo_ia_thread(perfiles_equipo, q)
+        # Ahora 'perfiles_todos' es un argumento válido y se puede pasar
+        generar_nombre_equipo_ia_thread(perfiles_equipo, perfiles_todos, q)
 
     def check_ia_thread(self, capitan, elegido):
         if self.thread_ia.is_alive():
