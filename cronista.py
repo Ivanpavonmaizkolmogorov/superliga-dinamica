@@ -6,6 +6,7 @@ import re
 from datetime import datetime, timedelta
 from config import GEMINI_API_KEY
 import google.generativeai as genai
+import time
 
 # --- INICIALIZACIÓN Y CONFIGURACIÓN ---
 gemini_model = None
@@ -36,6 +37,39 @@ except FileNotFoundError:
     print("ERROR (Cronista): El archivo 'comentaristas.yml' no fue encontrado.")
 except Exception as e:
     print(f"ERROR (Cronista): No se pudo leer o procesar 'comentaristas.yml'. Error: {e}")
+
+
+# --- NUEVA FUNCIÓN OPTIMIZADA PARA CRÓNICAS ---
+def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, comentarista):
+    """Pide a la IA que genere TODAS las crónicas en una sola llamada usando un delimitador."""
+    if not gemini_model or not comentarista: return {}
+
+    datos_texto = ""
+    for perfil in perfiles:
+        ultimo_historial = perfil['historial_temporada'][-1]
+        declaracion = "ha mantenido un prudente silencio." # Valor por defecto
+        # (Aquí iría tu lógica de _buscar_declaracion_reciente si la necesitas)
+        datos_texto += f"ID_MANAGER: {perfil['id_manager']}\nNOMBRE: {limpiar_nombre_para_ia(perfil['nombre_mister'])}\nPUNTOS: {ultimo_historial['puntos_jornada']}\nDECLARACION: \"{declaracion}\"\n---\n"
+    
+    DELIMITADOR = "|||---|||"
+    prompt = (
+        f"{comentarista['prompt_base']}\n\n"
+        f"Tu tarea es escribir una crónica breve (2-3 frases) para CADA UNO de los siguientes mánagers. "
+        f"Conecta sus PUNTOS con su DECLARACION. Debes escribir una crónica para cada uno en el mismo orden que te los doy, "
+        f"y separar CADA crónica de la siguiente con el delimitador exacto: {DELIMITADOR}\n\n"
+        f"LISTA DE MÁNAGERS:\n{datos_texto}"
+    )
+
+    print(f" -> Pidiendo LOTE de {len(perfiles)} crónicas a '{comentarista['nombre_display']}'...")
+    try:
+        response = gemini_model.generate_content(prompt)
+        cronicas_separadas = response.text.split(DELIMITADOR)
+        if len(cronicas_separadas) >= len(perfiles):
+            return {perfiles[i]['id_manager']: cronicas_separadas[i].strip() for i in range(len(perfiles))}
+        else:
+            print(f"ADVERTENCIA: La IA devolvió {len(cronicas_separadas)} crónicas en lugar de {len(perfiles)}."); return {}
+    except Exception as e:
+        print(f"ERROR en IA para LOTE de Crónicas: {e}"); return {}
 
 def limpiar_nombre_para_ia(nombre):
     """ Elimina emojis y caracteres que puedan dar problemas a la IA. """
@@ -93,6 +127,7 @@ def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
     PRIORIDAD ALTA: Busca conversaciones jugosas.
     DEVUELVE: una tupla (texto_generado, set_de_ids_usados)
     """
+    time.sleep(1)
     if not gemini_model:
         return ("## 🎙️ El Vestuario Habla\n\n_El Cronista está afónico._\n", set())
 
@@ -147,34 +182,14 @@ def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
         print(f"Error al generar la introducción de la IA: {e}")
         return ("## 🎙️ El Vestuario Habla\n\n_El Cronista tuvo problemas técnicos._\n", set())
 
-def generar_cronica(perfil_manager, datos_actuales, nombre_rival, todas_declaraciones, ids_ya_usadas, comentarista):
-    # ANTES: Tenía un prompt fijo y se llamaba en bucle.
-    # AHORA: Recibe un 'comentarista' elegido una sola vez fuera del bucle para dar coherencia.
-    if not gemini_model or not comentarista: return "El cronista está afónico hoy."
-    
-    declaracion_reciente = _buscar_declaracion_reciente(perfil_manager.get("telegram_user_id"), todas_declaraciones, ids_ya_usadas)
-    ultima_declaracion = declaracion_reciente['declaracion'] if declaracion_reciente else "ha mantenido un prudente silencio esta semana."
-    nombre_mister = perfil_manager.get('nombre_mister', 'Desconocido')
 
-    prompt = (
-        f"{comentarista['prompt_base']}\n\n"
-        f"Analiza al mánager: {nombre_mister}\n"
-        f"Puntos esta jornada: {datos_actuales.get('puntos_jornada', 0)}\n"
-        f"Su última declaración: \"{ultima_declaracion}\"\n\n"
-        f"Misión: Escribe una crónica breve (2-3 frases), conectando su rendimiento con su declaración."
-    )
-    try:
-        response = gemini_model.generate_content(prompt)
-        return response.text.strip()
-    except Exception as e:
-        print(f"Error al generar crónica para {nombre_mister}: {e}")
-        return "El cronista se ha quedado sin palabras."
 
 # --- OTRAS FUNCIONES DE CRONISTA (PUEDEN QUEDAR IGUAL O ADAPTARSE EN EL FUTURO) ---
 # Por ahora, las funciones de Sprints y Parejas no usarán declaraciones para simplificar.
 # Si en el futuro quieres añadirles contexto, seguirían el mismo patrón que 'generar_cronica'.
 
 def generar_comentario_premio(nombre_premio, ganadores, jornada_actual, es_final):
+    time.sleep(1)
     comentarista = elegir_comentarista('premio')
     if not gemini_model or not comentarista: return "_El cronista guarda silencio._"
     contexto = "de forma definitiva" if es_final else f"provisionalmente en la jornada {jornada_actual}"
@@ -186,6 +201,7 @@ def generar_comentario_premio(nombre_premio, ganadores, jornada_actual, es_final
     
 
 def generar_comentario_sprint(nombre_sprint, clasificacion, jornada_actual, inicio_sprint, fin_sprint):
+    time.sleep(1)
     comentarista = elegir_comentarista('sprint_analisis')
     if not gemini_model or not clasificacion or not comentarista: return "_El cronista toma tiempos._"
     if jornada_actual >= fin_sprint: estado_sprint = "y la carrera ha finalizado"
@@ -253,6 +269,7 @@ def crear_nombre_emergencia(perfiles):
 
 
 def generar_comentario_parejas(clasificacion):
+    time.sleep(0.5)
     comentarista = elegir_comentarista('parejas_analisis')
     if not gemini_model or not clasificacion or not comentarista: return "_El cronista estudia las sinergias._"
     if len(clasificacion) > 1:

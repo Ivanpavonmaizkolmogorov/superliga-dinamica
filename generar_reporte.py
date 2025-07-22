@@ -4,8 +4,8 @@ from tkinter import font, scrolledtext, messagebox
 from gestor_datos import cargar_perfiles, cargar_parejas, cargar_config_liga
 # --- CORRECCIÓN 1: Importamos las funciones necesarias del cronista ---
 from cronista import (
-    generar_introduccion_semanal, 
-    generar_cronica,
+    generar_introduccion_semanal,
+    generar_todas_las_cronicas,
     generar_comentario_parejas,
     generar_comentario_sprint,
     generar_comentario_premio,
@@ -23,6 +23,7 @@ import asyncio
 from telegram_sender import send_telegram_message
 import time
 import json
+
 
 # --- FUNCIONES DE CÁLCULO DE REPORTE (SIN CAMBIOS) ---
 # En generar_reporte.py, dentro de calcular_clasificacion_parejas
@@ -91,10 +92,15 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
                 clasificacion_parejas.append({'ids': p['id_managers'], 'media': puntos_pareja / len(miembros)})
         if clasificacion_parejas:
             pareja_ganadora_ids = max(clasificacion_parejas, key=lambda x: x['media'])['ids']
-            valor_individual = premios_info.get("Pareja de Oro", 0) / len(pareja_ganadora_ids)
-            for manager_id in pareja_ganadora_ids:
-                nombre_ganador = next(p['nombre_mister'] for p in perfiles if p['id_manager'] == manager_id)
-                premios_por_manager[nombre_ganador].append(("Pareja de Oro", valor_individual))
+            if len(pareja_ganadora_ids) > 0: # Añadimos una comprobación extra por seguridad
+                valor_individual = premios_info.get("Pareja de Oro", 0) / len(pareja_ganadora_ids)
+                for manager_id in pareja_ganadora_ids:
+                    # Usamos next() con un valor por defecto (None) para que no crashee si no lo encuentra.
+                    nombre_ganador = next((p['nombre_mister'] for p in perfiles if p['id_manager'] == manager_id), None)
+                    
+                    # Solo añadimos el premio SI hemos encontrado un nombre de ganador.
+                    if nombre_ganador:
+                        premios_por_manager[nombre_ganador].append(("Pareja de Oro", valor_individual))
             
     # 3. Sprints
     sprints = { "Ganador Sprint 1": (1, 10), "Ganador Sprint 2": (11, 20), "Ganador Sprint 3": (21, 30), "Ganador Sprint 4": (31, 38) }
@@ -310,68 +316,47 @@ def mostrar_ventana_final(texto_clipboard, url_web):
         print(f"Error: {e}")
 
 
-# --- FUNCIÓN PRINCIPAL ---
 def main():
     print("--- [PUNTO DE CONTROL 1] INICIANDO GENERACIÓN DE REPORTE ---")
     perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
-    
-    try:
-        with open('declaraciones.json', 'r', encoding='utf-8') as f: todas_declaraciones = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError): todas_declaraciones = []
-        
     if not perfiles or not perfiles[0].get('historial_temporada'):
         print("ERROR: No hay datos de ninguna jornada."); return
-        
     jornada_actual = perfiles[0]['historial_temporada'][-1]['jornada']
+    try:
+        with open('declaraciones.json', 'r', encoding='utf-8') as f: todas_declaraciones = json.load(f)
+    except Exception: todas_declaraciones = []
     print(f"--- [PUNTO DE CONTROL 2] Datos cargados para la Jornada {jornada_actual} ---")
-    
     declaraciones_usadas = set()
     
-    # 1. INTRODUCCIÓN
+    # 1. INTRODUCCIÓN (1ª llamada a la IA)
     print("--- [PUNTO DE CONTROL 3] Generando Introducción...")
     introduccion_ia, ids_usados_en_intro = generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual)
     declaraciones_usadas.update(ids_usados_en_intro)
 
-    # 2. CRÓNICAS INDIVIDUALES
+    # 2. CRÓNICAS INDIVIDUALES (OPTIMIZADO: 2ª llamada a la IA para TODAS)
     print("--- [PUNTO DE CONTROL 4] Generando Crónicas Individuales...")
     reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
     perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
-    
     comentarista_del_dia = elegir_comentarista('cronica_individual')
+    cronicas_generadas = {}
     if comentarista_del_dia:
-        print(f"    -> El Cronista del Día para las crónicas individuales será: {comentarista_del_dia['nombre_display']}")
         reporte_individual_texto += f"##### Análisis Individual por: *{comentarista_del_dia['nombre_display']}*\n\n"
-        for perfil in perfiles:
-            ultimo_historial = perfil['historial_temporada'][-1]
-            nombre_del_rival = "Nadie en particular"
-            if perfil.get('rival_historico'):
-                rival_perfil = next((p for p in perfiles if p.get('id_manager') == perfil['rival_historico']), None)
-                if rival_perfil: nombre_del_rival = rival_perfil.get('nombre_mister', 'Un rival misterioso')
-            
-            cronica = generar_cronica(perfil, ultimo_historial, nombre_del_rival, todas_declaraciones, declaraciones_usadas, comentarista_del_dia)
-            
-            reporte_individual_texto += f"<details>\n  <summary><b>{ultimo_historial['puesto']}. {perfil['nombre_mister']}</b> ({ultimo_historial['puntos_totales']} pts) | Jornada: {ultimo_historial['puntos_jornada']} pts</summary>\n  <p><em>{cronica}</em></p>\n</details>\n\n"
-    else:
-        reporte_individual_texto += "_El cronista de las individuales se ha tomado el día libre._\n"
-
-    # 3. SECCIONES RESTANTES
+        cronicas_generadas = generar_todas_las_cronicas(perfiles, todas_declaraciones, declaraciones_usadas, comentarista_del_dia)
+    
+    for perfil in perfiles:
+        ultimo_historial = perfil['historial_temporada'][-1]
+        cronica_texto = cronicas_generadas.get(perfil['id_manager'], "El cronista no ha comentado sobre este mánager.")
+        reporte_individual_texto += f"<details><summary><b>{ultimo_historial['puesto']}. {perfil['nombre_mister']}</b> ({ultimo_historial['puntos_totales']} pts) | Jornada: {ultimo_historial['puntos_jornada']} pts</summary><p><em>{cronica_texto}</em></p></details>\n"
+    
+    # 3. SECCIONES RESTANTES (Ahora con mucho margen de cuota)
     reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
     reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)
     reporte_reparto_premios_texto = calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual)
     reporte_comentarios_ia_texto = generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual)
 
     # 4. ENSAMBLAJE FINAL
-    reporte_markdown_completo = (
-        introduccion_ia + "\n---\n" + 
-        reporte_individual_texto + 
-        reporte_parejas_texto + "\n---\n" + 
-        reporte_sprints_texto + 
-        reporte_reparto_premios_texto +
-        reporte_comentarios_ia_texto
-    )
-
-    print("\n\n--- REPORTE FINAL GENERADO (PREVIO A PUBLICACIÓN) ---\n")
-    print(reporte_markdown_completo)
+    reporte_markdown_completo = (introduccion_ia + "\n---\n" + reporte_individual_texto + "\n---\n" + reporte_parejas_texto + "\n---\n" + reporte_sprints_texto + reporte_reparto_premios_texto + reporte_comentarios_ia_texto)
+    print("\n\n--- REPORTE FINAL GENERADO ---\n"); print(reporte_markdown_completo)
 
     # 5. PUBLICACIÓN
     url_reporte_real = actualizar_web_historico(jornada_actual, reporte_markdown_completo)
