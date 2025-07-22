@@ -304,16 +304,16 @@ async def guardar_declaracion(update: Update, context: ContextTypes.DEFAULT_TYPE
     message = update.message
 
     nueva_declaracion = {
-        # ---- DATOS NUEVOS Y ESENCIALES ----
-        "message_id": message.message_id,
-        "reply_to_message_id": message.reply_to_message.message_id if message.reply_to_message else None,
-        
-        # ---- Tus datos actuales ----
-        "telegram_user_id": message.from_user.id,
-        "nombre_mister": nombre_mister_registrado,
-        "declaracion": message.text,
-        "timestamp": datetime.now().isoformat()
-    }
+    "message_id": message.message_id,
+    "reply_to_message_id": message.reply_to_message.message_id if message.reply_to_message else None,
+    
+    "telegram_user_id": message.from_user.id,
+    # V ↓↓↓ ESTA ES LA LÍNEA A CORREGIR ↓↓↓ V
+    "nombre_mister": nombre_mister_registrado, 
+    # ^ ↑↑↑ ESTA ES LA LÍNEA A CORREGIR ↑↑↑ ^
+    "declaracion": message.text,
+    "timestamp": datetime.now().isoformat()
+}
     
     try:
         with open(DECLARACIONES_PATH, 'r', encoding='utf-8') as f:

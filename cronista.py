@@ -316,97 +316,125 @@ def generar_comentario_sprint(nombre_sprint, clasificacion, jornada_actual, inic
 
 def generar_introduccion_semanal(perfiles, jornada_actual):
     """
-    Genera una introducción narrativa para el reporte semanal, buscando
-    la declaración más relevante y pidiendo a la IA que la comente.
+    Genera una introducción semanal, agrupando las declaraciones en conversaciones
+    para darle un contexto más rico a la IA.
     """
     if not gemini_model:
-        return "" # Si no hay IA, no hay introducción.
+        return ""
 
-    # --- 1. FILTRADO DE DECLARACIONES POR FECHA Y RELEVANCIA ---
-    
-    declaraciones_relevantes = []
-    fecha_limite = datetime.now() - timedelta(days=7)
-
+    # --- 1. CARGAR Y AGRUPAR DECLARACIONES EN HILOS DE CONVERSACIÓN ---
     try:
         with open('declaraciones.json', 'r', encoding='utf-8') as f:
             todas_las_declaraciones = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        # Si no hay declaraciones, no podemos generar introducción
-        return "## 🎙️ El Vestuario Habla\n\n_Semana de reflexión en la liga. Silencio en los banquillos a la espera de la próxima batalla._\n"
+        return "## 🎙️ El Vestuario Habla\n\n_Semana de reflexión en la liga. Silencio en los banquillos._\n"
 
-    for declaracion in todas_las_declaraciones:
-        fecha_declaracion = datetime.fromisoformat(declaracion['timestamp'])
-        if fecha_declaracion > fecha_limite:
-            # Comprobamos si la declaración contiene alguna de nuestras palabras clave
+    # Usamos la nueva función para agrupar todo en hilos
+    todos_los_hilos = _group_declarations_into_threads(todas_las_declaraciones)
+    
+    # --- 2. FILTRAR HILOS RELEVANTES DE LA ÚLTIMA SEMANA ---
+    hilos_relevantes = []
+    fecha_limite = datetime.now() - timedelta(days=7)
+
+    for hilo in todos_los_hilos:
+        hilo_es_relevante = False
+        actividad_reciente = False
+        
+        for declaracion in hilo:
+            # Comprobamos si alguna declaración del hilo es reciente
+            if datetime.fromisoformat(declaracion['timestamp']) > fecha_limite:
+                actividad_reciente = True
+            
+            # Comprobamos si alguna declaración tiene palabras clave
             texto_declaracion = declaracion.get('declaracion', '').lower()
             if any(palabra in texto_declaracion for palabra in PALABRAS_CLAVE_INTERES):
-                declaraciones_relevantes.append(declaracion)
+                hilo_es_relevante = True
 
-    if not declaraciones_relevantes:
-        return "## 🎙️ El Vestuario Habla\n\n_Semana de reflexión en la liga. Silencio en los banquillos a la espera de la próxima batalla._\n"
+        if hilo_es_relevante and actividad_reciente:
+            hilos_relevantes.append(hilo)
 
-    # --- 2. PREPARACIÓN DE LA TRANSCRIPCIÓN PARA LA IA ---
-    
+    if not hilos_relevantes:
+        return "## 🎙️ El Vestuario Habla\n\n_Semana de calma tensa. Nadie ha querido mostrar sus cartas._\n"
+
+    # --- 3. PREPARAR LA TRANSCRIPCIÓN CON FORMATO DE CONVERSACIÓN ---
     transcripcion = ""
-    for d in declaraciones_relevantes:
-        transcripcion += f"- {d['nombre_mister']}: \"{d['declaracion']}\"\n"
+    for i, hilo in enumerate(hilos_relevantes):
+        transcripcion += f"--- Hilo de Conversación {i+1} ---\n"
+        for d in hilo:
+            # Determinamos si es una respuesta para añadir contexto visual
+            prefijo = "  -> (en respuesta) " if d.get("reply_to_message_id") else ""
+            transcripcion += f"{prefijo}- {d['nombre_mister']}: \"{d['declaracion']}\"\n"
+        transcripcion += "---\n\n"
 
-    # --- 3. CONSTRUCCIÓN DEL PROMPT PARA LA IA "EDITOR JEFE" ---
-
-    # Buscamos datos clave de la jornada (ej. el líder)
+    # --- 4. CONSTRUCCIÓN DEL PROMPT MEJORADO PARA LA IA ---
     lider_actual = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])[0]
     
     prompt = f"""
-    Eres el Editor Jefe de un programa deportivo sobre una liga fantasy, conocido por tu estilo dramático y agudo.
+    Eres el Editor Jefe de un programa deportivo sobre una liga fantasy. Eres agudo y experto en detectar "salseo".
     Tu misión es escribir una introducción impactante para el reporte de la Jornada {jornada_actual}.
 
-    A continuación, te presento un resumen de las declaraciones más "calientes" del chat de la liga esta semana:
-    ---
+    A continuación, te presento las conversaciones más "calientes" de la semana, agrupadas en hilos. Los mensajes con "->" son respuestas a otros.
     {transcripcion}
-    ---
+    Dato clave: El líder actual es {lider_actual['nombre_mister']}.
 
-    Dato clave de la jornada: El líder actual es {lider_actual['nombre_mister']}.
+    Analiza estas conversaciones. No comentes cada una, elige la más jugosa (un pique, una negociación, una queja que quedó en nada...).
+    Realiza estas dos tareas:
+    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta y potente que resuma el drama o la polémica principal.
+    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta el hilo más significativo. Explica la interacción entre los mánagers.
 
-    Basándote EXCLUSIVAMENTE en las declaraciones proporcionadas y en el dato del líder, realiza estas dos tareas:
-    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta, potente y periodística que capture la esencia de la semana.
-    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta la declaración o el cruce de declaraciones más significativo. Explica la polémica, la bravuconada o la queja más interesante y conéctala si es posible con el líder actual o algún evento importante.
-
-    Tu respuesta debe tener el siguiente formato exacto:
+    Tu respuesta debe tener el formato exacto:
     TÍTULO: [Tu título aquí]
     ANÁLISIS: [Tu párrafo de análisis aquí]
     """
-
-    prompt = f"""..."""
-
-    # --- !! LÍNEA DE PRUEBA TEMPORAL !! ---
-    # Descomenta esta línea para saltarte la llamada a la IA y probar la integración
-    # Coméntala de nuevo cuando la API vuelva a funcionar.
-    # print("INFO: [MODO PRUEBA] Saltando llamada a la IA y devolviendo texto falso.")
-    # return "## 🎙️ LA TÁCTICA DE LA BERENJENA\n\n_El mercado de fichajes se ha visto sacudido por la audaz declaración de Iván sobre su 'berenjena voladora'. ¿Genialidad o locura? Solo los puntos del fin de semana dictarán sentencia._\n"
-    # --- FIN DE LA LÍNEA DE PRUEBA ---
+    
     try:
-        print(" -> Generando introducción de la IA...")
+        print(" -> Generando introducción de la IA con contexto de conversaciones...")
         response = gemini_model.generate_content(prompt)
         
-        # Procesamos la respuesta de la IA para separarla en título y análisis
+        # Procesamos la respuesta (tu código de regex para TÍTULO/ANÁLISIS ya es correcto)
         titulo = "El Vestuario Habla"
-        analisis = response.text # Valor por defecto
-
+        analisis = response.text
         match_titulo = re.search(r"TÍTULO: (.*)", response.text, re.IGNORECASE)
         match_analisis = re.search(r"ANÁLISIS: (.*)", response.text, re.IGNORECASE | re.DOTALL)
-
         if match_titulo:
             titulo = match_titulo.group(1).strip()
         if match_analisis:
             analisis = match_analisis.group(1).strip()
-
-        # Devolvemos el texto formateado en Markdown
         return f"## 🎙️ {titulo}\n\n_{analisis}_\n"
-        
     except Exception as e:
         print(f"Error al generar la introducción de la IA: {e}")
-        return "" # Si falla, no añadimos nada al reporte
-    
+        return ""
+
+# En: cronista.py
+
+def _find_root_message(message_id, declarations_map):
+    """Navega hacia atrás en una conversación para encontrar el mensaje raíz."""
+    current_id = message_id
+    while True:
+        message = declarations_map.get(current_id)
+        if not message or not message.get("reply_to_message_id"):
+            break
+        parent_id = message["reply_to_message_id"]
+        if parent_id not in declarations_map:
+            break
+        current_id = parent_id
+    return current_id
+
+def _group_declarations_into_threads(all_declarations):
+    """Agrupa una lista de declaraciones en hilos de conversación."""
+    declarations_map = {d["message_id"]: d for d in all_declarations if d.get("message_id")}
+    threads = {}
+    for declaration in all_declarations:
+        if not declaration.get("message_id"):
+            continue
+        root_id = _find_root_message(declaration["message_id"], declarations_map)
+        if root_id not in threads:
+            threads[root_id] = []
+        threads[root_id].append(declaration)
+    for root_id in threads:
+        threads[root_id].sort(key=lambda d: d["timestamp"])
+    return list(threads.values())
+
 # --- BLOQUE DE PRUEBA UNITARIA ---
 # Este código solo se ejecuta si lanzamos este archivo directamente
 """ if __name__ == '__main__':

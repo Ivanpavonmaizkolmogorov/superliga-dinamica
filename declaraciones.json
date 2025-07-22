@@ -14,5 +14,37 @@
         "nombre_mister": "Aquí va el nombre del mánager (debes obtenerlo de tus perfiles)",
         "declaracion": "No eres ni muy paquete",
         "timestamp": "2025-07-22T04:18:29.008576"
+    },
+    {
+        "message_id": 48,
+        "reply_to_message_id": 47,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "declaracion": "Te ofrezco 10M por ese paquete, y me estoy arriesgando",
+        "timestamp": "2025-07-22T05:01:21.009531"
+    },
+    {
+        "message_id": 49,
+        "reply_to_message_id": 48,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "declaracion": "Te ofrezco 10M por ese paquete, y me estoy arriesgando",
+        "timestamp": "2025-07-22T05:01:53.329489"
+    },
+    {
+        "message_id": 50,
+        "reply_to_message_id": null,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "declaracion": "Qué mala suerte con el VAR esta jornada, ha sido un robo.",
+        "timestamp": "2025-07-22T05:03:00.686409"
+    },
+    {
+        "message_id": 51,
+        "reply_to_message_id": null,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "declaracion": "Esto es una mierda así no juego yo",
+        "timestamp": "2025-07-22T05:03:21.135190"
     }
 ]
