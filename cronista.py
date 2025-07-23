@@ -39,7 +39,25 @@ except Exception as e:
     print(f"ERROR (Cronista): No se pudo leer o procesar 'comentaristas.yml'. Error: {e}")
 
 
+# --- NUEVA FUNCIÓN AUXILIAR PARA LAS DECLARACIONES ---
+def _preparar_ultimas_declaraciones(todas_declaraciones):
+    """
+    Procesa la lista completa de declaraciones y devuelve un diccionario
+    mapeando cada id_manager a su última declaración.
+    """
+    declaraciones_por_manager = {}
+    # Ordenamos de más reciente a más antiguo para procesar eficientemente
+    for d in sorted(todas_declaraciones, key=lambda x: x.get('timestamp', ''), reverse=True):
+        manager_id = d.get("telegram_user_id")
+        # Si el manager ya tiene una declaración, no la sobrescribimos,
+        # porque ya hemos guardado la más reciente gracias al ordenamiento.
+        if manager_id and manager_id not in declaraciones_por_manager:
+            declaraciones_por_manager[manager_id] = d['declaracion']
+    return declaraciones_por_manager
+
 # --- NUEVA FUNCIÓN OPTIMIZADA PARA CRÓNICAS ---
+# En cronista.py
+
 def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, comentarista, eventos_por_manager={}):
     """Pide a la IA que genere TODAS las crónicas en una sola llamada, reaccionando a eventos."""
     if not gemini_model or not comentarista: 
@@ -48,10 +66,18 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
     datos_texto = ""
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
-        declaracion = "ha mantenido un prudente silencio." # Valor por defecto
-        # (Aquí iría tu lógica futura para buscar declaraciones si la añades)
 
-        # --- INICIO DE LA LÓGICA DE EVENTOS (VERSIÓN COMPLETA) ---
+        # --- INICIO DE LA MODIFICACIÓN ---
+        # 1. Establecemos el valor por defecto
+        declaracion = "ha mantenido un prudente silencio."
+        # 2. Buscamos una declaración real, empezando por la más nueva
+        for d in sorted(todas_declaraciones, key=lambda x: x.get('timestamp', ''), reverse=True):
+            if d.get("telegram_user_id") == perfil['id_manager']:
+                declaracion = d['declaracion']
+                break # Nos detenemos al encontrar la primera (que es la más reciente)
+        # --- FIN DE LA MODIFICACIÓN ---
+
+        # --- INICIO DE LA LÓGICA DE EVENTOS (SIN CAMBIOS) ---
         contexto_extra = ""
         eventos_del_manager = eventos_por_manager.get(perfil['id_manager'], [])
         
@@ -98,6 +124,7 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
             "---\n"
         )
     
+    # ... (el resto de la función para construir el prompt y llamar a la IA sigue igual)
     DELIMITADOR = "|||---|||"
     prompt = (
         f"{comentarista['prompt_base']}\n\n"
@@ -111,21 +138,9 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
 
     print(f" -> Pidiendo LOTE de {len(perfiles)} crónicas a '{comentarista['nombre_display']}'...")
     
-    # Descomenta las siguientes líneas si necesitas depurar en el futuro
-    # print("\n----------- PROMPT ENVIADO A GEMINI -----------\n")
-    # print(prompt)
-    # print("\n----------------------------------------------\n")
-
     try:
         response = gemini_model.generate_content(prompt)
-        
-        # Descomenta las siguientes líneas si necesitas depurar en el futuro
-        # print("\n----------- RESPUESTA RECIBIDA DE GEMINI -----------\n")
-        # print(response.text)
-        # print("\n----------------------------------------------------\n")
-
         cronicas_separadas = response.text.split(DELIMITADOR)
-        
         if len(cronicas_separadas) >= len(perfiles):
             return {perfiles[i]['id_manager']: cronicas_separadas[i].strip() for i in range(len(perfiles))}
         else:
