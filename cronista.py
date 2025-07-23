@@ -58,27 +58,31 @@ def _preparar_ultimas_declaraciones(todas_declaraciones):
 # --- NUEVA FUNCIÓN OPTIMIZADA PARA CRÓNICAS ---
 # En cronista.py
 
+# En cronista.py
+
 def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, comentarista, eventos_por_manager={}):
     """Pide a la IA que genere TODAS las crónicas en una sola llamada, reaccionando a eventos."""
     if not gemini_model or not comentarista: 
         return {}
 
+    # La función _preparar_ultimas_declaraciones que creamos antes es muy útil aquí
+    ultimas_declaraciones = _preparar_ultimas_declaraciones(todas_declaraciones)
+
     datos_texto = ""
+    # CORRECCIÓN 1: Toda la lógica debe ir DENTRO de este bucle
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
 
-        # --- INICIO DE LA MODIFICACIÓN ---
-        # 1. Establecemos el valor por defecto
+        # Lógica para buscar la declaración (ahora indentada correctamente)
         declaracion = "ha mantenido un prudente silencio."
-        # 2. Buscamos una declaración real, empezando por la más nueva
-        for d in sorted(todas_declaraciones, key=lambda x: x.get('timestamp', ''), reverse=True):
-            if d.get("telegram_user_id") == perfil['id_manager']:
-                declaracion = d['declaracion']
-                break # Nos detenemos al encontrar la primera (que es la más reciente)
-        # --- FIN DE LA MODIFICACIÓN ---
+        manager_telegram_id = perfil.get("telegram_user_id")
+        if manager_telegram_id:
+            # Usamos el diccionario pre-procesado para una búsqueda instantánea
+            declaracion = ultimas_declaraciones.get(manager_telegram_id, "ha mantenido un prudente silencio.")
 
-        # --- INICIO DE LA LÓGICA DE EVENTOS (SIN CAMBIOS) ---
+        # Lógica para buscar los eventos (ahora indentada correctamente)
         contexto_extra = ""
+        # CORRECCIÓN 2: Buscamos eventos usando la llave correcta -> perfil['id_manager']
         eventos_del_manager = eventos_por_manager.get(perfil['id_manager'], [])
         
         for evento in eventos_del_manager:
@@ -93,19 +97,19 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
                 contexto_extra += f"Estás en el Olimpo (Puesto {evento['contexto']['puesto']}). ¿Recuerdas tu momento de gloria? '{evento['contexto']['recordatorio_gloria']}'. "
             elif evento['tipo'] == 'CAIDA_DESASTRE':
                 contexto_extra += f"Estás en el abismo (Puesto {evento['contexto']['puesto']}). ¿Se repite tu peor desastre? '{evento['contexto']['recordatorio_desastre']}'. "
-            
+
             # Eventos de Puntuación de la Jornada
             elif evento['tipo'] == 'MVP_JORNADA':
                 contexto_extra += f"¡El MVP de la jornada! Has logrado la máxima puntuación con {evento['contexto']['puntos']} puntos. ¡Impresionante! "
             elif evento['tipo'] == 'FAROLILLO_ROJO_JORNADA':
                 contexto_extra += f"Semana difícil. Has sido el farolillo rojo con la puntuación más baja ({evento['contexto']['puntos']} pts). Toca reflexionar. "
-            
+
             # Eventos de Movimiento en la Clasificación
             elif evento['tipo'] == 'COHETE_JORNADA':
                 contexto_extra += f"¡El cohete de la semana! Has protagonizado la mayor subida, escalando {evento['contexto']['puestos_subidos']} puestos de golpe. "
             elif evento['tipo'] == 'ANCLA_JORNADA':
                 contexto_extra += f"¡Semana para olvidar! Has sufrido la peor caída, desplomándote {evento['contexto']['puestos_bajados']} puestos. "
-            
+
             # Eventos de Rachas y Tendencias
             elif evento['tipo'] == 'RACHA_IMPARABLE':
                 contexto_extra += f"¡Estás imparable! Llevas 3 semanas seguidas en el podio. Eres el rival a batir. "
@@ -113,8 +117,8 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
                 contexto_extra += f"¡En caída libre! Tercera semana consecutiva perdiendo posiciones. Las alarmas están encendidas. "
             elif evento['tipo'] == 'MR_REGULARIDAD':
                 contexto_extra += f"Abonado a la zona tibia. Una jornada más en la cómoda mediocridad de la tabla. ¿Estrategia o falta de ambición? "
-        # --- FIN DE LA LÓGICA DE EVENTOS ---
 
+        # Construcción del texto para el prompt (ahora indentado correctamente)
         datos_texto += (
             f"ID_MANAGER: {perfil['id_manager']}\n"
             f"NOMBRE: {limpiar_nombre_para_ia(perfil['nombre_mister'])}\n"
@@ -124,7 +128,7 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
             "---\n"
         )
     
-    # ... (el resto de la función para construir el prompt y llamar a la IA sigue igual)
+    # Esta parte (la construcción del prompt y la llamada a la IA) ya estaba bien
     DELIMITADOR = "|||---|||"
     prompt = (
         f"{comentarista['prompt_base']}\n\n"
@@ -142,6 +146,7 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
         response = gemini_model.generate_content(prompt)
         cronicas_separadas = response.text.split(DELIMITADOR)
         if len(cronicas_separadas) >= len(perfiles):
+            # CORRECCIÓN 3: El diccionario devuelto DEBE usar 'id_manager' como llave
             return {perfiles[i]['id_manager']: cronicas_separadas[i].strip() for i in range(len(perfiles))}
         else:
             print(f"ADVERTENCIA: La IA devolvió {len(cronicas_separadas)} crónicas en lugar de {len(perfiles)}."); 
@@ -149,6 +154,7 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
     except Exception as e:
         print(f"❌❌ ERROR en la llamada a la IA para LOTE de Crónicas: {e} ❌❌")
         return {}
+
 
 def limpiar_nombre_para_ia(nombre):
     """ Elimina emojis y caracteres que puedan dar problemas a la IA. """
