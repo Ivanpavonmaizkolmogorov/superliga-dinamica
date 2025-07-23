@@ -30,6 +30,8 @@ import json
 
 # --- FUNCIONES DE CÁLCULO Y GENERACIÓN DE SECCIONES ---
 
+# --- Versión final de las funciones de cálculo (sin comentarios de IA) ---
+
 def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     if not parejas: return ""
     titulo = f"## ⚔️ COMPETICIÓN POR PAREJAS (Jornada {jornada_actual}) ⚔️\n\n"
@@ -42,9 +44,7 @@ def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
         clasificacion.append({"nombre": pareja['nombre_pareja'], "media": round(media)})
     clasificacion.sort(key=lambda x: x['media'], reverse=True)
     clasificacion_texto = "".join([f"### {i+1}. {item['nombre']} - *(Media Total: {item['media']} pts)*\n" for i, item in enumerate(clasificacion)])
-    print(" -> Generando comentario de IA para la clasificación de parejas...")
-    comentario_ia = generar_comentario_parejas(clasificacion)
-    return f"{titulo}{clasificacion_texto}\n{comentario_ia}\n"
+    return f"{titulo}{clasificacion_texto}\n"
 
 
 def calcular_clasificacion_sprints(perfiles, jornada_actual):
@@ -59,9 +59,7 @@ def calcular_clasificacion_sprints(perfiles, jornada_actual):
                 clasificacion.append({"nombre": perfil['nombre_mister'], "puntos": puntos})
             clasificacion.sort(key=lambda x: x['puntos'], reverse=True)
             clasificacion_texto = "".join([f"**{i+1}.** {item['nombre']} - {item['puntos']} pts\n" for i, item in enumerate(clasificacion)])
-            print(f" -> Generando comentario de IA para {nombre}...")
-            comentario_ia = generar_comentario_sprint(nombre, clasificacion, jornada_actual, inicio, fin)
-            reporte_final += f"{titulo}{clasificacion_texto}\n{comentario_ia}\n\n---\n"
+            reporte_final += f"{titulo}{clasificacion_texto}\n\n---\n"
     return reporte_final
 
 
@@ -152,17 +150,28 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
 
 
 # --- CORRECCIÓN 4: Nueva sección para los comentarios de los premios ---
+# Versión final de la sección de comentarios, ahora desactivada
+
+# En generar_reporte.py, reemplaza la función vacía por esta:
+
 def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actual):
-    print("--- [PUNTO DE CONTROL EXTRA] Generando comentarios de la IA para los premios...")
+    """
+    Genera la sección final de comentarios de la IA, "El Micrófono del Cronista",
+    analizando a los líderes de las principales categorías.
+    """
+    print("--- [IA] Generando la sección 'Micrófono del Cronista'...")
     es_final_temporada = (jornada_actual == 38)
     reporte = "\n---\n## 🎤 EL MICRÓFONO DEL CRONISTA 🎤\n\n"
     perfiles_ordenados = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])
     
+    # 1. Comentario sobre el Líder Actual
     if perfiles_ordenados:
         lider = perfiles_ordenados[0]
+        # La función generar_comentario_premio viene de cronista.py
         comentario = generar_comentario_premio("Líder Actual", [lider['nombre_mister']], jornada_actual, es_final_temporada)
         reporte += f"### Sobre el Líder Actual: {lider['nombre_mister']}\n{comentario}\n\n"
         
+    # 2. Comentario sobre la Pareja de Oro
     if parejas:
         clasificacion_parejas = []
         for p in parejas:
@@ -175,13 +184,15 @@ def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actua
             comentario = generar_comentario_premio("Pareja de Oro (Líderes)", [ganadora['nombre']], jornada_actual, es_final_temporada)
             reporte += f"### Sobre la Pareja de Oro: {ganadora['nombre']}\n{comentario}\n\n"
             
-    sprints_def = {"Sprint 1 (J1-10)": (1, 10), "Sprint 2 (J11-20)": (11, 20)}
+    # 3. Comentario sobre los Líderes de Sprints
+    sprints_def = {"Sprint 1 (J1-10)": (1, 10), "Sprint 2 (J11-20)": (11, 20), "Sprint 3 (J21-30)": (21, 30), "Sprint 4 (J31-38)": (31, 38)}
     for nombre, (inicio, fin) in sprints_def.items():
         if jornada_actual >= inicio:
             es_final = (jornada_actual >= fin)
             lider = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= jornada_actual))
             comentario = generar_comentario_premio(f"Líder {nombre}", [lider['nombre_mister']], jornada_actual, es_final)
             reporte += f"### Sobre el Líder del {nombre}: {lider['nombre_mister']}\n{comentario}\n\n"
+            
     return reporte
 
 # --- FUNCIONES WEB Y DE VENTANA (SIN CAMBIOS) ---
