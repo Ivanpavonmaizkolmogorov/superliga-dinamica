@@ -11,7 +11,7 @@ from cronista import (
     generar_comentario_premio,
     elegir_comentarista
 )
-
+from eventos import detectar_eventos_jornada
 
 
 import os
@@ -326,6 +326,9 @@ def main():
         with open('declaraciones.json', 'r', encoding='utf-8') as f: todas_declaraciones = json.load(f)
     except Exception: todas_declaraciones = []
     print(f"--- [PUNTO DE CONTROL 2] Datos cargados para la Jornada {jornada_actual} ---")
+    # --- NUEVA LÍNEA: LLAMAMOS AL DETECTOR DE EVENTOS ---
+    eventos_de_la_jornada = detectar_eventos_jornada(perfiles)
+
     declaraciones_usadas = set()
     
     # 1. INTRODUCCIÓN (1ª llamada a la IA)
@@ -335,19 +338,35 @@ def main():
 
     # 2. CRÓNICAS INDIVIDUALES (OPTIMIZADO: 2ª llamada a la IA para TODAS)
     print("--- [PUNTO DE CONTROL 4] Generando Crónicas Individuales...")
+    
+    # ESTA LÍNEA ES LA CLAVE: Asegura que la variable siempre exista.
     reporte_individual_texto = f"## 🏆 CRÓNICA DE LA JORNADA {jornada_actual} 🏆\n\n"
+    
     perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puesto'])
     comentarista_del_dia = elegir_comentarista('cronica_individual')
-    cronicas_generadas = {}
+    cronicas_generadas = {} # Se inicializa como diccionario vacío
+
     if comentarista_del_dia:
         reporte_individual_texto += f"##### Análisis Individual por: *{comentarista_del_dia['nombre_display']}*\n\n"
-        cronicas_generadas = generar_todas_las_cronicas(perfiles, todas_declaraciones, declaraciones_usadas, comentarista_del_dia)
-    
+        # Llamamos a la función que genera las crónicas
+        cronicas_generadas = generar_todas_las_cronicas(
+            perfiles,
+            todas_declaraciones,
+            declaraciones_usadas,
+            comentarista_del_dia,
+            eventos_de_la_jornada
+        )
+    else:
+        # Mensaje por si no se encuentra un comentarista
+        reporte_individual_texto += "_El comité de cronistas ha decidido tomarse un descanso esta jornada._\n\n"
+
+    # Este bucle construye el texto final de las crónicas
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
-        cronica_texto = cronicas_generadas.get(perfil['id_manager'], "El cronista no ha comentado sobre este mánager.")
+        # Obtenemos la crónica generada o un texto por defecto
+        cronica_texto = cronicas_generadas.get(perfil['id_manager'], "El cronista no ha emitido comentarios sobre este mánager.")
         reporte_individual_texto += f"<details><summary><b>{ultimo_historial['puesto']}. {perfil['nombre_mister']}</b> ({ultimo_historial['puntos_totales']} pts) | Jornada: {ultimo_historial['puntos_jornada']} pts</summary><p><em>{cronica_texto}</em></p></details>\n"
-    
+        
     # 3. SECCIONES RESTANTES (Ahora con mucho margen de cuota)
     reporte_parejas_texto = calcular_clasificacion_parejas(perfiles, parejas, jornada_actual)
     reporte_sprints_texto = calcular_clasificacion_sprints(perfiles, jornada_actual)

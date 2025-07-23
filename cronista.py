@@ -40,36 +40,100 @@ except Exception as e:
 
 
 # --- NUEVA FUNCIÓN OPTIMIZADA PARA CRÓNICAS ---
-def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, comentarista):
-    """Pide a la IA que genere TODAS las crónicas en una sola llamada usando un delimitador."""
-    if not gemini_model or not comentarista: return {}
+def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, comentarista, eventos_por_manager={}):
+    """Pide a la IA que genere TODAS las crónicas en una sola llamada, reaccionando a eventos."""
+    if not gemini_model or not comentarista: 
+        return {}
 
     datos_texto = ""
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
         declaracion = "ha mantenido un prudente silencio." # Valor por defecto
-        # (Aquí iría tu lógica de _buscar_declaracion_reciente si la necesitas)
-        datos_texto += f"ID_MANAGER: {perfil['id_manager']}\nNOMBRE: {limpiar_nombre_para_ia(perfil['nombre_mister'])}\nPUNTOS: {ultimo_historial['puntos_jornada']}\nDECLARACION: \"{declaracion}\"\n---\n"
+        # (Aquí iría tu lógica futura para buscar declaraciones si la añades)
+
+        # --- INICIO DE LA LÓGICA DE EVENTOS (VERSIÓN COMPLETA) ---
+        contexto_extra = ""
+        eventos_del_manager = eventos_por_manager.get(perfil['id_manager'], [])
+        
+        for evento in eventos_del_manager:
+            # Eventos de Rivalidad, Extremos y Venganza
+            if evento['tipo'] == 'ADELANTAMIENTO_VICTORIA':
+                contexto_extra += f"¡Momento clave! Has adelantado a tu rival histórico, {evento['contexto']['rival_adelantado']}. El honor está en juego. "
+            elif evento['tipo'] == 'ADELANTAMIENTO_DERROTA':
+                contexto_extra += f"¡Dura derrota! Tu rival histórico, {evento['contexto']['adelantado_por']}, te ha adelantado. La humillación es palpable. "
+            elif evento['tipo'] == 'VENGANZA_RIVAL':
+                contexto_extra += f"¡La venganza se sirve fría! Tras ser adelantado, has recuperado tu honor y tu puesto frente a tu archienemigo, {evento['contexto']['rival_vengado']}. ¡El golpe moral es doble! "
+            elif evento['tipo'] == 'ENTRADA_GLORIA':
+                contexto_extra += f"Estás en el Olimpo (Puesto {evento['contexto']['puesto']}). ¿Recuerdas tu momento de gloria? '{evento['contexto']['recordatorio_gloria']}'. "
+            elif evento['tipo'] == 'CAIDA_DESASTRE':
+                contexto_extra += f"Estás en el abismo (Puesto {evento['contexto']['puesto']}). ¿Se repite tu peor desastre? '{evento['contexto']['recordatorio_desastre']}'. "
+            
+            # Eventos de Puntuación de la Jornada
+            elif evento['tipo'] == 'MVP_JORNADA':
+                contexto_extra += f"¡El MVP de la jornada! Has logrado la máxima puntuación con {evento['contexto']['puntos']} puntos. ¡Impresionante! "
+            elif evento['tipo'] == 'FAROLILLO_ROJO_JORNADA':
+                contexto_extra += f"Semana difícil. Has sido el farolillo rojo con la puntuación más baja ({evento['contexto']['puntos']} pts). Toca reflexionar. "
+            
+            # Eventos de Movimiento en la Clasificación
+            elif evento['tipo'] == 'COHETE_JORNADA':
+                contexto_extra += f"¡El cohete de la semana! Has protagonizado la mayor subida, escalando {evento['contexto']['puestos_subidos']} puestos de golpe. "
+            elif evento['tipo'] == 'ANCLA_JORNADA':
+                contexto_extra += f"¡Semana para olvidar! Has sufrido la peor caída, desplomándote {evento['contexto']['puestos_bajados']} puestos. "
+            
+            # Eventos de Rachas y Tendencias
+            elif evento['tipo'] == 'RACHA_IMPARABLE':
+                contexto_extra += f"¡Estás imparable! Llevas 3 semanas seguidas en el podio. Eres el rival a batir. "
+            elif evento['tipo'] == 'CAIDA_LIBRE':
+                contexto_extra += f"¡En caída libre! Tercera semana consecutiva perdiendo posiciones. Las alarmas están encendidas. "
+            elif evento['tipo'] == 'MR_REGULARIDAD':
+                contexto_extra += f"Abonado a la zona tibia. Una jornada más en la cómoda mediocridad de la tabla. ¿Estrategia o falta de ambición? "
+        # --- FIN DE LA LÓGICA DE EVENTOS ---
+
+        datos_texto += (
+            f"ID_MANAGER: {perfil['id_manager']}\n"
+            f"NOMBRE: {limpiar_nombre_para_ia(perfil['nombre_mister'])}\n"
+            f"PUNTOS: {ultimo_historial['puntos_jornada']}\n"
+            f"DECLARACION: \"{declaracion}\"\n"
+            f"CONTEXTO_EXTRA: \"{contexto_extra.strip()}\"\n" 
+            "---\n"
+        )
     
     DELIMITADOR = "|||---|||"
     prompt = (
         f"{comentarista['prompt_base']}\n\n"
         f"Tu tarea es escribir una crónica breve (2-3 frases) para CADA UNO de los siguientes mánagers. "
-        f"Conecta sus PUNTOS con su DECLARACION. Debes escribir una crónica para cada uno en el mismo orden que te los doy, "
+        f"Conecta sus PUNTOS con su DECLARACION. "
+        f"Si existe un 'CONTEXTO_EXTRA', DEBES centrar tu crónica en ese evento dramático, es la noticia más importante. Si está vacío, ignóralo. "
+        f"Debes escribir una crónica para cada uno en el mismo orden que te los doy, "
         f"y separar CADA crónica de la siguiente con el delimitador exacto: {DELIMITADOR}\n\n"
         f"LISTA DE MÁNAGERS:\n{datos_texto}"
     )
 
     print(f" -> Pidiendo LOTE de {len(perfiles)} crónicas a '{comentarista['nombre_display']}'...")
+    
+    # Descomenta las siguientes líneas si necesitas depurar en el futuro
+    # print("\n----------- PROMPT ENVIADO A GEMINI -----------\n")
+    # print(prompt)
+    # print("\n----------------------------------------------\n")
+
     try:
         response = gemini_model.generate_content(prompt)
+        
+        # Descomenta las siguientes líneas si necesitas depurar en el futuro
+        # print("\n----------- RESPUESTA RECIBIDA DE GEMINI -----------\n")
+        # print(response.text)
+        # print("\n----------------------------------------------------\n")
+
         cronicas_separadas = response.text.split(DELIMITADOR)
+        
         if len(cronicas_separadas) >= len(perfiles):
             return {perfiles[i]['id_manager']: cronicas_separadas[i].strip() for i in range(len(perfiles))}
         else:
-            print(f"ADVERTENCIA: La IA devolvió {len(cronicas_separadas)} crónicas en lugar de {len(perfiles)}."); return {}
+            print(f"ADVERTENCIA: La IA devolvió {len(cronicas_separadas)} crónicas en lugar de {len(perfiles)}."); 
+            return {}
     except Exception as e:
-        print(f"ERROR en IA para LOTE de Crónicas: {e}"); return {}
+        print(f"❌❌ ERROR en la llamada a la IA para LOTE de Crónicas: {e} ❌❌")
+        return {}
 
 def limpiar_nombre_para_ia(nombre):
     """ Elimina emojis y caracteres que puedan dar problemas a la IA. """
