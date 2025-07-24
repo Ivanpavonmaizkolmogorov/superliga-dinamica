@@ -390,6 +390,42 @@ def mostrar_ventana_final(texto_clipboard, url_web):
 
 def main():
     print("--- [PUNTO DE CONTROL 1] INICIANDO GENERACIÓN DE REPORTE ---")
+    perfiles = cargar_perfiles()
+    parejas = cargar_parejas()
+    config_liga = cargar_config_liga()
+
+    # --- INICIO DEL CHEQUEO PREVIO DE DATOS ---
+
+    # 1. Chequeos Críticos (errores que impiden continuar)
+    if not perfiles or not perfiles[0].get('historial_temporada'):
+        # Usamos messagebox.showerror para errores fatales
+        messagebox.showerror(
+            "Error Crítico de Datos", 
+            "No se han encontrado perfiles o datos de jornadas en perfiles.json.\n\nEl programa no puede continuar."
+        )
+        print("ERROR: Faltan datos críticos en perfiles.json. Proceso abortado.")
+        return # Salida forzosa
+
+    # 2. Chequeos de Advertencia (el usuario decide si continuar)
+    advertencias = []
+    if not parejas:
+        advertencias.append("- El archivo de parejas ('parejas.json') está vacío. La sección de parejas no se generará.")
+    if not config_liga:
+        advertencias.append("- El archivo de configuración ('liga_config.json') está vacío. La sección de premios no se generará.")
+    
+    # Si hemos encontrado advertencias, se lo mostramos al usuario
+    if advertencias:
+        mensaje_advertencia = "Se han detectado los siguientes problemas:\n\n" + "\n".join(advertencias) + "\n\n¿Deseas continuar igualmente?"
+        
+        # Usamos messagebox.askyesno, que devuelve True (Sí) o False (No)
+        continuar = messagebox.askyesno("Advertencia de Datos", mensaje_advertencia)
+        
+        if not continuar:
+            print("--- PROCESO CANCELADO POR EL USUARIO ---")
+            return # Salida limpia si el usuario pulsa "No"
+
+    # --- FIN DEL CHEQUEO PREVIO DE DATOS ---
+    print("--- [PUNTO DE CONTROL 1] INICIANDO GENERACIÓN DE REPORTE ---")
     perfiles = cargar_perfiles(); parejas = cargar_parejas(); config_liga = cargar_config_liga()
     if not perfiles or not perfiles[0].get('historial_temporada'):
         print("ERROR: No hay datos de ninguna jornada."); return

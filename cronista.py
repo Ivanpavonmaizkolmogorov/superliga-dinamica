@@ -192,24 +192,46 @@ def elegir_comentarista(contexto_actual):
 # --- FUNCIONES AUXILIARES PARA LA LÓGICA DE PRIORIDAD ---
 
 def _find_root_message(message_id, declarations_map):
+    """
+    Navega hacia atrás en un hilo de respuestas para encontrar el mensaje original.
+    """
     current_id = message_id
     while True:
         message = declarations_map.get(current_id)
-        if not message or not message.get("reply_to_message_id"): break
+        # Si no hay mensaje o no es una respuesta, hemos encontrado el origen.
+        if not message or not message.get("reply_to_message_id"):
+            break
         parent_id = message["reply_to_message_id"]
-        if parent_id not in declarations_map: break
+        # Si el mensaje al que responde no está en nuestras declaraciones, paramos.
+        if parent_id not in declarations_map:
+            break
         current_id = parent_id
     return current_id
 
 def _group_declarations_into_threads(all_declarations):
+    """
+    Agrupa todas las declaraciones en hilos de conversación.
+    Devuelve una lista de hilos, donde cada hilo es una lista de declaraciones.
+    """
+    # Creamos un mapa para acceder a cualquier mensaje por su ID rápidamente.
     declarations_map = {d["message_id"]: d for d in all_declarations if d.get("message_id")}
+    
     threads = {}
     for declaration in all_declarations:
         if not declaration.get("message_id"): continue
+        
+        # Para cada declaración, encontramos la raíz de su conversación.
         root_id = _find_root_message(declaration["message_id"], declarations_map)
-        if root_id not in threads: threads[root_id] = []
+        
+        # Agrupamos la declaración en el hilo correspondiente a su raíz.
+        if root_id not in threads:
+            threads[root_id] = []
         threads[root_id].append(declaration)
-    for root_id in threads: threads[root_id].sort(key=lambda d: d["timestamp"])
+        
+    # Ordenamos cada hilo por fecha para que la conversación tenga sentido.
+    for root_id in threads:
+        threads[root_id].sort(key=lambda d: d.get("timestamp", ""))
+        
     return list(threads.values())
 
 def _buscar_declaracion_reciente(manager_ids, todas_declaraciones, ids_ya_usadas):
@@ -224,63 +246,78 @@ def _buscar_declaracion_reciente(manager_ids, todas_declaraciones, ids_ya_usadas
 
 def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
     """
-    PRIORIDAD ALTA: Busca conversaciones jugosas.
-    DEVUELVE: una tupla (texto_generado, set_de_ids_usados)
+    Genera la introducción de la semana analizando los hilos de conversación
+    más relevantes para encontrar el "pique" o "debate" de la jornada.
     """
-    time.sleep(1)
     if not gemini_model:
         return ("## 🎙️ El Vestuario Habla\n\n_El Cronista está afónico._\n", set())
 
+    # 1. Agrupamos todas las declaraciones en hilos de conversación.
     todos_los_hilos = _group_declarations_into_threads(todas_declaraciones)
+    
+    # 2. Filtramos los hilos relevantes (ej: que tengan más de un mensaje y sean recientes).
     hilos_relevantes = []
-    ids_usados = set()
     fecha_limite = datetime.now() - timedelta(days=7)
-
     for hilo in todos_los_hilos:
-        actividad_reciente = any(datetime.fromisoformat(d['timestamp']) > fecha_limite for d in hilo)
-        if not actividad_reciente: continue
-
-        if any(palabra in d.get('declaracion', '').lower() for d in hilo for palabra in PALABRAS_CLAVE_INTERES):
+        # Un hilo es relevante si tiene al menos una respuesta y actividad reciente.
+        actividad_reciente = any(datetime.fromisoformat(d.get('timestamp', '')) > fecha_limite for d in hilo)
+        if len(hilo) > 1 and actividad_reciente:
             hilos_relevantes.append(hilo)
-            for d in hilo: ids_usados.add(d['message_id'])
 
     if not hilos_relevantes:
-        return ("## 🎙️ El Vestuario Habla\n\n_Semana de calma tensa._\n", set())
+        return ("## 🎙️ El Vestuario Habla\n\n_Semana de calma tensa en el vestuario, sin debates acalorados._\n", set())
 
+    # 3. Elegimos el hilo más jugoso (por ejemplo, el que tenga más mensajes).
+    hilo_estrella = max(hilos_relevantes, key=len)
+    
+    # 4. Creamos una transcripción de ese hilo para la IA.
     transcripcion = ""
-    for i, hilo in enumerate(hilos_relevantes):
-        transcripcion += f"--- Hilo de Conversación {i+1} ---\n"
-        for d in hilo:
-            prefijo = "  -> (en respuesta) " if d.get("reply_to_message_id") else ""
-            transcripcion += f"{prefijo}- {d['nombre_mister']}: \"{d['declaracion']}\"\n"
-        transcripcion += "---\n\n"
+    ids_usados = set()
+    for d in hilo_estrella:
+        prefijo = "  -> Responde: " if d.get("reply_to_message_id") else ""
+        transcripcion += f"{prefijo}{d['nombre_mister']}: \"{d['declaracion']}\"\n"
+        ids_usados.add(d['message_id'])
 
+    # 5. Creamos el nuevo prompt para la IA.
     lider_actual = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])[0]
     prompt = f"""
     Eres el Editor Jefe de un programa deportivo. Tu misión es escribir una introducción impactante para el reporte de la Jornada {jornada_actual}.
-    Te presento las conversaciones más "calientes" de la semana. Los mensajes con "->" son respuestas.
+    Esta semana, el debate más caliente ha sido el siguiente. Analiza esta conversación y extrae la narrativa principal.
+
+    --- TRANSCRIPCIÓN DEL DEBATE ---
     {transcripcion}
+    ---------------------------------
+
     Dato clave: El líder actual es {lider_actual['nombre_mister']}.
-    Elige la conversación más jugosa y realiza dos tareas:
-    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta y potente.
-    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta el hilo más significativo.
-    Tu respuesta debe tener el formato:
+
+    Tu tarea es doble:
+    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta y potente que resuma el pique.
+    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta el debate, quién empezó, quién respondió, y qué significa esta tensión para la liga. No te limites a repetir las frases, interprétalas.
+
+    Formato de respuesta:
     TÍTULO: [Tu título aquí]
     ANÁLISIS: [Tu párrafo de análisis aquí]
     """
+    
     try:
-        print(" -> Generando introducción (Prioridad Alta)...")
+        print(" -> Generando introducción basada en el 'debate de la semana'...")
         response = gemini_model.generate_content(prompt)
+        
         titulo = "El Vestuario Habla"
         analisis = response.text
+        
         match_titulo = re.search(r"TÍTULO: (.*)", response.text, re.IGNORECASE)
         match_analisis = re.search(r"ANÁLISIS: (.*)", response.text, re.IGNORECASE | re.DOTALL)
+        
         if match_titulo: titulo = match_titulo.group(1).strip()
         if match_analisis: analisis = match_analisis.group(1).strip()
+        
         return (f"## 🎙️ {titulo}\n\n_{analisis}_\n", ids_usados)
     except Exception as e:
         print(f"Error al generar la introducción de la IA: {e}")
-        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista tuvo problemas técnicos._\n", set())
+        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista tuvo problemas técnicos al analizar los debates._\n", set())
+
+
 
 
 
