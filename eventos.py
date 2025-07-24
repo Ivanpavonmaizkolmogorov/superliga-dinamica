@@ -144,7 +144,7 @@ def detectar_eventos_individuales(perfiles):
 
     todos_los_eventos.extend(_detectar_eventos_contextuales(perfiles))
     todos_los_eventos.extend(_detectar_duelo_rivales(perfiles))
-    
+
     return todos_los_eventos
 
 def agrupar_eventos_por_manager(todos_los_eventos):
@@ -157,44 +157,76 @@ def agrupar_eventos_por_manager(todos_los_eventos):
         eventos_por_manager[manager_id].append(evento)
     return eventos_por_manager
 
+def _calcular_clasificacion_parejas_simple(perfiles, parejas, jornada_index=-1):
+    """Función auxiliar para calcular la clasificación de parejas en una jornada específica."""
+    clasificacion = []
+    for pareja in parejas:
+        miembros = [p for p in perfiles if p['id_manager'] in pareja.get('id_managers', [])]
+        if not miembros: continue
+        try:
+            puntos_totales = sum(m['historial_temporada'][jornada_index]['puntos_totales'] for m in miembros)
+            media = puntos_totales / len(miembros)
+            clasificacion.append({"nombre": pareja['nombre_pareja'], "media": media})
+        except IndexError:
+            # Ocurre si un mánager no tiene datos para esa jornada (ej. jornada -2 en la j1)
+            continue
+            
+    clasificacion.sort(key=lambda x: x['media'], reverse=True)
+    # Devuelve un diccionario de {nombre_pareja: puesto}
+    return {pareja['nombre']: i + 1 for i, pareja in enumerate(clasificacion)}
 def detectar_eventos_parejas(perfiles, parejas):
     """
-    Analiza el rendimiento de las parejas para detectar eventos narrativos
-    como sinergias, grandes actuaciones o desastres.
+    Detecta eventos clave para las parejas, incluyendo Dúo Dinámico, Lastre,
+    Cohete, Ancla y Polos Opuestos.
     """
+    print(" -> Detectando eventos de parejas (versión avanzada)...")
+    eventos_por_pareja = {}
     if not parejas or not perfiles or len(perfiles[0].get('historial_temporada', [])) < 1:
         return {}
 
-    print(" -> Detectando eventos de parejas...")
-    eventos_por_pareja = {}
-    
-    # Calculamos la media de puntos de la jornada para tener una referencia
-    puntos_totales_jornada = sum(p['historial_temporada'][-1]['puntos_jornada'] for p in perfiles)
-    if not perfiles: return {} # Evitar división por cero si no hay perfiles
-    media_puntos_jornada = puntos_totales_jornada / len(perfiles)
+    # --- Lógica para eventos de la jornada actual ---
+    perfiles_ordenados_jornada = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puntos_jornada'], reverse=True)
+    top_3_ids = {p['id_manager'] for p in perfiles_ordenados_jornada[:3]}
+    bottom_3_ids = {p['id_manager'] for p in perfiles_ordenados_jornada[-3:]}
 
     for pareja in parejas:
         nombre_pareja = pareja['nombre_pareja']
-        eventos_encontrados = []
+        eventos = []
+        miembros_ids = set(pareja.get('id_managers', []))
         
-        miembros = [p for p in perfiles if p['id_manager'] in pareja.get('id_managers', [])]
-        if len(miembros) != 2: continue # Solo analizamos parejas de dos
+        # Evento: Polos Opuestos
+        if len(miembros_ids.intersection(top_3_ids)) > 0 and len(miembros_ids.intersection(bottom_3_ids)) > 0:
+            eventos.append("🎭 **Polos Opuestos**: ¡Un miembro en el podio de la jornada y el otro en el fango! La cara y la cruz en el mismo equipo.")
 
-        puntos_m1 = miembros[0]['historial_temporada'][-1]['puntos_jornada']
-        puntos_m2 = miembros[1]['historial_temporada'][-1]['puntos_jornada']
+        if eventos:
+            eventos_por_pareja[nombre_pareja] = eventos
 
-        # Evento: Dúo Dinámico (ambos muy por encima de la media)
-        if puntos_m1 > media_puntos_jornada + 15 and puntos_m2 > media_puntos_jornada + 15:
-            eventos_encontrados.append("🔥 **Dúo Dinámico**: ¡Ambos miembros han tenido una jornada espectacular!")
+    # --- Lógica para eventos de movimiento (necesitan 2 jornadas de historial) ---
+    if len(perfiles[0].get('historial_temporada', [])) < 2:
+        return eventos_por_pareja
 
-        # Evento: El Lastre (gran diferencia de puntos entre ambos, ajustable)
-        elif abs(puntos_m1 - puntos_m2) > 40:
-            heroe, lastre = (miembros[0], miembros[1]) if puntos_m1 > puntos_m2 else (miembros[1], miembros[0])
-            eventos_encontrados.append(f"⚖️ **El Lastre**: ¡Gran actuación de {heroe['nombre_mister']} frenada por el bajo rendimiento de {lastre['nombre_mister']}!")
+    clasif_actual = _calcular_clasificacion_parejas_simple(perfiles, parejas, -1)
+    clasif_anterior = _calcular_clasificacion_parejas_simple(perfiles, parejas, -2)
+    
+    movimientos = []
+    for nombre, puesto_actual in clasif_actual.items():
+        puesto_anterior = clasif_anterior.get(nombre)
+        if puesto_anterior:
+            movimiento = puesto_anterior - puesto_actual
+            movimientos.append({"nombre": nombre, "movimiento": movimiento})
 
-        if eventos_encontrados:
-            eventos_por_pareja[nombre_pareja] = eventos_encontrados
-            
+    if movimientos:
+        max_subida = max(m['movimiento'] for m in movimientos) if any(m['movimiento'] > 0 for m in movimientos) else 0
+        max_bajada = min(m['movimiento'] for m in movimientos) if any(m['movimiento'] < 0 for m in movimientos) else 0
+
+        for m in movimientos:
+            if max_subida > 0 and m['movimiento'] == max_subida:
+                if m['nombre'] not in eventos_por_pareja: eventos_por_pareja[m['nombre']] = []
+                eventos_por_pareja[m['nombre']].append(f"🚀 **Pareja Cohete**: ¡La mayor subida de la semana (+{max_subida} puestos)!")
+            if max_bajada < 0 and m['movimiento'] == max_bajada:
+                if m['nombre'] not in eventos_por_pareja: eventos_por_pareja[m['nombre']] = []
+                eventos_por_pareja[m['nombre']].append(f"⚓ **Pareja Ancla**: ¡La peor caída de la semana ({max_bajada} puestos)!")
+
     return eventos_por_pareja
 
 # En eventos.py, AÑADE estas nuevas funciones
