@@ -23,14 +23,56 @@ import asyncio
 from telegram_sender import send_telegram_message
 import time
 import json
+import telegram
+
+BOT_STATE_PATH = 'bot_state.json'
 
 
-# --- FUNCIONES DE CÁLCULO DE REPORTE (SIN CAMBIOS) ---
-# En generar_reporte.py, dentro de calcular_clasificacion_parejas
+async def publicar_reporte_y_abrir_declaraciones(token: str, chat_id: str, jornada_actual: int, url_reporte: str) -> None:
+    """
+    Envía un único mensaje que anuncia el reporte y abre las declaraciones, y luego lo ancla.
+    """
+    print("--- [AUTOMATIZACIÓN] Publicando mensaje 2x1: Reporte y Anuncio...")
+    try:
+        bot = telegram.Bot(token=token)
+        bot_info = await bot.get_me()
+        bot_username = bot_info.username
 
-# --- FUNCIONES DE CÁLCULO Y GENERACIÓN DE SECCIONES ---
+        # 1. Desanclar el mensaje antiguo si existe
+        try:
+            with open(BOT_STATE_PATH, 'r') as f:
+                state = json.load(f)
+                old_message_id = state.get('pinned_message_id')
+                if old_message_id:
+                    await bot.unpin_chat_message(chat_id=chat_id)
+                    print(f"INFO: Desanclado mensaje anterior {old_message_id}.")
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass # No hay estado guardado, no hacemos nada
 
-# --- Versión final de las funciones de cálculo (sin comentarios de IA) ---
+        # 2. Construir el nuevo mensaje "2 en 1" y genérico
+        texto_mensaje = (
+            f"📰 **¡Ya está disponible el reporte de la Jornada {jornada_actual}!**\n\n"
+            f"Puedes leerlo online [pulsando aquí]({url_reporte}).\n\n"
+            f"--- \n\n"
+            f"🎙️ **Micrófono abierto para nuevas declaraciones.**\n\n"
+            f"Mencionen a **@{bot_username}** en sus mensajes para que el Cronista les escuche."
+        )
+        
+        # 3. Enviar el nuevo mensaje
+        mensaje_enviado = await bot.send_message(chat_id=chat_id, text=texto_mensaje, parse_mode='Markdown', disable_web_page_preview=True)
+
+        # 4. Anclar el nuevo mensaje
+        await bot.pin_chat_message(chat_id=chat_id, message_id=mensaje_enviado.message_id, disable_notification=False)
+
+        # 5. Guardar el estado del nuevo mensaje
+        with open(BOT_STATE_PATH, 'w') as f:
+            json.dump({'pinned_message_id': mensaje_enviado.message_id}, f)
+        
+        print(f"✅ ¡ÉXITO! Mensaje 2x1 publicado y anclado correctamente.")
+
+    except Exception as e:
+        print(f"❌ ERROR al publicar el mensaje 2x1 en Telegram: {e}")
+
 
 def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     if not parejas: return ""
@@ -422,20 +464,22 @@ def main():
     except Exception as e:
         print(f"❌ ERROR al subir cambios con Git: {e}")
 
-    delay_segundos = 20
+    # Pausa para que la web de GitHub se actualice
+    delay_segundos = 20 
     print(f"\n--- [PAUSA] Esperando {delay_segundos} segundos para que la web se actualice...")
     time.sleep(delay_segundos)
 
-    mensaje_para_telegram = (
-        f"📰 **¡Ya está disponible el reporte de la Jornada {jornada_actual}!** 📰\n\n"
-        f"Puedes leerlo online [pulsando aquí]({url_reporte_real})."
-    )
+    # Llamamos a nuestra nueva función "2 en 1"
+    TOKEN = os.getenv("TELEGRAM_TOKEN")
+    CHAT_ID = os.getenv("TELEGRAM_GROUP_ID") # O TELEGRAM_CHAT_ID, según tu .env
+    if TOKEN and CHAT_ID:
+        asyncio.run(publicar_reporte_y_abrir_declaraciones(TOKEN, CHAT_ID, jornada_actual, url_reporte_real))
+    else:
+        print("ADVERTENCIA: No se pudo publicar el reporte en Telegram porque falta TOKEN o GROUP_ID en .env")
 
-    print("\n--- [PUNTO DE CONTROL 7] Publicando en Telegram...")
-    asyncio.run(send_telegram_message(mensaje_para_telegram))
-    
     reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_markdown_completo
     mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
+    
 
 def limpiar_nombre_para_ia(nombre):
     """ MEJORA: Elimina emojis y caracteres que puedan dar problemas a la IA. """
