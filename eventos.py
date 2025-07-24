@@ -141,6 +141,10 @@ def detectar_eventos_individuales(perfiles):
     todos_los_eventos.extend(_detectar_rachas_y_estancamiento(perfiles))
     todos_los_eventos.extend(_detectar_rivalidad(perfiles))
     todos_los_eventos.extend(_detectar_rendimiento_semanal(perfiles))
+
+    todos_los_eventos.extend(_detectar_eventos_contextuales(perfiles))
+    todos_los_eventos.extend(_detectar_duelo_rivales(perfiles))
+    
     return todos_los_eventos
 
 def agrupar_eventos_por_manager(todos_los_eventos):
@@ -192,3 +196,77 @@ def detectar_eventos_parejas(perfiles, parejas):
             eventos_por_pareja[nombre_pareja] = eventos_encontrados
             
     return eventos_por_pareja
+
+# En eventos.py, AÑADE estas nuevas funciones
+
+def _detectar_eventos_contextuales(perfiles):
+    """
+    Detecta eventos basados en el contexto de la clasificación y el historial.
+    """
+    eventos = []
+    if len(perfiles[0].get('historial_temporada', [])) < 1: return []
+
+    num_managers = len(perfiles)
+    mitad_tabla = num_managers / 2
+
+    # Ordenamos los perfiles por su puntuación en la jornada para análisis
+    perfiles_ordenados_jornada = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puntos_jornada'], reverse=True)
+    
+    top_3_puntuaciones = [p['id_manager'] for p in perfiles_ordenados_jornada[:3]]
+    bottom_3_puntuaciones = [p['id_manager'] for p in perfiles_ordenados_jornada[-3:]]
+
+    for perfil in perfiles:
+        manager_id = perfil['id_manager']
+        puesto_general = perfil['historial_temporada'][-1]['puesto']
+        puntos_jornada = perfil['historial_temporada'][-1]['puntos_jornada']
+
+        # Evento: La Sorpresa de la Jornada
+        if puesto_general > mitad_tabla and manager_id in top_3_puntuaciones:
+            eventos.append({"id_manager": manager_id, "tipo": "SORPRESA_JORNADA", "contexto": {"puntos": puntos_jornada}})
+
+        # Evento: Crisis en la Cima
+        if puesto_general <= 3 and manager_id in bottom_3_puntuaciones:
+            eventos.append({"id_manager": manager_id, "tipo": "CRISIS_EN_CIMA", "contexto": {"puntos": puntos_jornada}})
+
+        # Evento: El Gigante Despierta
+        momento_gloria = perfil.get('momento_gloria', '').lower()
+        if ('campeon' in momento_gloria or 'campeón' in momento_gloria) and puesto_general > 4 and manager_id in top_3_puntuaciones:
+            eventos.append({"id_manager": manager_id, "tipo": "GIGANTE_DESPIERTA", "contexto": {}})
+
+    return eventos
+
+def _detectar_duelo_rivales(perfiles):
+    """
+    Detecta si dos rivales históricos han tenido una puntuación muy similar.
+    """
+    eventos = []
+    perfiles_map = {p['id_manager']: p for p in perfiles}
+    rivales_procesados = set()
+
+    for perfil in perfiles:
+        manager_id = perfil['id_manager']
+        rival_id = perfil.get('rival_historico')
+
+        # Evitamos procesar el mismo duelo dos veces
+        if not rival_id or rival_id not in perfiles_map or manager_id in rivales_procesados:
+            continue
+
+        rival_perfil = perfiles_map[rival_id]
+        # Nos aseguramos de que sean rivales mutuos
+        if rival_perfil.get('rival_historico') == manager_id:
+            puntos_manager = perfil['historial_temporada'][-1]['puntos_jornada']
+            puntos_rival = rival_perfil['historial_temporada'][-1]['puntos_jornada']
+
+            if abs(puntos_manager - puntos_rival) <= 5: # Umbral de 5 puntos de diferencia
+                contexto = {
+                    "manager1_nombre": perfil['nombre_mister'], "manager1_puntos": puntos_manager,
+                    "manager2_nombre": rival_perfil['nombre_mister'], "manager2_puntos": puntos_rival
+                }
+                eventos.append({"id_manager": manager_id, "tipo": "DUELO_RIVALES", "contexto": contexto})
+                eventos.append({"id_manager": rival_id, "tipo": "DUELO_RIVALES", "contexto": contexto})
+            
+            # Añadimos ambos a la lista de procesados
+            rivales_procesados.add(manager_id)
+            rivales_procesados.add(rival_id)
+            
+    return eventos

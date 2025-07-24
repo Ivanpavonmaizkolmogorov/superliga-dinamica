@@ -122,6 +122,16 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
                 contexto_extra += f"¡En caída libre! Tercera semana consecutiva perdiendo posiciones. Las alarmas están encendidas. "
             elif evento['tipo'] == 'MR_REGULARIDAD':
                 contexto_extra += f"Abonado a la zona tibia. Una jornada más en la cómoda mediocridad de la tabla. ¿Estrategia o falta de ambición? "
+            
+            # --- AÑADE ESTOS NUEVOS ELIF ---
+            elif evento['tipo'] == 'DUELO_RIVALES':
+                contexto_extra += f"¡Duelo de alta tensión! Lucha fraticida contra su rival histórico, {evento['contexto']['manager2_nombre']}, decidida por la mínima. "
+            elif evento['tipo'] == 'SORPRESA_JORNADA':
+                contexto_extra += "¡La sorpresa de la jornada! Viniendo desde abajo, se ha colado en el podio de puntuaciones. "
+            elif evento['tipo'] == 'CRISIS_EN_CIMA':
+                contexto_extra += "¡Crisis en la cima! Estando en el Top 3, ha cosechado una de las peores puntuaciones de la semana. "
+            elif evento['tipo'] == 'GIGANTE_DESPIERTA':
+                contexto_extra += "¡El gigante dormido ha despertado! Un ex-campeón vuelve por sus fueros con una puntuación estelar. "
 
         # Construcción del texto para el prompt (ahora indentado correctamente)
         datos_texto += (
