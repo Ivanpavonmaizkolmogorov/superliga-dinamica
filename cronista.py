@@ -73,8 +73,12 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
 
-        # Lógica para buscar la declaración (ahora indentada correctamente)
-        declaracion = "ha mantenido un prudente silencio."
+  
+        # Esta es la instrucción que mejor genera el tipo de crónica que te gustó
+        # Esta es la nueva instrucción que fomenta el análisis en lugar de la pregunta directa
+        declaracion = "Este mánager hace dias que no declara. Cronista, analiza su resultado. Especula sobre las posibles causas de su rendimiento o haz una afirmación contundente sobre su situación actual en la liga."
+
+        
         manager_telegram_id = perfil.get("telegram_user_id")
         if manager_telegram_id:
             # Usamos el diccionario pre-procesado para una búsqueda instantánea
