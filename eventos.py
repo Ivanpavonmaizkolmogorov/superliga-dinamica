@@ -8,7 +8,7 @@ que pueden ser comentados por el cronista para añadir dramatismo y contexto.
 
 # --- EVENTOS DE RIVALIDAD Y POSICIÓN EXTREMA ---
 
-def _detectar_adelantamiento_rival(perfiles):
+def _detectar_rivalidad(perfiles):
     """Detecta si un mánager ha adelantado a su rival histórico."""
     eventos = []
     if len(perfiles[0].get('historial_temporada', [])) < 2: return []
@@ -61,7 +61,7 @@ def _detectar_venganza_rival(perfiles):
     
 # --- EVENTOS DE RENDIMIENTO EN LA JORNADA ---
 
-def _detectar_puntuaciones_notables(perfiles):
+def _detectar_rendimiento_semanal(perfiles):
     """Detecta al MVP (mejor puntuación) y al Farolillo Rojo (peor puntuación) de la jornada."""
     eventos = []
     if not perfiles: return []
@@ -78,7 +78,7 @@ def _detectar_puntuaciones_notables(perfiles):
             eventos.append({"id_manager": perfil['id_manager'], "tipo": "FAROLILLO_ROJO_JORNADA", "contexto": {"puntos": puntos_jornada}})
     return eventos
 
-def _detectar_movimientos_clasificacion(perfiles):
+def _detectar_rendimiento_semanal(perfiles):
     """Detecta al Cohete (mayor subida) y al Ancla (mayor bajada) de la jornada."""
     eventos = []
     if len(perfiles[0].get('historial_temporada', [])) < 2: return []
@@ -130,40 +130,65 @@ def _detectar_rachas_y_estancamiento(perfiles):
 
 # --- FUNCIÓN PRINCIPAL ORQUESTADORA ---
 
-def detectar_eventos_jornada(perfiles):
-    """
-    Función principal que orquesta la detección de todos los eventos.
-    Recibe la lista de perfiles y devuelve un diccionario de eventos por id_manager.
-    """
-    if not perfiles or not perfiles[0].get('historial_temporada'):
-        print("ADVERTENCIA: No hay datos de perfiles o historial para detectar eventos.")
-        return {}
+def detectar_eventos_individuales(perfiles):
+    """Función principal que orquesta la detección de todos los eventos individuales."""
+    print(" -> Detectando eventos individuales...")
+    if not perfiles or len(perfiles[0].get('historial_temporada', [])) < 2:
+        print("ADVERTENCIA: No hay suficiente historial para detectar todos los eventos individuales.")
+        return []
 
-    print("--- [DETECCIÓN DE EVENTOS] Buscando narrativas especiales...")
-    
     todos_los_eventos = []
-    print(" -> Detectando adelantamientos, extremos y venganzas...")
-    todos_los_eventos.extend(_detectar_adelantamiento_rival(perfiles))
-    todos_los_eventos.extend(_detectar_extremos_clasificacion(perfiles))
-    todos_los_eventos.extend(_detectar_venganza_rival(perfiles))
-    
-    print(" -> Detectando puntuaciones notables...")
-    todos_los_eventos.extend(_detectar_puntuaciones_notables(perfiles))
-    
-    print(" -> Detectando movimientos en la clasificación...")
-    todos_los_eventos.extend(_detectar_movimientos_clasificacion(perfiles))
-    
-    print(" -> Detectando rachas y estancamientos...")
     todos_los_eventos.extend(_detectar_rachas_y_estancamiento(perfiles))
-    
-    if todos_los_eventos:
-        print(f"INFO: Se han detectado {len(todos_los_eventos)} eventos narrativos.")
-    
+    todos_los_eventos.extend(_detectar_rivalidad(perfiles))
+    todos_los_eventos.extend(_detectar_rendimiento_semanal(perfiles))
+    return todos_los_eventos
+
+def agrupar_eventos_por_manager(todos_los_eventos):
+    """Agrupa una lista de eventos en un diccionario por id_manager."""
     eventos_por_manager = {}
     for evento in todos_los_eventos:
         manager_id = evento['id_manager']
         if manager_id not in eventos_por_manager:
             eventos_por_manager[manager_id] = []
         eventos_por_manager[manager_id].append(evento)
-        
     return eventos_por_manager
+
+def detectar_eventos_parejas(perfiles, parejas):
+    """
+    Analiza el rendimiento de las parejas para detectar eventos narrativos
+    como sinergias, grandes actuaciones o desastres.
+    """
+    if not parejas or not perfiles or len(perfiles[0].get('historial_temporada', [])) < 1:
+        return {}
+
+    print(" -> Detectando eventos de parejas...")
+    eventos_por_pareja = {}
+    
+    # Calculamos la media de puntos de la jornada para tener una referencia
+    puntos_totales_jornada = sum(p['historial_temporada'][-1]['puntos_jornada'] for p in perfiles)
+    if not perfiles: return {} # Evitar división por cero si no hay perfiles
+    media_puntos_jornada = puntos_totales_jornada / len(perfiles)
+
+    for pareja in parejas:
+        nombre_pareja = pareja['nombre_pareja']
+        eventos_encontrados = []
+        
+        miembros = [p for p in perfiles if p['id_manager'] in pareja.get('id_managers', [])]
+        if len(miembros) != 2: continue # Solo analizamos parejas de dos
+
+        puntos_m1 = miembros[0]['historial_temporada'][-1]['puntos_jornada']
+        puntos_m2 = miembros[1]['historial_temporada'][-1]['puntos_jornada']
+
+        # Evento: Dúo Dinámico (ambos muy por encima de la media)
+        if puntos_m1 > media_puntos_jornada + 15 and puntos_m2 > media_puntos_jornada + 15:
+            eventos_encontrados.append("🔥 **Dúo Dinámico**: ¡Ambos miembros han tenido una jornada espectacular!")
+
+        # Evento: El Lastre (gran diferencia de puntos entre ambos, ajustable)
+        elif abs(puntos_m1 - puntos_m2) > 40:
+            heroe, lastre = (miembros[0], miembros[1]) if puntos_m1 > puntos_m2 else (miembros[1], miembros[0])
+            eventos_encontrados.append(f"⚖️ **El Lastre**: ¡Gran actuación de {heroe['nombre_mister']} frenada por el bajo rendimiento de {lastre['nombre_mister']}!")
+
+        if eventos_encontrados:
+            eventos_por_pareja[nombre_pareja] = eventos_encontrados
+            
+    return eventos_por_pareja

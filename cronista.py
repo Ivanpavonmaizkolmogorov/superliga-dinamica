@@ -75,7 +75,8 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
 
   
         # Esta es la instrucción que mejor genera el tipo de crónica que te gustó
-        # Esta es la nueva instrucción que fomenta el análisis en lugar de la pregunta directa
+        # Esta es la nueva instrucción que fomenta el análisis en lugar de la pregunta direc
+        # ta
         declaracion = "Este mánager hace dias que no declara. Cronista, analiza su resultado. Especula sobre las posibles causas de su rendimiento o haz una afirmación contundente sobre su situación actual en la liga."
 
         
@@ -136,7 +137,7 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
     DELIMITADOR = "|||---|||"
     prompt = (
         f"{comentarista['prompt_base']}\n\n"
-        f"Tu tarea es escribir una crónica breve (2-3 frases) para CADA UNO de los siguientes mánagers. "
+        f"Tu tarea es escribir una crónica (4-5 frases) para CADA UNO de los siguientes mánagers. "
         f"Conecta sus PUNTOS con su DECLARACION. "
         f"Si existe un 'CONTEXTO_EXTRA', DEBES centrar tu crónica en ese evento dramático, es la noticia más importante. Si está vacío, ignóralo. "
         f"Debes escribir una crónica para cada uno en el mismo orden que te los doy, "

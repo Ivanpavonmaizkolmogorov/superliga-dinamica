@@ -11,8 +11,8 @@ from cronista import (
     generar_comentario_premio,
     elegir_comentarista
 )
-from eventos import detectar_eventos_jornada
-
+# --- IMPORTS DEL SISTEMA DE EVENTOS ---
+from eventos import detectar_eventos_individuales, agrupar_eventos_por_manager, detectar_eventos_parejas
 
 import os
 import markdown
@@ -35,16 +35,35 @@ import json
 def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     if not parejas: return ""
     titulo = f"## ⚔️ COMPETICIÓN POR PAREJAS (Jornada {jornada_actual}) ⚔️\n\n"
+    
+    # 1. Llamamos a nuestro nuevo detector de eventos de parejas
+    eventos_parejas = detectar_eventos_parejas(perfiles, parejas)
+    
     clasificacion = []
     for pareja in parejas:
         miembros = [p for p in perfiles if p['id_manager'] in pareja.get('id_managers', [])]
         if not miembros: continue
-        puntos_totales = sum(p['historial_temporada'][-1]['puntos_totales'] for p in miembros)
+        puntos_totales = sum(m['historial_temporada'][-1]['puntos_totales'] for m in miembros)
         media = puntos_totales / len(miembros)
         clasificacion.append({"nombre": pareja['nombre_pareja'], "media": round(media)})
+    
     clasificacion.sort(key=lambda x: x['media'], reverse=True)
-    clasificacion_texto = "".join([f"### {i+1}. {item['nombre']} - *(Media Total: {item['media']} pts)*\n" for i, item in enumerate(clasificacion)])
-    return f"{titulo}{clasificacion_texto}\n"
+    
+    clasificacion_texto = ""
+    # 2. Construimos el texto, añadiendo los eventos si existen
+    for i, item in enumerate(clasificacion):
+        nombre_pareja = item['nombre']
+        media_pareja = item['media']
+        clasificacion_texto += f"### {i+1}. {nombre_pareja} - *(Media Total: {media_pareja} pts)*\n"
+        
+        # Añadimos la nota del evento justo debajo del nombre de la pareja
+        if nombre_pareja in eventos_parejas:
+            for evento_texto in eventos_parejas[nombre_pareja]:
+                clasificacion_texto += f"  *{evento_texto}*\n"
+        
+        clasificacion_texto += "\n" # Un espacio extra para separar las parejas
+
+    return f"{titulo}{clasificacion_texto}"
 
 
 def calcular_clasificacion_sprints(perfiles, jornada_actual):
@@ -338,7 +357,8 @@ def main():
     except Exception: todas_declaraciones = []
     print(f"--- [PUNTO DE CONTROL 2] Datos cargados para la Jornada {jornada_actual} ---")
     # --- NUEVA LÍNEA: LLAMAMOS AL DETECTOR DE EVENTOS ---
-    eventos_de_la_jornada = detectar_eventos_jornada(perfiles)
+    eventos_individuales_lista = detectar_eventos_individuales(perfiles)
+    eventos_por_manager = agrupar_eventos_por_manager(eventos_individuales_lista)
 
     declaraciones_usadas = set()
     
@@ -365,7 +385,7 @@ def main():
             todas_declaraciones,
             declaraciones_usadas,
             comentarista_del_dia,
-            eventos_de_la_jornada
+            eventos_por_manager
         )
     else:
         # Mensaje por si no se encuentra un comentarista
