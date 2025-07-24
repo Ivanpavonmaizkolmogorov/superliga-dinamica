@@ -20,13 +20,7 @@ from telegram.ext import (
 import unicodedata # <-- ¡NUEVA IMPORTACIÓN para quitar tildes!
 import logging 
 
-# --- FUNCIÓN DE AYUDA PARA NORMALIZAR TEXTO ---
-def normalizar_texto(texto: str) -> str:
-    """Convierte un texto a minúsculas y le quita las tildes."""
-    # Transforma a una forma donde los acentos son caracteres separados
-    nfkd_form = unicodedata.normalize('NFD', texto.lower())
-    # Devuelve solo los caracteres que no son acentos
-    return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
+
 
 # --- 2. CONFIGURACIÓN INICIAL Y CONSTANTES ---
 
@@ -58,46 +52,7 @@ DECLARACIONES_PATH = 'declaraciones.json'
 
 # --- ¡LISTA DE PALABRAS CLAVE MEJORADA Y AMPLIADA! ---
 # Ahora todas las palabras están en minúsculas y SIN tildes.
-PALABRAS_CLAVE_INTERES = [
-    # --- 1. Bravuconadas / Venirse Arriba ---
-    'abusica', 'abuson', 'arrasar', 'arraso', 'bisho', 'bisha', 'campeon', 
-    'el mejor', 'er puto amo', 'estoy que me salgo', 'facil', 'fasi', 'ganamos', 
-    'ganao', 'ganar', 'ganare', 'gane', 'gano', 'imparable', 'invencible', 
-    'lide', 'lider', 'liderato', 'maki', 'makina', 'maquina', 'maquinaria', 
-    'maquinon', 'mejor', 'nadie me gana', 'os gano', 'os reviento', 'paliza', 
-    'paseito', 'paseo', 'rey', 'repaso', 'reviento', 'sobrao', 'sobrado', 
-    'ta chupao', 'victoria', 
 
-    # --- 2. Quejas / Polémicas / Lloriqueos ---
-    'amañao', 'amañado', 'arbitraje', 'arbitro', 'cherra', 'chiripa', 'chorra', 
-    'churre', 'comprao', 'comprado', 'er var', 'excusa', 'guensa', 'injusticia', 
-    'injusto', 'llorando', 'llorar', 'llorera', 'llorica', 'lloron', 'me cago en', 
-    'mierda', 'no veas', 'potra', 'puta', 'robao', 'robado', 'robaron', 'robo', 
-    'suerte', 'tiene cohone', 'tongo', 'trampa', 'var', 'vaya tela', 'verguensa', 
-    'verguenza',
-
-    # --- 3. Insultos / Piques / "Trash Talk" ---
-    'acabao', 'acabado', 'bcazas', 'bocazas', 'cenutrio', 'cerdaca', 'cerda', 
-    'cerdo', 'cerdon', 'cojo', 'cono', 'eres malisimo', 'esmayao', 'fantasma', 
-    'horrible', 'humo', 'illo', 'jartible', 'malaje', 'malo', 'malisimo', 'manco', 
-    'manta', 'matao', 'merluso', 'muerto', 'pa casa', 'pa tu casa', 'paquete de', 
-    'paquete', 'paqueton', 'papafrita', 'pejcao', 'penoso', 'petardo', 'porcon', 
-    'puerca', 'remando', 'remar', 'retirate', 'sieso', 'tieso', 'tuercebotas', 
-    'vendemotos',
-
-    # --- 4. Mercado / Fichajes / Los Tacos ---
-    'birlar', 'clausula', 'clausulazo', 'compro', 'dinero', 'fichado', 'fichaje', 
-    'fichao', 'fichar', 'levantar', 'mercado', 'millones', 'pasta', 'pelas', 
-    'puja', 'pujar', 'robar jugador', 'soltar la gallina', 'vendido', 'vendo', 
-    'vender', 
-
-    # --- 5. Táctica / El Equipo ---
-    'alineacion', 'banquillazo', 'banquillo', 'chupar banquillo', 'dique seco', 
-    'equipo', 'equipaso', 'equipucho', 'formacion', 'jugadores', 'lesion', 
-    'lesionao', 'lesionado', 'mister', 'planteamiento', 'roto', 'tactica'
-]
-MIN_MESSAGE_LENGTH = 7 # Longitud mínima de un mensaje para ser considerado
-# --- 3. FUNCIONES DE AYUDA (MANEJO DE ARCHIVOS) ---
 
 def cargar_perfiles():
     """Carga los perfiles desde el archivo JSON de forma segura."""
@@ -260,60 +215,40 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 # REEMPLAZA TU FUNCIÓN guardar_declaracion COMPLETA CON ESTA VERSIÓN
 async def guardar_declaracion(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
-    Guarda mensajes de texto si cumplen los criterios de relevancia,
-    verificando la identidad del usuario ANTES de proceder.
+    Guarda un mensaje como declaración SIEMPRE Y CUANDO mencione al bot.
     """
     user = update.effective_user
-    texto_recibido = update.message.text
-    
-    timestamp_log = datetime.now().strftime('%H:%M:%S.%f')
-    print(f"\n[{timestamp_log}] MENSAJE RECIBIDO de '{user.first_name}': '{texto_recibido}'")
-
-    # --- 1. VERIFICACIÓN DE IDENTIDAD ---
-    # Es lo primero que hacemos. Si no sabemos quién es, no seguimos.
-    perfiles = cargar_perfiles()
-    nombre_mister_registrado = None
-    
-    for perfil in perfiles:
-        if perfil.get('telegram_user_id') == user.id:
-            nombre_mister_registrado = perfil['nombre_mister']
-            break
-            
-    if not nombre_mister_registrado:
-        print(f"[{timestamp_log}] INFO: Mensaje ignorado (el usuario '{user.first_name}' no está registrado).")
-        return # Detenemos la función aquí.
-
-    # --- 2. FILTRADO DE CONTENIDO ---
-    # Solo si el usuario está registrado, nos molestamos en analizar su mensaje.
-    texto_normalizado = normalizar_texto(texto_recibido)
-
-    if not any(palabra in texto_normalizado for palabra in PALABRAS_CLAVE_INTERES):
-        print(f"[{timestamp_log}] INFO: Mensaje de '{nombre_mister_registrado}' ignorado (no relevante).")
-        return
-
-    if len(texto_recibido) < MIN_MESSAGE_LENGTH:
-        print(f"[{timestamp_log}] INFO: Mensaje de '{nombre_mister_registrado}' ignorado (demasiado corto).")
-        return
-
-
-    # --- 3. GUARDADO EN JSON ---
-    # Si hemos llegado hasta aquí, el mensaje es válido y el usuario está verificado.
-    print(f"[{timestamp_log}] ✅ GUARDANDO declaración de '{nombre_mister_registrado}': '{texto_recibido}'")
-
-    # La parte clave es la creación del diccionario que se va a guardar
     message = update.message
+    bot_username = context.bot.username
+
+    # La condición ahora es increíblemente simple: ¿el mensaje menciona al bot?
+    # Usamos message.text para asegurar que funcione aunque el bot no tenga @ en el nombre
+    if f"@{bot_username}" not in message.text:
+        return # Si no menciona al bot, ignoramos el mensaje. Fin.
+
+    # --- Si llegamos aquí, es una declaración oficial ---
+    
+    # 1. Verificamos que el usuario esté registrado
+    perfiles = cargar_perfiles()
+    nombre_mister_registrado = next((p['nombre_mister'] for p in perfiles if p.get('telegram_user_id') == user.id), None)
+        
+    if not nombre_mister_registrado:
+        print(f"INFO: Mención de usuario no registrado ('{user.first_name}') ignorada.")
+        # Opcional: podrías responderle al usuario que necesita registrarse
+        # await message.reply_text("He escuchado tu llamada, pero no sé quién eres. Usa /register primero.")
+        return 
+
+    # 2. Guardamos la declaración
+    print(f"✅ GUARDANDO declaración de '{nombre_mister_registrado}': '{message.text}'")
 
     nueva_declaracion = {
-    "message_id": message.message_id,
-    "reply_to_message_id": message.reply_to_message.message_id if message.reply_to_message else None,
-    
-    "telegram_user_id": message.from_user.id,
-    # V ↓↓↓ ESTA ES LA LÍNEA A CORREGIR ↓↓↓ V
-    "nombre_mister": nombre_mister_registrado, 
-    # ^ ↑↑↑ ESTA ES LA LÍNEA A CORREGIR ↑↑↑ ^
-    "declaracion": message.text,
-    "timestamp": datetime.now().isoformat()
-}
+        "message_id": message.message_id,
+        "reply_to_message_id": message.reply_to_message.message_id if message.reply_to_message else None,
+        "telegram_user_id": user.id,
+        "nombre_mister": nombre_mister_registrado,
+        "declaracion": message.text.replace(f"@{bot_username}", "").strip(), # Guardamos el texto sin la mención
+        "timestamp": datetime.now().isoformat()
+    }
     
     try:
         with open(DECLARACIONES_PATH, 'r', encoding='utf-8') as f:
@@ -348,17 +283,66 @@ def main() -> None:
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("register", register_command))
     application.add_handler(CommandHandler("micronica", micronica))
-    
+    application.add_handler(CommandHandler("declaraciones", abrir_declaraciones)) # <-- NUEVO COMANDO
+
     # 2. Añadimos el manejador para los BOTONES
     application.add_handler(CallbackQueryHandler(button_callback))
-    
-    # 3. Añadimos UN ÚNICO manejador para los MENSAJES DE TEXTO
-    #    Este debe ser el último manejador de mensajes que añadas.
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, guardar_declaracion))
+
+    # 3. Nuestro manejador de mensajes ahora solo se activa si hay una mención.
+    # Es mucho más eficiente y limpio.
+    application.add_handler(MessageHandler(
+        filters.TEXT & ~filters.COMMAND & filters.Entity("mention"), 
+        guardar_declaracion
+    ))
     
     # Inicia el bot
     print("Bot del Cronista iniciado. ¡Listo para la acción!")
     application.run_polling()
+
+
+# Ruta para guardar el ID del mensaje anclado
+BOT_STATE_PATH = 'bot_state.json'
+
+async def abrir_declaraciones(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Publica y ancla el mensaje para iniciar la recogida de declaraciones."""
+    
+    # (Opcional: puedes añadir aquí una comprobación para que solo los admins puedan usarlo)
+    
+    # 1. Desanclar el mensaje antiguo si existe
+    try:
+        with open(BOT_STATE_PATH, 'r') as f:
+            state = json.load(f)
+            old_message_id = state.get('pinned_message_id')
+            if old_message_id:
+                await context.bot.unpin_chat_message(chat_id=update.message.chat_id)
+                print(f"INFO: Desanclado mensaje anterior {old_message_id}.")
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass # No hay estado guardado, no hacemos nada
+
+    # 2. Enviar el nuevo mensaje
+    bot_username = context.bot.username
+    texto_anuncio = (
+        f"🎙️ **¡Rueda de Prensa Abierta!** 🎙️\n\n"
+        f"Para que el Cronista escuche tus declaraciones para el próximo reporte, "
+        f"menciona a @{bot_username} en tu mensaje.\n\n"
+        f"¡La afición espera tus palabras!"
+    )
+    
+    mensaje_enviado = await update.message.reply_text(texto_anuncio, parse_mode='Markdown')
+    
+    # 3. Anclar el nuevo mensaje
+    await context.bot.pin_chat_message(
+        chat_id=update.message.chat_id,
+        message_id=mensaje_enviado.message_id,
+        disable_notification=False # Notifica al grupo que se ha anclado
+    )
+    
+    # 4. Guardar el ID del nuevo mensaje anclado
+    with open(BOT_STATE_PATH, 'w') as f:
+        json.dump({'pinned_message_id': mensaje_enviado.message_id}, f)
+        
+    print(f"INFO: Nuevo mensaje de declaraciones ({mensaje_enviado.message_id}) publicado y anclado.")
+
 
 if __name__ == "__main__":
     main()

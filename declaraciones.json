@@ -1,5 +1,4 @@
 [
-   
     {
         "message_id": 50,
         "reply_to_message_id": null,
@@ -15,5 +14,21 @@
         "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
         "declaracion": "Esto es una cosa dificil así no juego yo",
         "timestamp": "2025-07-22T05:03:21.135190"
+    },
+    {
+        "message_id": 144,
+        "reply_to_message_id": null,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "declaracion": "probando",
+        "timestamp": "2025-07-24T16:07:29.888534"
+    },
+    {
+        "message_id": 17,
+        "reply_to_message_id": null,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "declaracion": "hunde",
+        "timestamp": "2025-07-24T16:13:42.031854"
     }
 ]
