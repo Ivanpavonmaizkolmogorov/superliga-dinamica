@@ -78,7 +78,6 @@ def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     if not parejas: return ""
     titulo = f"## ⚔️ COMPETICIÓN POR PAREJAS (Jornada {jornada_actual}) ⚔️\n\n"
     
-    # 1. Llamamos a nuestro nuevo detector de eventos de parejas
     eventos_parejas = detectar_eventos_parejas(perfiles, parejas)
     
     clasificacion = []
@@ -92,18 +91,26 @@ def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
     clasificacion.sort(key=lambda x: x['media'], reverse=True)
     
     clasificacion_texto = ""
-    # 2. Construimos el texto, añadiendo los eventos si existen
     for i, item in enumerate(clasificacion):
         nombre_pareja = item['nombre']
         media_pareja = item['media']
-        clasificacion_texto += f"### {i+1}. {nombre_pareja} - *(Media Total: {media_pareja} pts)*\n"
         
-        # Añadimos la nota del evento justo debajo del nombre de la pareja
+        # --- ¡AQUÍ ESTÁ LA NUEVA LÓGICA! ---
+        
+        # Si la pareja tiene eventos, creamos un desplegable
         if nombre_pareja in eventos_parejas:
+            summary = f"<b>{i+1}. {nombre_pareja}</b> - (Media Total: {media_pareja} pts)"
+            
+            # Construimos el contenido del desplegable
+            contenido_desplegable = ""
             for evento_texto in eventos_parejas[nombre_pareja]:
-                clasificacion_texto += f"  *{evento_texto}*\n"
+                contenido_desplegable += f"<p><em>{evento_texto}</em></p>"
+            
+            clasificacion_texto += f"<details><summary>{summary}</summary>{contenido_desplegable}</details>\n"
         
-        clasificacion_texto += "\n" # Un espacio extra para separar las parejas
+        # Si no hay eventos, mostramos la línea como antes (pero sin markdown extra)
+        else:
+            clasificacion_texto += f"<b>{i+1}. {nombre_pareja}</b> - (Media Total: {media_pareja} pts)\n"
 
     return f"{titulo}{clasificacion_texto}"
 
