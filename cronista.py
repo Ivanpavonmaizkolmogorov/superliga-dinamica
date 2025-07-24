@@ -244,55 +244,58 @@ def _buscar_declaracion_reciente(manager_ids, todas_declaraciones, ids_ya_usadas
 
 # --- FUNCIONES DE GENERACIÓN DE TEXTO (ACTUALIZADAS) ---
 
+# En cronista.py, reemplaza generar_introduccion_semanal por esta versión
+
 def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
     """
-    Genera la introducción de la semana analizando los hilos de conversación
-    más relevantes para encontrar el "pique" o "debate" de la jornada.
+    Genera la introducción de la semana.
+    PRIORIDAD 1: Busca el "debate de la semana" (hilos con respuestas).
+    PRIORIDAD 2: Si no hay debates, busca la declaración individual más jugosa.
     """
-    if not gemini_model:
+    if not gemini_model or not todas_declaraciones:
         return ("## 🎙️ El Vestuario Habla\n\n_El Cronista está afónico._\n", set())
 
-    # 1. Agrupamos todas las declaraciones en hilos de conversación.
-    todos_los_hilos = _group_declarations_into_threads(todas_declaraciones)
-    
-    # 2. Filtramos los hilos relevantes (ej: que tengan más de un mensaje y sean recientes).
-    hilos_relevantes = []
     fecha_limite = datetime.now() - timedelta(days=7)
-    for hilo in todos_los_hilos:
-        # Un hilo es relevante si tiene al menos una respuesta y actividad reciente.
-        actividad_reciente = any(datetime.fromisoformat(d.get('timestamp', '')) > fecha_limite for d in hilo)
-        if len(hilo) > 1 and actividad_reciente:
-            hilos_relevantes.append(hilo)
+    declaraciones_recientes = [d for d in todas_declaraciones if datetime.fromisoformat(d.get('timestamp', '')) > fecha_limite]
+    if not declaraciones_recientes:
+        return ("## 🎙️ El Vestuario Habla\n\n_Semana de silencio total en el vestuario._\n", set())
 
-    if not hilos_relevantes:
-        return ("## 🎙️ El Vestuario Habla\n\n_Semana de calma tensa en el vestuario, sin debates acalorados._\n", set())
+    # --- PRIORIDAD 1: BUSCAR DEBATES ---
+    todos_los_hilos = _group_declarations_into_threads(declaraciones_recientes)
+    hilos_relevantes = [hilo for hilo in todos_los_hilos if len(hilo) > 1]
 
-    # 3. Elegimos el hilo más jugoso (por ejemplo, el que tenga más mensajes).
-    hilo_estrella = max(hilos_relevantes, key=len)
+    if hilos_relevantes:
+        print("INFO (Intro): Encontrado debate de la semana. Analizando...")
+        hilo_estrella = max(hilos_relevantes, key=len)
+        transcripcion = ""
+        ids_usados = set()
+        for d in hilo_estrella:
+            prefijo = "  -> Responde: " if d.get("reply_to_message_id") else ""
+            transcripcion += f"{prefijo}{d['nombre_mister']}: \"{d['declaracion']}\"\n"
+            ids_usados.add(d['message_id'])
+        
+        texto_prompt = f"El debate más caliente ha sido el siguiente:\n\n--- TRANSCRIPCIÓN ---\n{transcripcion}-------------------\n\nAnaliza este pique."
     
-    # 4. Creamos una transcripción de ese hilo para la IA.
-    transcripcion = ""
-    ids_usados = set()
-    for d in hilo_estrella:
-        prefijo = "  -> Responde: " if d.get("reply_to_message_id") else ""
-        transcripcion += f"{prefijo}{d['nombre_mister']}: \"{d['declaracion']}\"\n"
-        ids_usados.add(d['message_id'])
+    # --- PRIORIDAD 2: SI NO HAY DEBATES, BUSCAR LA MEJOR DECLARACIÓN INDIVIDUAL ---
+    else:
+        print("INFO (Intro): No se encontraron debates. Buscando la declaración individual más relevante...")
+        # (Aquí puedes re-introducir la lógica de palabras clave si quieres, o simplemente elegir la más larga/reciente)
+        declaracion_estrella = max(declaraciones_recientes, key=lambda d: len(d.get('declaracion', '')))
+        
+        transcripcion = f"{declaracion_estrella['nombre_mister']} ha declarado: \"{declaracion_estrella['declaracion']}\""
+        ids_usados = {declaracion_estrella['message_id']}
+        texto_prompt = f"La declaración más destacada de la semana ha sido la siguiente:\n\n{transcripcion}\n\nAnaliza esta declaración."
 
-    # 5. Creamos el nuevo prompt para la IA.
+    # --- Construcción del prompt final (común para ambos casos) ---
     lider_actual = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])[0]
     prompt = f"""
     Eres el Editor Jefe de un programa deportivo. Tu misión es escribir una introducción impactante para el reporte de la Jornada {jornada_actual}.
-    Esta semana, el debate más caliente ha sido el siguiente. Analiza esta conversación y extrae la narrativa principal.
-
-    --- TRANSCRIPCIÓN DEL DEBATE ---
-    {transcripcion}
-    ---------------------------------
-
+    {texto_prompt}
     Dato clave: El líder actual es {lider_actual['nombre_mister']}.
 
     Tu tarea es doble:
-    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta y potente que resuma el pique.
-    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta el debate, quién empezó, quién respondió, y qué significa esta tensión para la liga. No te limites a repetir las frases, interprétalas.
+    1.  **Escribe un TÍTULO DE LA JORNADA:** Una frase corta y potente.
+    2.  **Escribe un PÁRRAFO DE ANÁLISIS:** Comenta la situación (el debate o la declaración), y qué significa para la liga.
 
     Formato de respuesta:
     TÍTULO: [Tu título aquí]
@@ -300,24 +303,18 @@ def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
     """
     
     try:
-        print(" -> Generando introducción basada en el 'debate de la semana'...")
+        # (El resto de la función para llamar a la IA y procesar la respuesta es igual)
         response = gemini_model.generate_content(prompt)
-        
         titulo = "El Vestuario Habla"
         analisis = response.text
-        
         match_titulo = re.search(r"TÍTULO: (.*)", response.text, re.IGNORECASE)
         match_analisis = re.search(r"ANÁLISIS: (.*)", response.text, re.IGNORECASE | re.DOTALL)
-        
         if match_titulo: titulo = match_titulo.group(1).strip()
         if match_analisis: analisis = match_analisis.group(1).strip()
-        
         return (f"## 🎙️ {titulo}\n\n_{analisis}_\n", ids_usados)
     except Exception as e:
         print(f"Error al generar la introducción de la IA: {e}")
-        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista tuvo problemas técnicos al analizar los debates._\n", set())
-
-
+        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista tuvo problemas técnicos._\n", set())
 
 
 
