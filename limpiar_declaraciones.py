@@ -6,8 +6,8 @@ import os
 ARCHIVO_DECLARACIONES = 'declaraciones.json'
 # NUEVO: Archivo único para el histórico
 ARCHIVO_HISTORICO = 'declaraciones_archivadas.json' 
-# MODIFICADO: Aumentamos a 14 días para coincidir con el cronista
-DIAS_ANTIGUEDAD_PARA_LIMPIAR = 14
+# MODIFICADO: Aumentamos a 21 días para coincidir con el cronista
+DIAS_ANTIGUEDAD_PARA_LIMPIAR = 21
 
 def limpiar_declaraciones_antiguas():
     """

@@ -274,13 +274,22 @@ def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
     PRIORIDAD 2: Si no hay debates, busca la declaración individual más jugosa.
     """
     if not gemini_model or not todas_declaraciones:
-        return ("## 🎙️ El Vestuario Habla\n\n_El Cronista está afónico._\n", set())
+        mensaje_proactivo = (
+            "¡El vestuario ha enmudecido! Ni un solo rumor, ni un pique, ni una queja esta semana. "
+            "El Cronista necesita material para la crónica. Para que vuestras opiniones salgan aquí, "
+            "¡mencionad a `@SuperligaCronistaBot` en vuestros mensajes y dadle salseo a la liga!"
+        )
+        return (f"## 🎙️ El Micrófono Abierto\n\n_{mensaje_proactivo}_\n", set())
 
-    fecha_limite = datetime.now() - timedelta(days=7)
+    fecha_limite = datetime.now() - timedelta(days=21)
     declaraciones_recientes = [d for d in todas_declaraciones if datetime.fromisoformat(d.get('timestamp', '')) > fecha_limite]
     if not declaraciones_recientes:
-        return ("## 🎙️ El Vestuario Habla\n\n_Semana de silencio total en el vestuario._\n", set())
-
+        mensaje_proactivo = (
+            "¡El vestuario ha enmudecido! Ni un solo rumor, ni un pique, ni una queja esta semana. "
+            "El Cronista necesita material para la crónica. Para que vuestras opiniones salgan aquí, "
+            "¡mencionad a `@SuperligaCronistaBot` en vuestros mensajes y dadle salseo a la liga!"
+        )
+        return (f"## 🎙️ El Micrófono Abierto\n\n_{mensaje_proactivo}_\n", set())
     # --- PRIORIDAD 1: BUSCAR DEBATES ---
     todos_los_hilos = _group_declarations_into_threads(declaraciones_recientes)
     hilos_relevantes = [hilo for hilo in todos_los_hilos if len(hilo) > 1]
