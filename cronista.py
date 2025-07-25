@@ -21,13 +21,34 @@ else:
     print("ADVERTENCIA: No se encontró GEMINI_API_KEY.")
 
 PALABRAS_CLAVE_INTERES = [
-    'ficho', 'fichaje', 'oferta', 'ofrezco', 'vendo', 'venta', 'compro', 
-    'compra', 'clausula', 'clausulazo', 'mercado', 'millones', 'pasta', 
-    'puja', 'pujar', 'vendido', 'paquete', 'manco', 'robo', 'tongo', 'suerte', 
-    'lloron', 'malo', 'malisimo', 'gano', 'gane', 'reviento', 'paliza', 'lider',
-    'lesion', 'lesionado', 'roto', 'banquillo', 'alineacion', 'tactica'
-]
+    # --- Mercado y Fichajes ---
+    'ficho', 'fichaje', 'fichajazo', 'oferta', 'ofrezco', 'ofrecen', 'vendo', 
+    'venta', 'vender', 'compro', 'compra', 'clausula', 'clausulazo', 'mercado', 
+    'millones', 'pasta', 'kilos', 'dinero', 'puja', 'pujar', 'vendido', 
+    'negociar', 'negociación', 'traspaso', 'interesa', 'robar', 'roba', 'robarme',
 
+    # --- Críticas, Piques y Burlas ---
+    'paquete', 'paquetón', 'manco', 'mantas', 'tronco', 'cono', 'robo', 'tongo', 
+    'trampa', 'tramposo', 'suerte', 'potra', 'chiripa', 'flor', 'suertudo', 
+    'lloron', 'llorica', 'llorando', 'malo', 'malisimo', 'ridículo', 'pechofrío',
+    'humo', 'vendehumo', 'cagón', 'palmero',
+
+    # --- Resultados y Clasificación ---
+    'gano', 'gane', 'ganar', 'reviento', 'paliza', ' repaso', 'goleada', 
+    'humillación', 'lider', 'líder', 'campeón', 'podio', 'remontada', 'farolillo', 
+    'colista', 'último', 'palmar', 'palmo', 'pierdo', 'perder', 'fracaso', 
+    'victoria', 'derrota', 'empaque', 'ascenso', 'descenso',
+
+    # --- Jugadores, Lesiones y Alineaciones ---
+    'lesion', 'lesionado', 'roto', 'tocado', 'duda', 'no juega', 'banquillo', 
+    'suplente', 'alineacion', 'alineación', 'once', 'indebida', 'tactica', 
+    'táctica', 'sistema', 'rotación', 'rotaciones', 'pufo', 'chollo', 'revelación',
+    'bluff', 'defensa', 'delantero', 'portero',
+
+    # --- Estrategia y General ---
+    'ahorrar', 'guardando', 'deuda', 'positivo', 'negativo', 'arriesgar', 
+    'apostar', 'apuesto', 'reto', 'jugón', 'máquina', 'abuso'
+]
 PERSONALIDADES = {}
 try:
     with open('comentaristas.yml', 'r', encoding='utf-8') as f:
