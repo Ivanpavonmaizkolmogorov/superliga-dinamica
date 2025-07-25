@@ -1,18 +1,26 @@
 [
     {
-        "message_id": 39,
+        "message_id": 5,
         "reply_to_message_id": null,
         "telegram_user_id": 2078045747,
         "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "este es un rival de categoría",
-        "timestamp": "2025-07-24T17:49:59.428886"
+        "declaracion": "La verdad es que la jornada ha sido bastante predecible, no ha habido grandes sorpresas y mi equipo ha rendido como se esperaba, ni bien ni mal.",
+        "timestamp": "2025-07-25T13:17:43.766616"
     },
     {
-        "message_id": 55,
-        "reply_to_message_id": 53,
+        "message_id": 6,
+        "reply_to_message_id": null,
         "telegram_user_id": 2078045747,
         "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "declaracion": "díselo tú Kike que a mí me da la risa",
-        "timestamp": "2025-07-24T18:19:29.233070"
+        "declaracion": "Vaya robo de jornada, menudo tongo.",
+        "timestamp": "2025-07-25T13:18:07.077919"
+    },
+    {
+        "message_id": 7,
+        "reply_to_message_id": null,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "declaracion": "Buena jornada a todos",
+        "timestamp": "2025-07-25T13:18:25.287131"
     }
 ]

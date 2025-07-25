@@ -1,103 +1,17 @@
 [
     {
-        "id_manager": "7101774",
-        "nombre_mister": "The 👑",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 78,
-                "puesto": 0,
-                "puntos_totales": 78
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 157
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 82,
-                "puesto": 1,
-                "puntos_totales": 239
-            }
-        ]
-    },
-    {
-        "id_manager": "7106472",
-        "nombre_mister": "Pericles Triano Muñoz",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 70,
-                "puesto": 0,
-                "puntos_totales": 70
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 66,
-                "puesto": 0,
-                "puntos_totales": 136
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 66,
-                "puesto": 2,
-                "puntos_totales": 202
-            }
-        ]
-    },
-    {
         "id_manager": "10361479",
         "nombre_mister": "raul_piru_",
-        "apodo_lema": "El Novato",
+        "apodo_lema": "",
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 81,
-                "puesto": 0,
-                "puntos_totales": 81
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 57,
-                "puesto": 0,
-                "puntos_totales": 138
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 46,
-                "puesto": 3,
-                "puntos_totales": 184
+                "puntos_jornada": 76,
+                "puesto": 1,
+                "puntos_totales": 76
             }
-        ]
-    },
-    {
-        "id_manager": "14574192",
-        "nombre_mister": "Jortru",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 28
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 79,
-                "puesto": 0,
-                "puntos_totales": 107
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 73,
-                "puesto": 4,
-                "puntos_totales": 180
-            }
-        ]
+        ],
+        "telegram_user_id": 2043658875
     },
     {
         "id_manager": "8539397",
@@ -106,21 +20,9 @@
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 39,
-                "puesto": 0,
-                "puntos_totales": 39
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 78,
-                "puesto": 0,
-                "puntos_totales": 117
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 62,
-                "puesto": 5,
-                "puntos_totales": 179
+                "puntos_jornada": 69,
+                "puesto": 2,
+                "puntos_totales": 69
             }
         ],
         "momento_gloria": "Yo creo que lograr el título siempre es la máxima en este juego",
@@ -128,156 +30,8 @@
         "estilo_juego": "Fuel al centro del campo.",
         "rival_historico": "7101774",
         "jugador_fetiche": "Lejeune",
-        "filosofia_fichajes": ""
-    },
-    {
-        "id_manager": "8524310",
-        "nombre_mister": "king revolution 💪⚽",
-        "apodo_lema": "Ya está aquí la revelación del torneo ",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 49,
-                "puesto": 0,
-                "puntos_totales": 49
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 74,
-                "puesto": 0,
-                "puntos_totales": 123
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 42,
-                "puesto": 6,
-                "puntos_totales": 165
-            }
-        ],
-        "momento_gloria": "No recuerdo algo increíble que haya sucedido",
-        "peor_desastre": "Vender a Raúl de tomas a la maquina por qué no me daba resultados en las 3 primeras jornadas ficharlo el Peri y hincharse a meter goles ",
-        "estilo_juego": "Me gusta el riesgo ",
-        "rival_historico": "7101774",
-        "jugador_fetiche": "Lamine yamal",
-        "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)"
-    },
-    {
-        "id_manager": "13305509",
-        "nombre_mister": "PIRI",
-        "apodo_lema": "El Novato",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 60,
-                "puesto": 0,
-                "puntos_totales": 60
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 48,
-                "puesto": 0,
-                "puntos_totales": 108
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 44,
-                "puesto": 7,
-                "puntos_totales": 152
-            }
-        ]
-    },
-    {
-        "id_manager": "7112166",
-        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
-        "apodo_lema": "The special Juan ",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 31
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 75,
-                "puesto": 0,
-                "puntos_totales": 106
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 33,
-                "puesto": 8,
-                "puntos_totales": 139
-            }
-        ],
-        "momento_gloria": "Único 4 veces campeón del campeonato, sin participar en las últimas 4 ligas no hay nadie ni cerca de igualar mi palmarés…",
-        "peor_desastre": "Messi no se iba y yo lo sabía no pude estar pendiente por trabajo y lo perdí y ya me di cuenta de que para no estar pendiente mejor dejarlo (otro año que ganaba…)",
-        "estilo_juego": "Mi nick es un homenaje a una frase del gran José mourinho, ridiculizando a Juan mata mi frase es “el estilo llena el ojo pero no la tripa”",
-        "rival_historico": "7110624",
-        "jugador_fetiche": "Ninguno en concreto, pero lo que más me gusta en el juego es apostar por la típica puja que nadie da nada y que luego se convierta en un jugador importante de mi equipo. ",
-        "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)"
-    },
-    {
-        "id_manager": "7107051",
-        "nombre_mister": "Perico",
-        "apodo_lema": "Paco que te den! 😂😂😂😂",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 31,
-                "puesto": 0,
-                "puntos_totales": 31
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 45,
-                "puesto": 0,
-                "puntos_totales": 76
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 62,
-                "puesto": 9,
-                "puntos_totales": 138
-            }
-        ],
-        "momento_gloria": "Esperando el momento! ",
-        "peor_desastre": "Algún menos 4 pero poca cosa más ",
-        "estilo_juego": "Me gusta el riesgo, presión alta ",
-        "rival_historico": "7112166",
-        "jugador_fetiche": "Joselu! Hasta que se fue al Madrid ",
-        "filosofia_fichajes": "Experto en parches (ficho lo que puedo a última hora)"
-    },
-    {
-        "id_manager": "12112883",
-        "nombre_mister": "Francis",
-        "apodo_lema": "Auuu",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 28
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 64,
-                "puesto": 0,
-                "puntos_totales": 92
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 43,
-                "puesto": 10,
-                "puntos_totales": 135
-            }
-        ],
-        "momento_gloria": "Remontada en la segunda vuelta",
-        "peor_desastre": "El descenso con D10S",
-        "estilo_juego": "Tikitaka ",
-        "rival_historico": "7107051",
-        "jugador_fetiche": "Sancet",
-        "filosofia_fichajes": "Experto en parches (ficho lo que puedo a última hora)"
+        "filosofia_fichajes": "",
+        "telegram_user_id": 1390826699
     },
     {
         "id_manager": "7108124",
@@ -286,21 +40,9 @@
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 40
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 80
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 42,
-                "puesto": 11,
-                "puntos_totales": 122
+                "puntos_jornada": 69,
+                "puesto": 3,
+                "puntos_totales": 69
             }
         ],
         "momento_gloria": "Cada minuto ",
@@ -311,58 +53,15 @@
         "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)"
     },
     {
-        "id_manager": "7106544",
-        "nombre_mister": "THE ELEVATOR💪🏆",
-        "apodo_lema": "The elevator",
-        "historial_temporada": [
-            {
-                "jornada": 1,
-                "puntos_jornada": 58,
-                "puesto": 0,
-                "puntos_totales": 58
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 37,
-                "puesto": 0,
-                "puntos_totales": 95
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 25,
-                "puesto": 12,
-                "puntos_totales": 120
-            }
-        ],
-        "momento_gloria": "Mi primer y único titulo de liga con joselu y el chimy de delanteros.",
-        "peor_desastre": "Quedarme en negativo por un error de cálculo y me costó el descenso este año pasado",
-        "estilo_juego": "Me gusta el riesgo",
-        "rival_historico": "7107051",
-        "jugador_fetiche": "Jude ",
-        "filosofia_fichajes": "Tiro de cartera (gasto sin miedo)"
-    },
-    {
         "id_manager": "7106479",
         "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
-        "apodo_lema": "El Novato",
+        "apodo_lema": "El saboteador, te esperas conseguir una ganga en el mercado y ZAS, el saboteador te lo roba",
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 25,
-                "puesto": 0,
-                "puntos_totales": 25
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 32,
-                "puesto": 0,
-                "puntos_totales": 57
-            },
-            {
-                "jornada": 3,
                 "puntos_jornada": 53,
-                "puesto": 13,
-                "puntos_totales": 110
+                "puesto": 4,
+                "puntos_totales": 53
             }
         ],
         "momento_gloria": "Doblete, dos veces seguidas siendo campeon",
@@ -380,28 +79,171 @@
         "historial_temporada": [
             {
                 "jornada": 1,
-                "puntos_jornada": 40,
-                "puesto": 0,
-                "puntos_totales": 40
-            },
-            {
-                "jornada": 2,
-                "puntos_jornada": 28,
-                "puesto": 0,
-                "puntos_totales": 68
-            },
-            {
-                "jornada": 3,
-                "puntos_jornada": 26,
-                "puesto": 14,
-                "puntos_totales": 94
+                "puntos_jornada": 52,
+                "puesto": 5,
+                "puntos_totales": 52
             }
         ],
-        "momento_gloria": "La Nolitada, vendi a la puerca de la Millona un jugador muy por encima de su valor",
+        "momento_gloria": "La Nolitada, vendi a mi rival 7101774 un jugador muy por encima de su valor",
         "peor_desastre": "Vini Jr.",
         "estilo_juego": "Tiki taka ",
         "rival_historico": "7101774",
         "jugador_fetiche": "Gaviria",
         "filosofia_fichajes": "Magia"
+    },
+    {
+        "id_manager": "7112166",
+        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
+        "apodo_lema": "The special Juan ",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 51,
+                "puesto": 6,
+                "puntos_totales": 51
+            }
+        ],
+        "momento_gloria": "Único 4 veces campeón del campeonato, sin participar en las últimas 4 ligas no hay nadie ni cerca de igualar mi palmarés…",
+        "peor_desastre": "Messi no se iba y yo lo sabía no pude estar pendiente por trabajo y lo perdí y ya me di cuenta de que para no estar pendiente mejor dejarlo (otro año que ganaba…)",
+        "estilo_juego": "Mi nick es un homenaje a una frase del gran José mourinho, ridiculizando a Juan mata mi frase es “el estilo llena el ojo pero no la tripa”",
+        "rival_historico": "7110624",
+        "jugador_fetiche": "Ninguno en concreto, pero lo que más me gusta en el juego es apostar por la típica puja que nadie da nada y que luego se convierta en un jugador importante de mi equipo. ",
+        "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)",
+        "telegram_user_id": 1192183458
+    },
+    {
+        "id_manager": "12112883",
+        "nombre_mister": "Francis",
+        "apodo_lema": "Auuu",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 51,
+                "puesto": 7,
+                "puntos_totales": 51
+            }
+        ],
+        "momento_gloria": "Remontada en la segunda vuelta",
+        "peor_desastre": "El descenso con D10S",
+        "estilo_juego": "Tikitaka ",
+        "rival_historico": "7107051",
+        "jugador_fetiche": "Sancet",
+        "filosofia_fichajes": "Experto en parches (ficho lo que puedo a última hora)",
+        "telegram_user_id": 7360061740
+    },
+    {
+        "id_manager": "7106544",
+        "nombre_mister": "THE ELEVATOR💪🏆",
+        "apodo_lema": "The elevator",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 49,
+                "puesto": 8,
+                "puntos_totales": 49
+            }
+        ],
+        "momento_gloria": "Mi primer y único titulo de liga con joselu y el chimy de delanteros.",
+        "peor_desastre": "Quedarme en negativo por un error de cálculo y me costó el descenso este año pasado",
+        "estilo_juego": "Me gusta el riesgo",
+        "rival_historico": "7107051",
+        "jugador_fetiche": "Jude ",
+        "filosofia_fichajes": "Tiro de cartera (gasto sin miedo)",
+        "telegram_user_id": 6788000516
+    },
+    {
+        "id_manager": "8524310",
+        "nombre_mister": "king revolution 💪⚽",
+        "apodo_lema": "Ya está aquí la revelación del torneo ",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 48,
+                "puesto": 9,
+                "puntos_totales": 48
+            }
+        ],
+        "momento_gloria": "No recuerdo algo increíble que haya sucedido",
+        "peor_desastre": "Vender a Raúl de tomas a la maquina por qué no me daba resultados en las 3 primeras jornadas ficharlo el Peri y hincharse a meter goles ",
+        "estilo_juego": "Me gusta el riesgo ",
+        "rival_historico": "7101774",
+        "jugador_fetiche": "Lamine yamal",
+        "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)",
+        "telegram_user_id": 8237874411
+    },
+    {
+        "id_manager": "7101774",
+        "nombre_mister": "The 👑",
+        "apodo_lema": "",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 44,
+                "puesto": 10,
+                "puntos_totales": 44
+            }
+        ],
+        "telegram_user_id": 3195403
+    },
+    {
+        "id_manager": "13305509",
+        "nombre_mister": "PIRI",
+        "apodo_lema": "",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 40,
+                "puesto": 11,
+                "puntos_totales": 40
+            }
+        ],
+        "telegram_user_id": 6861763306
+    },
+    {
+        "id_manager": "14574192",
+        "nombre_mister": "Jortru",
+        "apodo_lema": "",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 37,
+                "puesto": 12,
+                "puntos_totales": 37
+            }
+        ],
+        "telegram_user_id": 8286000967
+    },
+    {
+        "id_manager": "7106472",
+        "nombre_mister": "Pericles Triano Muñoz",
+        "apodo_lema": "",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 35,
+                "puesto": 13,
+                "puntos_totales": 35
+            }
+        ]
+    },
+    {
+        "id_manager": "7107051",
+        "nombre_mister": "Perico",
+        "apodo_lema": "Paco que te den! 😂😂😂😂",
+        "historial_temporada": [
+            {
+                "jornada": 1,
+                "puntos_jornada": 31,
+                "puesto": 14,
+                "puntos_totales": 31
+            }
+        ],
+        "momento_gloria": "Esperando el momento! ",
+        "peor_desastre": "Algún menos 4 pero poca cosa más ",
+        "estilo_juego": "Me gusta el riesgo, presión alta ",
+        "rival_historico": "7112166",
+        "jugador_fetiche": "Joselu! Hasta que se fue al Madrid ",
+        "filosofia_fichajes": "Experto en parches (ficho lo que puedo a última hora)",
+        "telegram_user_id": 7164678052
     }
 ]

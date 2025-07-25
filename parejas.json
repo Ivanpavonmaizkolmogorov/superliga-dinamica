@@ -1,57 +1,57 @@
 [
   {
-    "nombre_pareja": "The & The United",
-    "id_managers": [
-      "7101774",
-      "7112166"
-    ],
-    "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
-  },
-  {
-    "nombre_pareja": "Pericles & Perico United",
-    "id_managers": [
-      "7106472",
-      "7107051"
-    ],
-    "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
-  },
-  {
-    "nombre_pareja": "raul_piru_ & Francis United",
+    "nombre_pareja": "raul_piru_ & THE United",
     "id_managers": [
       "10361479",
-      "12112883"
-    ],
-    "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
-  },
-  {
-    "nombre_pareja": "Jortru & Rafatobalo United",
-    "id_managers": [
-      "14574192",
-      "7108124"
-    ],
-    "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
-  },
-  {
-    "nombre_pareja": "Panda’s & THE United",
-    "id_managers": [
-      "8539397",
       "7106544"
     ],
     "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
   },
   {
-    "nombre_pareja": "king & 🇮🇹Carlo United",
+    "nombre_pareja": "Panda’s & king United",
     "id_managers": [
-      "8524310",
-      "7106479"
+      "8539397",
+      "8524310"
     ],
     "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
   },
   {
-    "nombre_pareja": "PIRI & Al United",
+    "nombre_pareja": "Rafatobalo & The United",
     "id_managers": [
-      "13305509",
-      "7110624"
+      "7108124",
+      "7101774"
+    ],
+    "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
+  },
+  {
+    "nombre_pareja": "🇮🇹Carlo & PIRI United",
+    "id_managers": [
+      "7106479",
+      "13305509"
+    ],
+    "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
+  },
+  {
+    "nombre_pareja": "Al & Jortru United",
+    "id_managers": [
+      "7110624",
+      "14574192"
+    ],
+    "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
+  },
+  {
+    "nombre_pareja": "The & Pericles United",
+    "id_managers": [
+      "7112166",
+      "7106472"
+    ],
+    "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
+  },
+  {
+    "nombre_pareja": "Francis & Perico United",
+    "id_managers": [
+      "12112883",
+      "7107051"
     ],
     "justificacion": "El cronista estaba afónico, así que fundaron su propio club."
   }

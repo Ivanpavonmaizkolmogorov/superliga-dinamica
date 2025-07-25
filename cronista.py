@@ -235,7 +235,7 @@ def _group_declarations_into_threads(all_declarations):
     return list(threads.values())
 
 def _buscar_declaracion_reciente(manager_ids, todas_declaraciones, ids_ya_usadas):
-    fecha_limite = datetime.now() - timedelta(days=7)
+    fecha_limite = datetime.now() - timedelta(days=21)
     if not isinstance(manager_ids, list): manager_ids = [manager_ids]
     for d in sorted(todas_declaraciones, key=lambda x: x['timestamp'], reverse=True):
         if d.get("telegram_user_id") in manager_ids and d.get("message_id") not in ids_ya_usadas and datetime.fromisoformat(d['timestamp']) > fecha_limite:
@@ -278,14 +278,33 @@ def generar_introduccion_semanal(perfiles, todas_declaraciones, jornada_actual):
     
     # --- PRIORIDAD 2: SI NO HAY DEBATES, BUSCAR LA MEJOR DECLARACIÓN INDIVIDUAL ---
     else:
-        print("INFO (Intro): No se encontraron debates. Buscando la declaración individual más relevante...")
-        # (Aquí puedes re-introducir la lógica de palabras clave si quieres, o simplemente elegir la más larga/reciente)
-        declaracion_estrella = max(declaraciones_recientes, key=lambda d: len(d.get('declaracion', '')))
-        
+        print("INFO (Intro): No se encontraron debates. Buscando la declaración individual más relevante por palabras clave...")
+
+        if not declaraciones_recientes:
+            return ("## 🎙️ El Vestuario Habla\n\n_Semana de silencio total en el vestuario._\n", set())
+
+        # Puntuamos cada declaración reciente usando nuestra nueva función
+        declaraciones_puntuadas = [
+            (d, _calcular_puntuacion_declaracion(d.get('declaracion', ''), PALABRAS_CLAVE_INTERES))
+            for d in declaraciones_recientes
+        ]
+
+        # Obtenemos la puntuación máxima encontrada
+        max_puntuacion = max(p[1] for p in declaraciones_puntuadas)
+
+        # Si la mejor puntuación es mayor que 0, significa que hemos encontrado "salseo"
+        if max_puntuacion > 0:
+            print(f"INFO (Intro): Encontrada declaración con salseo (puntuación: {max_puntuacion}).")
+            # Elegimos la declaración con la máxima puntuación
+            declaracion_estrella = max(declaraciones_puntuadas, key=lambda item: item[1])[0]
+        else:
+            # Si ninguna declaración tiene palabras clave, como plan B, elegimos la más larga
+            print("INFO (Intro): No hay salseo. Se elige la declaración más larga como plan B.")
+            declaracion_estrella = max(declaraciones_recientes, key=lambda d: len(d.get('declaracion', '')))
+
         transcripcion = f"{declaracion_estrella['nombre_mister']} ha declarado: \"{declaracion_estrella['declaracion']}\""
         ids_usados = {declaracion_estrella['message_id']}
         texto_prompt = f"La declaración más destacada de la semana ha sido la siguiente:\n\n{transcripcion}\n\nAnaliza esta declaración."
-
     # --- Construcción del prompt final (común para ambos casos) ---
     lider_actual = sorted(perfiles, key=lambda p: p['historial_temporada'][-1]['puesto'])[0]
     prompt = f"""
@@ -352,11 +371,20 @@ def generar_comentario_sprint(nombre_sprint, clasificacion, jornada_actual, inic
         print(f"ERROR en IA para Sprint: {e}"); return "_Los mánagers aprietan el acelerador._"
 
 
-# En cronista.py
-
-# En cronista.py
-
-# En cronista.py
+def _calcular_puntuacion_declaracion(declaracion_texto, palabras_clave):
+    """
+    Calcula una puntuación de 'interés' para una declaración contando
+    cuántas palabras clave contiene.
+    """
+    if not declaracion_texto: return 0
+    puntuacion = 0
+    # Convertimos el texto a minúsculas para que la búsqueda no distinga mayúsculas/minúsculas
+    texto_minusculas = declaracion_texto.lower()
+    for palabra in palabras_clave:
+        # Buscamos cada palabra clave en el texto
+        if palabra.lower() in texto_minusculas:
+            puntuacion += 1
+    return puntuacion
 
 def generar_nombre_equipo_ia_thread(perfiles_equipo, perfiles_todos, resultado_queue):
     # ANTES: Tenía su propio prompt.

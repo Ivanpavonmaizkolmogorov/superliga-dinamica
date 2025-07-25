@@ -19,9 +19,19 @@ def main():
 
     # --- ¡CAMBIO CLAVE! ---
     # Llamamos a nuestra función GUI para obtener la confirmación
-    if confirmar_reinicio_gui(root_temp):
+    # Código modificado para depurar
+
+    # Primero, guardamos la respuesta en una variable
+    respuesta_del_usuario = confirmar_reinicio_gui(root_temp)
+
+    # AÑADE ESTA LÍNEA para que nos diga qué ha recibido
+    print(f"DEBUG: La ventana de confirmación ha devuelto: {respuesta_del_usuario} (Tipo: {type(respuesta_del_usuario)})")
+
+    # Ahora, el 'if' comprueba la variable
+    if respuesta_del_usuario:
         # El usuario ha pulsado "Sí"
         print("\nConfirmación recibida. Procediendo con el reinicio...")
+        # ... (el resto del código sigue igual)
         try:
             # Borrar parejas.json
             if os.path.exists('parejas.json'):

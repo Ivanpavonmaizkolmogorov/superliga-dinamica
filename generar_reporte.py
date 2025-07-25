@@ -44,8 +44,14 @@ async def publicar_reporte_y_abrir_declaraciones(token: str, chat_id: str, jorna
                 state = json.load(f)
                 old_message_id = state.get('pinned_message_id')
                 if old_message_id:
-                    await bot.unpin_chat_message(chat_id=chat_id)
-                    print(f"INFO: Desanclado mensaje anterior {old_message_id}.")
+                    try:
+                        # NUEVO: Intentamos desanclar dentro de su propio try/except
+                        await bot.unpin_chat_message(chat_id=chat_id)
+                        print(f"INFO: Desanclado mensaje anterior {old_message_id}.")
+                    except Exception as e:
+                        # Si el mensaje no se encuentra (porque fue borrado, o no hay nada anclado),
+                        # simplemente lo informamos y continuamos.
+                        print(f"ADVERTENCIA: No se pudo desanclar el mensaje (puede que no existiera). Error: {e}")
         except (FileNotFoundError, json.JSONDecodeError):
             pass # No hay estado guardado, no hacemos nada
 
