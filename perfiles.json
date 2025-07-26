@@ -15,23 +15,35 @@
     {
         "id_manager": "7101774",
         "nombre_mister": "The 👑",
-        "apodo_lema": "",
+        "apodo_lema": "Agárrate Porcon 🐽",
         "historial_temporada": [],
-        "telegram_user_id": 3195403
+        "telegram_user_id": 3195403,
+        "momento_gloria": "El fichaje que le hice al primo de Marcelo",
+        "peor_desastre": "Nolitada",
+        "estilo_juego": "Al ataque siempre ",
+        "rival_historico": "7110624",
+        "jugador_fetiche": "Luka Modric",
+        "filosofia_fichajes": "Tiro de cartera (gasto sin miedo)"
     },
     {
         "id_manager": "10361479",
         "nombre_mister": "raul_piru_",
-        "apodo_lema": "",
+        "apodo_lema": "Vamos!!!",
         "historial_temporada": [],
-        "telegram_user_id": 2043658875
+        "telegram_user_id": 2043658875,
+        "momento_gloria": "Un campeón en 2 division",
+        "peor_desastre": "Varitas jornadas en negativo por los malditos lunes",
+        "estilo_juego": "Mucho pelotero en medio campo ",
+        "rival_historico": "7107051",
+        "jugador_fetiche": "Ter stegen (este año no lo ficho )",
+        "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)"
     },
     {
         "id_manager": "7106479",
-        "nombre_mister": "🇮🇹Carlo Ancelotti🇮🇹🏆",
+        "nombre_mister": "El Monarca de las Sombras 🏆 🏆",
         "apodo_lema": "El saboteador, te esperas conseguir una ganga en el mercado y ZAS, el saboteador te lo roba",
         "historial_temporada": [],
-        "momento_gloria": "Doblete, dos veces seguidas siendo campeon",
+        "momento_gloria": "Doblete, dos veces seguidas siendo campeon. En una temporada con casi todas las estrellas del R. Madrid: Belligham, Vinicius, Rodrygo, T. Kroos y en otra con los grandes del Betis con Peligrini el ingeniero con Isco, Lo Celso y Antony. Equipazos.",
         "peor_desastre": "Un una vez casi desciendo pero eso era lo que todo el mundo queria, no lo que paso",
         "estilo_juego": "Buscandolos jugadores mas en forma",
         "rival_historico": "7110624",
@@ -40,7 +52,7 @@
         "telegram_user_id": 2078045747
     },
     {
-        "id_manager": "7112166",
+        "id_manager": "14581041",
         "nombre_mister": "The special Juan 🏆🏆🏆🏆",
         "apodo_lema": "The special Juan ",
         "historial_temporada": [],
@@ -68,9 +80,15 @@
     {
         "id_manager": "14574192",
         "nombre_mister": "Jortru",
-        "apodo_lema": "",
+        "apodo_lema": "Vamos equipo!!!",
         "historial_temporada": [],
-        "telegram_user_id": 8286000967
+        "telegram_user_id": 8286000967,
+        "momento_gloria": "",
+        "peor_desastre": "",
+        "estilo_juego": "",
+        "rival_historico": 0,
+        "jugador_fetiche": "Valverde",
+        "filosofia_fichajes": "Siempre llego tarde al mercado"
     },
     {
         "id_manager": "7106544",
@@ -101,14 +119,15 @@
         "estilo_juego": "Me gusta el riesgo ",
         "rival_historico": 0,
         "jugador_fetiche": "Mi Raul Blanco",
-        "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)"
+        "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)",
+        "telegram_user_id": 2096993545
     },
     {
         "id_manager": "7110624",
         "nombre_mister": "Al Hansi Flick 🏆🏆",
         "apodo_lema": "Al Hansi",
         "historial_temporada": [],
-        "momento_gloria": "La Nolitada, vendi a mi rival 7101774 un jugador muy por encima de su valor",
+        "momento_gloria": "La Nolitada. Le llamamos todo el grupo asi al hecho de que vendi a mi rival 7101774 a Nolito por un precio desorbitado, y el se lo creyo, es decir, pensaba que habia adquirido una gangan, menuda risa.",
         "peor_desastre": "Vini Jr.",
         "estilo_juego": "Tiki taka ",
         "rival_historico": "7101774",
@@ -144,8 +163,14 @@
     {
         "id_manager": "13305509",
         "nombre_mister": "PIRI",
-        "apodo_lema": "",
+        "apodo_lema": "Piri",
         "historial_temporada": [],
-        "telegram_user_id": 6861763306
+        "telegram_user_id": 6861763306,
+        "momento_gloria": "Fichaje de Valverde",
+        "peor_desastre": "Fichaje de Nico Williams",
+        "estilo_juego": "Al ataque ",
+        "rival_historico": "7101774",
+        "jugador_fetiche": "Valverde",
+        "filosofia_fichajes": "Cazador de gangas (busco libres y baratos)"
     }
 ]

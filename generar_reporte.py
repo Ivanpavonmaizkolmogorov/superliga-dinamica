@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import font, scrolledtext, messagebox
 from gestor_datos import cargar_perfiles, cargar_parejas, cargar_config_liga
 # --- CORRECCIÓN 1: Importamos las funciones necesarias del cronista ---
+from limpiar_declaraciones import limpiar_declaraciones_antiguas
+
 from cronista import (
     generar_introduccion_semanal,
     generar_todas_las_cronicas,
@@ -526,6 +528,10 @@ def main():
     else:
         print("ADVERTENCIA: No se pudo publicar el reporte en Telegram porque falta TOKEN o GROUP_ID en .env")
 
+    # --- NUEVO PASO AUTOMÁTICO ---
+    print("\n--- [PUNTO DE CONTROL FINAL] Limpiando y archivando declaraciones antiguas...")
+    limpiar_declaraciones_antiguas()
+    
     reporte_final_para_clipboard = f"Enlace al reporte web: {url_reporte_real}\n\n" + reporte_markdown_completo
     mostrar_ventana_final(reporte_final_para_clipboard, url_reporte_real)
     
