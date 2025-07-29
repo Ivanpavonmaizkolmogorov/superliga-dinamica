@@ -97,8 +97,11 @@ async def register_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Por favor, selecciona tu nombre de la lista para iniciar el proceso de verificación:", reply_markup=reply_markup)
 
+# En el archivo de tu bot (p.ej. bot_cronista.py)
+
+# REEMPLAZA TU FUNCIÓN /micronica COMPLETA CON ESTA VERSIÓN
 async def micronica(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Genera una crónica personalizada para el usuario."""
+    """Genera una crónica personalizada para el usuario, entendiendo las menciones."""
     user = update.effective_user
     
     if not gemini_model:
@@ -112,19 +115,34 @@ async def micronica(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text("No estás registrado. Por favor, usa /register primero.")
         return
 
-    mi_ultima_declaracion = "No he encontrado declaraciones recientes."
+    # --- INICIO DE LA MEJORA ---
+    mi_ultima_declaracion_texto = "No he encontrado declaraciones recientes."
+    info_menciones = "" # Nueva variable para el contexto de las menciones
+
     try:
         with open(DECLARACIONES_PATH, 'r', encoding='utf-8') as f:
             declaraciones = json.load(f)
-        for declaracion in reversed(declaraciones):
-            if declaracion.get('telegram_user_id') == user.id:
-                mi_ultima_declaracion = declaracion['declaracion']
-                break
+        
+        # Buscamos el OBJETO completo de la última declaración, no solo el texto
+        ultima_declaracion_obj = next((d for d in reversed(declaraciones) if d.get('telegram_user_id') == user.id), None)
+
+        if ultima_declaracion_obj:
+            mi_ultima_declaracion_texto = ultima_declaracion_obj.get('declaracion', mi_ultima_declaracion_texto)
+            
+            # ¡AQUÍ ESTÁ LA MAGIA! Comprobamos si hay menciones en esa declaración
+            mencionados = ultima_declaracion_obj.get('mencionados', [])
+            if mencionados:
+                nombres_mencionados = [m['nombre_mister'] for m in mencionados]
+                # Creamos el texto de contexto para la IA
+                info_menciones = f"En esta declaración, el mánager se dirige o ataca a: {', '.join(nombres_mencionados)}."
+                
     except (FileNotFoundError, json.JSONDecodeError):
         pass
+    # --- FIN DE LA MEJORA ---
 
     await update.message.reply_text("El Cronista está consultando sus notas y afilando su pluma... ✍️")
     
+    # --- PROMPT MEJORADO ---
     prompt = f"""
     Eres un cronista deportivo legendario, ingenioso y con un toque de sarcasmo.
     Vas a analizar al siguiente mánager de nuestra liga fantasy:
@@ -132,10 +150,11 @@ async def micronica(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     - Nombre del Mánager: {mi_perfil.get('nombre_mister', 'Desconocido')}
     - Su lema o apodo: {mi_perfil.get('apodo_lema', 'Sin lema conocido')}
     - Su estilo de juego: {mi_perfil.get('estilo_juego', 'Impredecible')}
-    - Su última declaración a la prensa: "{mi_ultima_declaracion}"
+    - Su última declaración a la prensa: "{mi_ultima_declaracion_texto}"
+    - Contexto Adicional: "{info_menciones}"
 
     Misión: Escribe una crónica breve (2-3 frases), aguda y memorable sobre este mánager.
-    Conecta su estilo o su apodo con su última declaración. Sé creativo y punzante. No seas genérico.
+    IMPORTANTE: Si el 'Contexto Adicional' indica que ataca a otro mánager, tu crónica DEBE centrarse en ese pique. Esa es la noticia principal.
     """
 
     try:
@@ -212,44 +231,72 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 # En primer_test_bot.py
 
+# En el archivo de tu bot (p.ej. bot_cronista.py)
+
 # REEMPLAZA TU FUNCIÓN guardar_declaracion COMPLETA CON ESTA VERSIÓN
 async def guardar_declaracion(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
-    Guarda un mensaje como declaración SIEMPRE Y CUANDO mencione al bot.
+    Guarda un mensaje como declaración, identificando al autor y a los mánagers mencionados.
+    Se activa solo cuando el mensaje contiene una mención al propio bot.
     """
     user = update.effective_user
     message = update.message
     bot_username = context.bot.username
 
-    # La condición ahora es increíblemente simple: ¿el mensaje menciona al bot?
-    # Usamos message.text para asegurar que funcione aunque el bot no tenga @ en el nombre
+    # Condición de activación: que mencionen al bot.
     if f"@{bot_username}" not in message.text:
-        return # Si no menciona al bot, ignoramos el mensaje. Fin.
-
-    # --- Si llegamos aquí, es una declaración oficial ---
-    
-    # 1. Verificamos que el usuario esté registrado
-    perfiles = cargar_perfiles()
-    nombre_mister_registrado = next((p['nombre_mister'] for p in perfiles if p.get('telegram_user_id') == user.id), None)
-        
-    if not nombre_mister_registrado:
-        print(f"INFO: Mención de usuario no registrado ('{user.first_name}') ignorada.")
-        # Opcional: podrías responderle al usuario que necesita registrarse
-        # await message.reply_text("He escuchado tu llamada, pero no sé quién eres. Usa /register primero.")
         return 
 
-    # 2. Guardamos la declaración
-    print(f"✅ GUARDANDO declaración de '{nombre_mister_registrado}': '{message.text}'")
+    # 1. Cargar perfiles y verificar que el autor esté registrado
+    perfiles = cargar_perfiles()
+    perfil_autor = next((p for p in perfiles if p.get('telegram_user_id') == user.id), None)
+        
+    if not perfil_autor:
+        logger.info(f"Mención ignorada de usuario no registrado: {user.first_name}")
+        # Opcional: avisar al usuario que debe registrarse.
+        # await message.reply_text("Te he oído, pero no sé quién eres. Usa /register para vincular tu cuenta.")
+        return
+
+    # 2. Identificar a los mánagers mencionados en el mensaje
+    mencionados = []
+    # Creamos un mapa de ID -> nombre para buscar fácilmente
+    id_a_nombre = {p['telegram_user_id']: p['nombre_mister'] for p in perfiles if 'telegram_user_id' in p}
+
+    if message.entities:
+        for entity in message.entities:
+            # Opción A: Mención directa con @username
+            if entity.type == 'mention':
+                username_mencionado = message.text[entity.offset:entity.offset + entity.length]
+                # Podríamos buscar por username, pero es menos fiable. Es mejor usar text_mention.
+                logger.info(f"Se usó una mención de texto ({username_mencionado}), se recomienda usar la mención que linkea al usuario.")
+
+            # Opción B (la mejor): Mención que linkea al usuario (text_mention)
+            elif entity.type == 'text_mention' and entity.user:
+                id_mencionado = entity.user.id
+                # Buscamos si el ID mencionado corresponde a un mánager registrado
+                if id_mencionado in id_a_nombre:
+                    # Evitamos añadir al propio autor o al bot si se mencionan a sí mismos
+                    if id_mencionado != user.id and entity.user.username != bot_username.replace("@", ""):
+                        mencionados.append({
+                            "telegram_user_id": id_mencionado,
+                            "nombre_mister": id_a_nombre[id_mencionado]
+                        })
+
+    # 3. Construir y guardar la declaración enriquecida
+    texto_limpio = message.text.replace(f"@{bot_username}", "").strip()
 
     nueva_declaracion = {
         "message_id": message.message_id,
         "reply_to_message_id": message.reply_to_message.message_id if message.reply_to_message else None,
         "telegram_user_id": user.id,
-        "nombre_mister": nombre_mister_registrado,
-        "declaracion": message.text.replace(f"@{bot_username}", "").strip(), # Guardamos el texto sin la mención
-        "timestamp": datetime.now().isoformat()
+        "nombre_mister": perfil_autor['nombre_mister'],
+        "declaracion": texto_limpio,
+        "timestamp": datetime.now().isoformat(),
+        "mencionados": mencionados  # <-- ¡Aquí está la nueva información!
     }
     
+    logger.info(f"✅ GUARDANDO declaración de '{perfil_autor['nombre_mister']}' mencionando a: {[m['nombre_mister'] for m in mencionados]}")
+
     try:
         with open(DECLARACIONES_PATH, 'r', encoding='utf-8') as f:
             declaraciones = json.load(f)

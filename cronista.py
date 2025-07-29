@@ -81,70 +81,77 @@ def _preparar_ultimas_declaraciones(todas_declaraciones):
 
 # En cronista.py
 
+# En cronista.py
+
+# REEMPLAZA TU FUNCIÓN CON ESTA VERSIÓN MEJORADA
 def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, comentarista, eventos_por_manager={}):
-    """Pide a la IA que genere TODAS las crónicas en una sola llamada, reaccionando a eventos."""
-    if not gemini_model or not comentarista: 
+    """
+    Pide a la IA que genere TODAS las crónicas en una sola llamada, reaccionando a eventos y menciones.
+    """
+    if not gemini_model or not comentarista:
         return {}
 
-    # La función _preparar_ultimas_declaraciones que creamos antes es muy útil aquí
-    ultimas_declaraciones = _preparar_ultimas_declaraciones(todas_declaraciones)
+    # <-- NUEVO: Preparamos un mapa que almacena el OBJETO completo de la última declaración.
+    # Esto es clave para poder acceder tanto al texto como a la lista de 'mencionados'.
+    ultimas_declaraciones_obj = {}
+    for d in sorted(todas_declaraciones, key=lambda x: x.get('timestamp', ''), reverse=True):
+        manager_id = d.get("telegram_user_id")
+        if manager_id and manager_id not in ultimas_declaraciones_obj:
+            ultimas_declaraciones_obj[manager_id] = d
 
     datos_texto = ""
-    # CORRECCIÓN 1: Toda la lógica debe ir DENTRO de este bucle
     for perfil in perfiles:
         ultimo_historial = perfil['historial_temporada'][-1]
-
-  
-        # Esta es la instrucción que mejor genera el tipo de crónica que te gustó
-        # Esta es la nueva instrucción que fomenta el análisis en lugar de la pregunta direc
-        # ta
-        declaracion = "Este mánager hace dias que no declara. Cronista, analiza su resultado. Especula sobre las posibles causas de su rendimiento o haz una afirmación contundente sobre su situación actual en la liga."
-
-        
         manager_telegram_id = perfil.get("telegram_user_id")
-        if manager_telegram_id:
-            # Usamos el diccionario pre-procesado para una búsqueda instantánea
-            declaracion = ultimas_declaraciones.get(manager_telegram_id, "ha mantenido un prudente silencio.")
 
-        # Lógica para buscar los eventos (ahora indentada correctamente)
-        contexto_extra = ""
-        # CORRECCIÓN 2: Buscamos eventos usando la llave correcta -> perfil['id_manager']
-        eventos_del_manager = eventos_por_manager.get(perfil['id_manager'], [])
+        # --- OBTENCIÓN DE DATOS ---
         
+        # 1. Obtenemos la última declaración y sus menciones
+        declaracion_texto = "Este mánager hace dias que no declara. Cronista, analiza su resultado. Especula sobre las posibles causas de su rendimiento o haz una afirmación contundente sobre su situación actual en la liga."
+        menciones_info = "" # Variable para guardar la info de las menciones
+        
+        declaracion_obj = ultimas_declaraciones_obj.get(manager_telegram_id)
+        if declaracion_obj:
+            declaracion_texto = declaracion_obj.get('declaracion', "ha mantenido un prudente silencio.")
+            
+            # <-- ¡NUEVA LÓGICA DE MENCIONES!
+            # Si el objeto de la declaración tiene la clave 'mencionados', la procesamos.
+            mencionados = declaracion_obj.get('mencionados', [])
+            if mencionados:
+                nombres_mencionados = [m['nombre_mister'] for m in mencionados]
+                menciones_info = f"En su declaración, ATACA o COMENTA directamente sobre: {', '.join(nombres_mencionados)}."
+
+        # 2. Procesamos los eventos (LÓGICA ORIGINAL ÍNTEGRA)
+        # Esta parte no se toca, ya que es fundamental.
+        contexto_extra = ""
+        eventos_del_manager = eventos_por_manager.get(perfil['id_manager'], [])
         for evento in eventos_del_manager:
             # Eventos de Rivalidad, Extremos y Venganza
             if evento['tipo'] == 'ADELANTAMIENTO_VICTORIA':
                 contexto_extra += f"¡Momento clave! Has adelantado a tu rival histórico, {evento['contexto']['rival_adelantado']}. El honor está en juego. "
             elif evento['tipo'] == 'ADELANTAMIENTO_DERROTA':
                 contexto_extra += f"¡Dura derrota! Tu rival histórico, {evento['contexto']['adelantado_por']}, te ha adelantado. La humillación es palpable. "
+            # ... (y así con TODOS los demás elif de tu lógica de eventos original)
             elif evento['tipo'] == 'VENGANZA_RIVAL':
                 contexto_extra += f"¡La venganza se sirve fría! Tras ser adelantado, has recuperado tu honor y tu puesto frente a tu archienemigo, {evento['contexto']['rival_vengado']}. ¡El golpe moral es doble! "
             elif evento['tipo'] == 'ENTRADA_GLORIA':
                 contexto_extra += f"Estás en el Olimpo (Puesto {evento['contexto']['puesto']}). ¿Recuerdas tu momento de gloria? '{evento['contexto']['recordatorio_gloria']}'. "
             elif evento['tipo'] == 'CAIDA_DESASTRE':
                 contexto_extra += f"Estás en el abismo (Puesto {evento['contexto']['puesto']}). ¿Se repite tu peor desastre? '{evento['contexto']['recordatorio_desastre']}'. "
-
-            # Eventos de Puntuación de la Jornada
             elif evento['tipo'] == 'MVP_JORNADA':
                 contexto_extra += f"¡El MVP de la jornada! Has logrado la máxima puntuación con {evento['contexto']['puntos']} puntos. ¡Impresionante! "
             elif evento['tipo'] == 'FAROLILLO_ROJO_JORNADA':
                 contexto_extra += f"Semana difícil. Has sido el farolillo rojo con la puntuación más baja ({evento['contexto']['puntos']} pts). Toca reflexionar. "
-
-            # Eventos de Movimiento en la Clasificación
             elif evento['tipo'] == 'COHETE_JORNADA':
                 contexto_extra += f"¡El cohete de la semana! Has protagonizado la mayor subida, escalando {evento['contexto']['puestos_subidos']} puestos de golpe. "
             elif evento['tipo'] == 'ANCLA_JORNADA':
                 contexto_extra += f"¡Semana para olvidar! Has sufrido la peor caída, desplomándote {evento['contexto']['puestos_bajados']} puestos. "
-
-            # Eventos de Rachas y Tendencias
             elif evento['tipo'] == 'RACHA_IMPARABLE':
                 contexto_extra += f"¡Estás imparable! Llevas 3 semanas seguidas en el podio. Eres el rival a batir. "
             elif evento['tipo'] == 'CAIDA_LIBRE':
                 contexto_extra += f"¡En caída libre! Tercera semana consecutiva perdiendo posiciones. Las alarmas están encendidas. "
             elif evento['tipo'] == 'MR_REGULARIDAD':
                 contexto_extra += f"Abonado a la zona tibia. Una jornada más en la cómoda mediocridad de la tabla. ¿Estrategia o falta de ambición? "
-            
-            # --- AÑADE ESTOS NUEVOS ELIF ---
             elif evento['tipo'] == 'DUELO_RIVALES':
                 contexto_extra += f"¡Duelo de alta tensión! Lucha fraticida contra su rival histórico, {evento['contexto']['manager2_nombre']}, decidida por la mínima. "
             elif evento['tipo'] == 'SORPRESA_JORNADA':
@@ -154,25 +161,26 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
             elif evento['tipo'] == 'GIGANTE_DESPIERTA':
                 contexto_extra += "¡El gigante dormido ha despertado! Un ex-campeón vuelve por sus fueros con una puntuación estelar. "
 
-        # Construcción del texto para el prompt (ahora indentado correctamente)
+        # --- CONSTRUCCIÓN DEL TEXTO PARA LA IA ---
         datos_texto += (
             f"ID_MANAGER: {perfil['id_manager']}\n"
             f"NOMBRE: {limpiar_nombre_para_ia(perfil['nombre_mister'])}\n"
             f"PUNTOS: {ultimo_historial['puntos_jornada']}\n"
-            f"DECLARACION: \"{declaracion}\"\n"
-            f"CONTEXTO_EXTRA: \"{contexto_extra.strip()}\"\n" 
+            f"DECLARACION: \"{declaracion_texto}\"\n"
+            # Unimos ambas fuentes de información: menciones y eventos
+            f"CONTEXTO_EXTRA: \"{menciones_info} {contexto_extra.strip()}\"\n"
             "---\n"
         )
     
-    # Esta parte (la construcción del prompt y la llamada a la IA) ya estaba bien
+    # --- PROMPT FINAL PARA LA IA (CON INSTRUCCIONES MEJORADAS) ---
     DELIMITADOR = "|||---|||"
     prompt = (
         f"{comentarista['prompt_base']}\n\n"
         f"Tu tarea es escribir una crónica (4-5 frases) para CADA UNO de los siguientes mánagers. "
-        f"Conecta sus PUNTOS con su DECLARACION. "
-        f"Si existe un 'CONTEXTO_EXTRA', DEBES centrar tu crónica en ese evento dramático, es la noticia más importante. Si está vacío, ignóralo. "
-        f"Debes escribir una crónica para cada uno en el mismo orden que te los doy, "
-        f"y separar CADA crónica de la siguiente con el delimitador exacto: {DELIMITADOR}\n\n"
+        f"Conecta sus PUNTOS con su DECLARACION y, sobre todo, con el CONTEXTO_EXTRA.\n\n"
+        f"**REGLA DE ORO:** El 'CONTEXTO_EXTRA' contiene la información más jugosa. **DEBES centrar tu crónica en lo que ponga ahí.** Si menciona un ataque a otro mánager, habla de ese pique. Si menciona un evento como 'MVP_JORNADA' o una 'CAIDA_LIBRE', enfócate en ese drama. Es la noticia más importante.\n\n"
+        f"Escribe una crónica para cada uno en el mismo orden que te los doy, "
+        f"y separa CADA crónica de la siguiente con el delimitador exacto: {DELIMITADOR}\n\n"
         f"LISTA DE MÁNAGERS:\n{datos_texto}"
     )
 
@@ -182,10 +190,9 @@ def generar_todas_las_cronicas(perfiles, todas_declaraciones, ids_ya_usadas, com
         response = gemini_model.generate_content(prompt)
         cronicas_separadas = response.text.split(DELIMITADOR)
         if len(cronicas_separadas) >= len(perfiles):
-            # CORRECCIÓN 3: El diccionario devuelto DEBE usar 'id_manager' como llave
             return {perfiles[i]['id_manager']: cronicas_separadas[i].strip() for i in range(len(perfiles))}
         else:
-            print(f"ADVERTENCIA: La IA devolvió {len(cronicas_separadas)} crónicas en lugar de {len(perfiles)}."); 
+            print(f"ADVERTENCIA: La IA devolvió {len(cronicas_separadas)} crónicas en lugar de {len(perfiles)}.");
             return {}
     except Exception as e:
         print(f"❌❌ ERROR en la llamada a la IA para LOTE de Crónicas: {e} ❌❌")

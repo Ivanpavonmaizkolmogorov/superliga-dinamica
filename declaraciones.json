@@ -6,5 +6,50 @@
         "nombre_mister": "Francis",
         "declaracion": "perico esta filtrando noticias.",
         "timestamp": "2025-07-26T18:12:48.533386"
+    },
+    {
+        "message_id": 165,
+        "reply_to_message_id": null,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "El Monarca de las Sombras 🏆 🏆",
+        "declaracion": "⭐⭐⭐ ¡Bienvenido a la Superliga Dinámica! ⭐⭐⭐\n\n¡Hola a todos!\nEsta temporada, nuestra liga evoluciona. Nos hemos mudado a Telegram y hemos fichado a un nuevo miembro para hacer las jornadas mucho más épicas y divertidas. Esta es tu guía para entenderlo todo.\n\n\n1. ¿Por Qué Estamos en Telegram? El Fichaje Estrella:  🤖\n\nEl único motivo de dejar WhatsApp es por nuestro nuevo bot: .\nTelegram nos permite usar esta tecnología para crear algo imposible en WhatsApp: un reporte de la jornada totalmente vivo y narrativo, escrito por nuestro misterioso \"Cronista\" de la liga. Este personaje analiza vuestros resultados, vuestros piques y vuestras polémicas para contar la historia de la semana.\n\n\n2. La Regla de Oro: Cómo Salir en el Reporte 📝\n\nPara que el Cronista sepa lo que piensas y lo incluya en la crónica, la regla es muy simple:\nMenciona a  en cualquier mensaje que quieras que se tenga en cuenta.\n¡Así de fácil! El Cronista leerá tu mensaje y lo usará para crear la noticia.\n\n\n3. Sube de Nivel: ¡Provoca el Debate de la Semana! 🔥\n\nEl Cronista no solo escucha declaraciones sueltas, también presta especial atención a las conversaciones y los piques directos. Su máxima prioridad es encontrar el debate más caliente de la semana.\nSi quieres que tu pique con otro mánager sea la noticia de portada, solo tienes que hacer esto:\nUsa la función \"Responder\" de Telegram para contestar directamente a la declaración de otro mánager.\nAl hacer esto, creas un \"hilo de debate\". El Cronista lo detectará y le dará MÁXIMA PRIORIDAD.\n\n\n4. Mira el Resultado: ¿Qué Dirá el Cronista? 📺\n\nPara que veas el poder que tenéis, aquí tenéis ejemplos de lo que puede pasar:\nCASO A: Declaración con \"Salseo\"\n• Tú escribes: \"Vaya robo de jornada, menudo tongo. @SuperligaCronistaB• ot\"\nPosible introducción del Cronista:\n\"¡La jornada termina envuelta en sombras! Las duras acusaciones de [Tu Nombre] sobre un presunto 'tongo' han hecho saltar todas las alarmas en la directiva. ¿Hay una mano negra en la liga o estamos ante una simple pataleta? El debate está servido• .\"\n\nCASO B: Creas un Hilo de Debate (Máxima Prioridad)\n• Mánager A escribe: \"Eres un suertudo, ganas sin merecerlo. @SuperligaCronistaB• ot\"\nTú (respondiendo a ese mensaje): \"Llorón, aprende a fichar y déjate de excusas. @SuperligaCronistaB• ot\"\nPosible introducción del Cronista:\n\"¡Salten chispas en la Superliga! Lo que empezó como una crítica a la suerte ha terminado en un cruce de acusaciones directas entre [Mánager A] y [Tú]. La tensión es máxima y las gradas se preguntan: ¿estamos ante el nacimiento de una nueva rivalidad histórica? ¡La guerra ha comenzado• !• \"• \n\n\n\n5. 🔬 Anatomía del Reporte Semanal\n\nCada reporte que publique el bot tendrá estas secciones:\n• La Introducción del Cronista: Analizando el tema más candente de la sem• ana.\nCrónica de la Jornada: Un análisis desplegable para cada mána• ger.\nCompetición por Parejas: La clasificación y comentar• ios.\nClasificaciones de Sprints: El estado de las minili• gas.\nBote Provisional: Un resumen de los prem• ios.\nEl Micrófono del Cronista: Comentarios finales de los líderes con diferentes personalida• d• es.\n\nLa liga la hacéis vosotros. Ahora, la historia de la liga también la contáis vosotros. ¡A jugar y a decla",
+        "timestamp": "2025-07-27T12:55:17.672892"
+    },
+    {
+        "message_id": 203,
+        "reply_to_message_id": 201,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "El Monarca de las Sombras 🏆 🏆",
+        "declaracion": "Este se cree ( Pantaki ) que con Zubimendi ya lo tiene todo averiguao",
+        "timestamp": "2025-07-28T21:33:49.721948",
+        "mencionados": [
+            {
+                "telegram_user_id": 7164678052,
+                "nombre_mister": "Perico"
+            }
+        ]
+    },
+    {
+        "message_id": 247,
+        "reply_to_message_id": null,
+        "telegram_user_id": 1192183458,
+        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
+        "declaracion": "El manager Jaime Peñalba tiene filosofía cholo simeone, no porque sea defensivo sino por llorar por todo antes de que comience a rodar la bola",
+        "timestamp": "2025-07-28T23:20:33.615583",
+        "mencionados": [
+            {
+                "telegram_user_id": 8237874411,
+                "nombre_mister": "king revolution 💪⚽"
+            }
+        ]
+    },
+    {
+        "message_id": 340,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7360061740,
+        "nombre_mister": "Francis",
+        "declaracion": "Jaime está empezando a voicotear las normas en el segundo día por no querer ser capitán de una pareja.",
+        "timestamp": "2025-07-29T12:47:53.176902",
+        "mencionados": []
     }
 ]

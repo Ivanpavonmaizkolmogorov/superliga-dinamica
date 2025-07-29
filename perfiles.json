@@ -106,8 +106,15 @@
     {
         "id_manager": "7106472",
         "nombre_mister": "Pericles Triano Muñoz",
-        "apodo_lema": "",
-        "historial_temporada": []
+        "apodo_lema": "Con paso firme",
+        "historial_temporada": [],
+        "momento_gloria": "Mi titulo de campeon",
+        "peor_desastre": "Sino recuerdo mal, hace 3 años me quitó el 2° puesto en la última jornada el Millón manager 7101774 (de los peores del mundo Fantasy) con 25 jugadores del Real Madrid \n",
+        "estilo_juego": "Muchos jugadores con puntuaciones verdes",
+        "rival_historico": "7110624",
+        "jugador_fetiche": "Los que sabes que te darán verde mínimo, como por ejemplo Toni Kroos que es su gloria esté.",
+        "filosofia_fichajes": "Intento estar al día de jugadores que no suenan mucho, y si tengo que ir a por alguno a muerte no hay problema. Eso sí, me cuesta vender a mis jugadores.",
+        "telegram_user_id": 8137123429
     },
     {
         "id_manager": "7108124",
@@ -132,7 +139,8 @@
         "estilo_juego": "Tiki taka ",
         "rival_historico": "7101774",
         "jugador_fetiche": "Gaviria",
-        "filosofia_fichajes": "Magia"
+        "filosofia_fichajes": "Magia",
+        "telegram_user_id": 6959330748
     },
     {
         "id_manager": "8524310",
