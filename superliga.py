@@ -8,9 +8,14 @@ import threading
 import subprocess
 from gestor_datos import cargar_perfiles
 import queue
+import multiprocessing
 
 # --- CLASE DE LA INTERFAZ GRÁFICA (VISTA) ---
 # REEMPLAZA ESTA CLASE ENTERA en tu archivo superliga.py
+def run_valoracion_module():
+    """Función auxiliar que el nuevo proceso ejecutará."""
+    from valoracion_fichajes.lanzador_valoracion import main
+    main()
 
 class MainPanel(tk.Frame):
     def __init__(self, master, controller):
@@ -45,7 +50,8 @@ class MainPanel(tk.Frame):
             'simular': ("Simular Jornada(s)", "#27ae60"),
                        # --- AÑADE ESTA LÍNEA ---
             'limpiar_declaraciones': ("Limpiar Declaraciones", "#95a5a6"),
-            'reset_season': ("Reiniciar Temporada", "#e74c3c")
+            'reset_season': ("Reiniciar Temporada", "#e74c3c"),
+            'valorar_fichajes': ("Valoración de Fichajes", "#1abc9c"), # <-- NUEVA LÍNEA
         }
 
         for key, (text, color) in button_data.items():
@@ -101,7 +107,10 @@ class SuperligaController:
             'generar_reporte': 'generar_reporte.py', # <-- CONEXIÓN DEL NUEVO BOTÓN
             # --- AÑADE ESTA LÍNEA ---
             'gestionar_cronistas': 'gestionar_cronistas.py',
-            'limpiar_declaraciones': 'limpiar_declaraciones.py'
+            'limpiar_declaraciones': 'limpiar_declaraciones.py',
+            'valorar_fichajes': 'lanzador_valoracion.py'
+
+
         }
         
         script_a_lanzar = action_map.get(action_name)
@@ -112,6 +121,12 @@ class SuperligaController:
         if action_name == 'editar_perfiles':
             thread = threading.Thread(target=self.accion_editar_perfiles, daemon=True); thread.start()
             return
+        
+        # --- AÑADE ESTE BLOQUE ---
+        if action_name == 'valorar_fichajes':
+            thread = threading.Thread(target=self.accion_valorar_fichajes, daemon=True); thread.start()
+            return
+        # --- FIN DEL BLOQUE ---
 
         if script_a_lanzar:
             thread = threading.Thread(target=self.run_script_in_subprocess, args=(script_a_lanzar,), daemon=True)
@@ -119,6 +134,18 @@ class SuperligaController:
         else:
             self.panel.log_message(f"Acción '{action_name}' no implementada.")
             self.update_app_state_and_buttons()
+
+    def accion_valorar_fichajes(self):
+        """Lanza el módulo de valoración en un PROCESO separado y seguro."""
+        self.panel.log_message("    (Lanzando Módulo de Valoración en un proceso separado...)")
+
+        # Crea un proceso que ejecutará nuestra función auxiliar
+        valoracion_process = multiprocessing.Process(target=run_valoracion_module)
+        valoracion_process.start() # Inicia el proceso. Esto no bloquea la app.
+
+        self.panel.log_message("\n<<< Módulo de Valoración lanzado.")
+        # Como no se bloquea, podemos reactivar los botones inmediatamente
+        self.update_app_state_and_buttons()
 
     # ## AÑADE ESTA NUEVA FUNCIÓN a la clase SuperligaController ##
     def accion_editar_perfiles(self):

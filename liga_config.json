@@ -1,7 +1,7 @@
 {
   "cuota": 20.0,
-  "num_managers": 10,
-  "bote_total": 200.0,
+  "num_managers": 14,
+  "bote_total": 280.0,
   "premios_pct": {
     "Pareja de Oro": 0.357,
     "Campeón Absoluto": 0.286,
@@ -12,12 +12,12 @@
     "Ganador Sprint 4 (J31-38)": 0.107
   },
   "premios_valor": {
-    "Pareja de Oro": 71.4,
-    "Campeón Absoluto": 57.2,
-    "Subcampeón": 21.4,
-    "Ganador Sprint 1": 5.8,
-    "Ganador Sprint 2": 8.6,
-    "Ganador Sprint 3": 14.2,
-    "Ganador Sprint 4": 21.4
+    "Pareja de Oro": 99.96,
+    "Campeón Absoluto": 80.08,
+    "Subcampeón": 29.96,
+    "Ganador Sprint 1": 8.12,
+    "Ganador Sprint 2": 12.04,
+    "Ganador Sprint 3": 19.88,
+    "Ganador Sprint 4": 29.96
   }
 }

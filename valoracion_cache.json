@@ -1,0 +1,61 @@
+{
+  "para_fichar": [
+    {
+      "nombre": "Mikel Oyarzabal",
+      "valor": 9856000,
+      "incremento": 127000
+    },
+    {
+      "nombre": "Gonzalo García",
+      "valor": 1329000,
+      "incremento": 42000
+    },
+    {
+      "nombre": "Takuma Asano",
+      "valor": 853000,
+      "incremento": 39000
+    },
+    {
+      "nombre": "Cédric Bakambu",
+      "valor": 814000,
+      "incremento": 34000
+    },
+    {
+      "nombre": "Pablo Martínez",
+      "valor": 1344000,
+      "incremento": 35000
+    },
+    {
+      "nombre": "Hugo Álvarez",
+      "valor": 1076000,
+      "incremento": 27000
+    },
+    {
+      "nombre": "Iker Muñoz",
+      "valor": 165000,
+      "incremento": 2000
+    },
+    {
+      "nombre": "Junior Firpo",
+      "valor": 2297000,
+      "incremento": 64000
+    },
+    {
+      "nombre": "David Soria",
+      "valor": 7949000,
+      "incremento": 54000
+    },
+    {
+      "nombre": "Alejandro Iturbe",
+      "valor": 629000,
+      "incremento": 12000
+    }
+  ],
+  "para_vender": [
+    {
+      "nombre": "Alexander Sørloth",
+      "valor": 13095000,
+      "incremento": 40000
+    }
+  ]
+}

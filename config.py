@@ -11,6 +11,7 @@ load_dotenv()
 
 # La URL de tu liga de Mister, la coge del archivo .env
 MISTER_URL = os.getenv("MISTER_URL_LIGA")
+MISTER_URL_MERCADO = os.getenv("MISTER_URL_MERCADO")
 
 # --- ¡ESTA ES LA LÍNEA CLAVE Y CORRECTA! ---
 # Define una ruta para una nueva carpeta de perfil DENTRO de tu proyecto.
