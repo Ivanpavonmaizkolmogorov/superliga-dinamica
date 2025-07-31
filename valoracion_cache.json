@@ -1,61 +1,61 @@
 {
   "para_fichar": [
     {
-      "nombre": "Mikel Oyarzabal",
-      "valor": 9856000,
-      "incremento": 127000
+      "nombre": "Pablo Durán",
+      "valor": 1042000,
+      "incremento": 22000
     },
     {
-      "nombre": "Gonzalo García",
-      "valor": 1329000,
-      "incremento": 42000
+      "nombre": "Yvan Neyou",
+      "valor": 1094000,
+      "incremento": 24000
     },
     {
-      "nombre": "Takuma Asano",
-      "valor": 853000,
-      "incremento": 39000
-    },
-    {
-      "nombre": "Cédric Bakambu",
-      "valor": 814000,
-      "incremento": 34000
-    },
-    {
-      "nombre": "Pablo Martínez",
-      "valor": 1344000,
-      "incremento": 35000
-    },
-    {
-      "nombre": "Hugo Álvarez",
-      "valor": 1076000,
-      "incremento": 27000
-    },
-    {
-      "nombre": "Iker Muñoz",
-      "valor": 165000,
-      "incremento": 2000
-    },
-    {
-      "nombre": "Junior Firpo",
-      "valor": 2297000,
-      "incremento": 64000
-    },
-    {
-      "nombre": "David Soria",
-      "valor": 7949000,
-      "incremento": 54000
-    },
-    {
-      "nombre": "Alejandro Iturbe",
-      "valor": 629000,
+      "nombre": "Moi Gómez",
+      "valor": 620000,
       "incremento": 12000
+    },
+    {
+      "nombre": "Flavien Boyomo",
+      "valor": 6061000,
+      "incremento": 28000
+    },
+    {
+      "nombre": "Dani Calvo",
+      "valor": 3258000,
+      "incremento": 59000
+    },
+    {
+      "nombre": "José Ángel Carmona",
+      "valor": 1196000,
+      "incremento": 29000
+    },
+    {
+      "nombre": "Adrià Pedrosa",
+      "valor": 1160000,
+      "incremento": 11000
+    },
+    {
+      "nombre": "Juan Iglesias",
+      "valor": 1085000,
+      "incremento": 18000
+    },
+    {
+      "nombre": "Thibaut Courtois",
+      "valor": 11117000,
+      "incremento": 24000
+    },
+    {
+      "nombre": "Dani Cárdenas",
+      "valor": 168000,
+      "incremento": 1000
     }
   ],
   "para_vender": [
     {
       "nombre": "Alexander Sørloth",
-      "valor": 13095000,
-      "incremento": 40000
+      "valor": 13059000,
+      "incremento": 36000
     }
   ]
 }

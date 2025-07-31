@@ -1,120 +1,196 @@
-import numpy as np
+import datetime
 
-OFERTAS_POR_DIA = 2
-NUM_DIAS_SIMULACION = 100
-RANGO_OFERTA_MIN = 0.95
-RANGO_OFERTA_MAX = 1.05
-PASO_OFERTA = 0.01
+# --- MOTOR DE CÁLCULO UNIFICADO Y FINAL ---
 
 class MotorCalculo:
-    DEBUG_MODE = True
-    VALOR_OBJETIVO_EXCEL = 46058
-
     def __init__(self, datos_jugador):
-        self.nombre = datos_jugador['nombre']
-        self.valor_actual = datos_jugador['valor']
-        self.incremento_diario = datos_jugador['incremento']
-        self.dias = np.arange(0, NUM_DIAS_SIMULACION + 2)
-        self.valor_futuro = self.valor_actual + (self.dias * self.incremento_diario)
+        self.datos_jugador = datos_jugador
 
-    def calcular_valoracion(self, mi_puja, dias_limite, es_compra=True):
-        """
-        IMPLEMENTACIÓN FINAL - ESPEJO LITERAL DE LA MATEMÁTICA Y ESCALA DEL EXCEL
-        """
+    # --- MÉTODO PRINCIPAL PARA ANÁLISIS DE COMPRA ---
+    def analizar_compra(self, config_usuario):
+        config = self._crear_config_compra(config_usuario)
         
-        # 1. Escalar los inputs para que coincidan con el Excel (que trabaja en miles)
-        escala = 1000.0
-        mi_puja_k = mi_puja / escala
-        valores_futuros_escalados = self.valor_futuro / escala
+        # Secuencia de cálculo para la compra
+        cabeceras, datos_ofertas = _generar_datos_ofertas_compra(config)
+        datos_exito = _generar_datos_exito_compra(config, datos_ofertas)
+        ps, qs, zs, fracaso = _calcular_probabilidades(datos_exito)
+        datos_flujo_neto = _generar_flujo_neto_compra(config, datos_ofertas)
+        vector_suceso_individual = _calcular_prob_suceso_individual(fracaso, len(datos_exito))
+        datos_suceso_individual = {f"{(1.05 - i * 0.01):.2f}": vector_suceso_individual for i in range(11)}
+        datos_ingreso_esperado = _calcular_ingreso_esperado(datos_flujo_neto, datos_suceso_individual)
+        datos_gasto_esperado = _calcular_gasto_esperado(datos_flujo_neto, datos_suceso_individual)
+        suma_ingresos = _sumar_ingresos(datos_ingreso_esperado)
+        suma_gastos = _sumar_gastos(datos_gasto_esperado)
+        datos_beneficio = _calcular_beneficio(suma_ingresos, suma_gastos, zs, fracaso)
+        esperanza_matematica = sum(datos_beneficio)
         
-        # 2. Definir constantes del modelo
-        posibles_multiplicadores = np.round(np.arange(RANGO_OFERTA_MIN, RANGO_OFERTA_MAX + PASO_OFERTA / 2, PASO_OFERTA), 2)
-        prob_por_variacion = 1 / len(posibles_multiplicadores)
+        return {"esperanza_matematica": esperanza_matematica}
 
-        # 3. Secuencia de valores base EXACTA del modelo Excel
-        valores_base = [
-            valores_futuros_escalados[1],  # Oferta 1 (Jueves)
-            valores_futuros_escalados[1],  # Oferta 2 (Viernes Mañana)
-            valores_futuros_escalados[2]   # Oferta 3 (Viernes Tarde)
-        ]
-        
-        # 4. Inicializar variables
-        prob_supervivencia = 1.0
-        valor_apuesta_total_escalado = 0.0
-        beneficios_paso_calculados = []
-        tabla_calculo = []
+    # --- MÉTODO PRINCIPAL PARA ANÁLISIS DE VENTA (VALIDADO) ---
+    def analizar_venta(self, config_usuario):
+        config = self._crear_config_venta(config_usuario)
 
-        # 5. Iterar a través de cada una de las 3 ofertas del modelo
-        for i, valor_base in enumerate(valores_base):
-            # Calcular el Beneficio (Qs) para cada uno de los 11 escenarios
-            beneficios_de_oferta = (valor_base * posibles_multiplicadores) - mi_puja_k
+        # Secuencia de cálculo completa y validada para la venta
+        cabeceras, datos_ofertas = _generar_datos_ofertas_venta(config)
+        datos_exito = _generar_datos_exito_venta(config, datos_ofertas)
+        ps, qs, zs, fracaso = _calcular_probabilidades(datos_exito)
+        datos_flujo_neto = _generar_flujo_neto_venta(config, datos_ofertas)
+        vector_suceso_individual = _calcular_prob_suceso_individual(fracaso, len(datos_exito))
+        datos_suceso_individual = {f"{(1.05 - i * 0.01):.2f}": vector_suceso_individual for i in range(11)}
+        datos_ingreso_esperado = _calcular_ingreso_esperado(datos_flujo_neto, datos_suceso_individual)
+        datos_gasto_esperado = _calcular_gasto_esperado(datos_flujo_neto, datos_suceso_individual)
+        suma_ingresos = _sumar_ingresos(datos_ingreso_esperado)
+        suma_gastos = _sumar_gastos(datos_gasto_esperado)
+        datos_beneficio = _calcular_beneficio(suma_ingresos, suma_gastos, zs, fracaso)
+        esperanza_matematica = -sum(datos_beneficio)
 
-            # Calcular la probabilidad de cada escenario individual (Qs * P(suceso))
-            # P(suceso) = P(llegar hasta aquí) * P(de que salga este multiplicador)
-            prob_suceso_individual = prob_por_variacion * prob_supervivencia
+        return {"esperanza_matematica": esperanza_matematica}
 
-            # Calcular las tablas E(I) y E(G) para este paso
-            e_ingresos_individuales = np.where(beneficios_de_oferta >= 0, beneficios_de_oferta * prob_suceso_individual, 0)
-            e_gastos_individuales = np.where(beneficios_de_oferta < 0, beneficios_de_oferta * prob_suceso_individual, 0)
-
-            # Sumar las tablas para obtener el E(I) y E(G) totales del paso
-            ingreso_total_paso = np.sum(e_ingresos_individuales)
-            gasto_total_paso = np.sum(e_gastos_individuales)
-            
-            # Aplicar la regla clave: el gasto solo cuenta en el 3er paso (i=2)
-            valor_apuesta_paso = ingreso_total_paso if i < 2 else (ingreso_total_paso + gasto_total_paso)
-            beneficios_paso_calculados.append(valor_apuesta_paso)
-            
-            # Actualizar la supervivencia para el SIGUIENTE paso (Ss = Ss-1 * qs)
-            prob_exito_oferta_condicional = np.sum(beneficios_de_oferta >= 0) * prob_por_variacion
-            prob_supervivencia *= (1 - prob_exito_oferta_condicional)
-
-        # 6. El valor total es la suma de los beneficios de los 3 pasos. No hay venta forzada separada.
-        valor_apuesta_total_escalado = sum(beneficios_paso_calculados)
-        valor_apuesta_total = valor_apuesta_total_escalado * escala
-
-        # --- LOG DE DEPURACIÓN FINAL ---
-        if self.DEBUG_MODE:
-            print("\n" + "="*80)
-            print(f"--- ANÁLISIS FINAL CON PUJA: {mi_puja:,.0f} € (Lógica Espejo del Excel) ---")
-            print("="*80)
-            
-            total_calculado_debug = 0
-            objetivos_excel = [30731, 12445, 2882]
-            for i, beneficio_escalado in enumerate(beneficios_paso_calculados):
-                beneficio_euros = beneficio_escalado * escala
-                total_calculado_debug += beneficio_euros
-                objetivo = objetivos_excel[i] if i < len(objetivos_excel) else 0
-                print(f"  - Paso {i+1}: {beneficio_euros:>12,.0f} €  (Objetivo Excel: {objetivo:>7,.0f} €, Dif: {beneficio_euros - objetivo:>7,.0f} €)")
-
-            print("-"*80)
-            print(f"VALOR DE APUESTA FINAL CALCULADO: {total_calculado_debug:,.0f} €")
-            print(f"VALOR DE APUESTA OBJETIVO (EXCEL): {self.VALOR_OBJETIVO_EXCEL:,.0f} €")
-            print(f"DIFERENCIA:                       {total_calculado_debug - self.VALOR_OBJETIVO_EXCEL:,.0f} €")
-            print("="*80 + "\n")
-
-        # Rellenar la tabla para la UI
-        for i, beneficio_escalado in enumerate(beneficios_paso_calculados):
-             tabla_calculo.append({
-                "Oferta #": i + 1,
-                "E(Beneficio) Paso": f"{beneficio_escalado * escala:,.0f} €"
-            })
-            
-        prob_total_de_exito_acumulada = 1 - prob_supervivencia
-        return {
-            "valor_apuesta": valor_apuesta_total, 
-            "probabilidad_beneficio": prob_total_de_exito_acumulada, 
-            "tabla_calculo": tabla_calculo
+    # --- Métodos privados para crear las configuraciones ---
+    def _crear_config_compra(self, config_usuario):
+        config = {
+            "valor_inicial": self.datos_jugador['valor'], "incremento": self.datos_jugador['incremento'],
+            "puja_k": config_usuario['puja_k'], "fecha_inicio": datetime.date.today().strftime("%d/%m/%Y"),
+            "dias_solares_configurados": config_usuario['dias_solares']
         }
+        config["dias_a_mostrar"] = config["dias_solares_configurados"] - 1
+        return config
 
-    def encontrar_puja_equilibrio(self, dias_limite, es_compra=True):
-        original_debug_mode = self.DEBUG_MODE
-        self.DEBUG_MODE = False
-        puja_estimada = self.valor_actual
-        for _ in range(30):
-            resultados = self.calcular_valoracion(puja_estimada, dias_limite, es_compra)
-            esperanza_actual = resultados['valor_apuesta']
-            if abs(esperanza_actual) < 1: break
-            puja_estimada += esperanza_actual
-        self.DEBUG_MODE = original_debug_mode
-        return int(puja_estimada)
+    def _crear_config_venta(self, config_usuario):
+        config = {
+            "valor_inicial": self.datos_jugador['valor'], "incremento": self.datos_jugador['incremento'],
+            "puja_k": self.datos_jugador['valor'], # Para el flujo vs compra original
+            "fecha_inicio": datetime.date.today().strftime("%d/%m/%Y"),
+            "dias_solares_configurados": config_usuario['dias_solares'],
+            "ofertas_por_consumir_hoy": config_usuario.get("ofertas_hoy", 2),
+            "oferta_maquina": config_usuario['oferta_maquina']
+        }
+        config["dias_a_mostrar"] = config["dias_solares_configurados"]
+        return config
+
+
+# --- FUNCIONES DE CÁLCULO GENÉRICas ---
+def _calcular_probabilidades(datos_exito):
+    if not datos_exito or not any(datos_exito.values()) or len(list(datos_exito.values())[0]) == 0: return [], [], [], []
+    num_ofertas_posibles = len(datos_exito); num_eventos = len(list(datos_exito.values())[0])
+    ps_values = [sum(datos_exito[key][i] for key in datos_exito) / num_ofertas_posibles for i in range(num_eventos)]
+    qs_values = [1 - p for p in ps_values]; zs_values, fracaso_values, prob_llegar_al_evento = [], [], 1.0
+    for ps in ps_values:
+        zs_values.append(prob_llegar_al_evento * ps); prob_llegar_al_evento *= (1 - ps); fracaso_values.append(prob_llegar_al_evento)
+    return ps_values, qs_values, zs_values, fracaso_values
+
+def _calcular_prob_suceso_individual(fracaso_acumulado, num_ofertas):
+    if not fracaso_acumulado: return []
+    prob_oferta_unica = 1 / num_ofertas; prob_suceso_individual, prob_llegar_al_evento_anterior = [], 1.0
+    for i in range(len(fracaso_acumulado)):
+        prob_suceso_individual.append(prob_llegar_al_evento_anterior * prob_oferta_unica); prob_llegar_al_evento_anterior = fracaso_acumulado[i]
+    return prob_suceso_individual
+
+def _calcular_ingreso_esperado(datos_flujo, datos_prob_individual):
+    multiplicadores = [1.05 - i * 0.01 for i in range(11)]; ingreso_esperado_datos = {f"{m:.2f}": [] for m in multiplicadores}
+    for m in multiplicadores:
+        key = f"{m:.2f}"
+        for i, flujo in enumerate(datos_flujo[key]): ingreso_esperado_datos[key].append(datos_prob_individual[key][i] * flujo if flujo > 0 else 0)
+    return ingreso_esperado_datos
+
+def _calcular_gasto_esperado(datos_flujo, datos_prob_individual):
+    multiplicadores = [1.05 - i * 0.01 for i in range(11)]; gasto_esperado_datos = {f"{m:.2f}": [] for m in multiplicadores}
+    num_eventos = len(datos_flujo["1.05"])
+    for m in multiplicadores:
+        key = f"{m:.2f}"
+        for i, flujo in enumerate(datos_flujo[key]):
+            gasto_esperado = 0
+            if i == (num_eventos - 1) and flujo < 0: gasto_esperado = datos_prob_individual[key][i] * flujo
+            gasto_esperado_datos[key].append(gasto_esperado)
+    return gasto_esperado_datos
+
+def _sumar_ingresos(datos_ingreso_esperado):
+    if not datos_ingreso_esperado: return []
+    num_eventos = len(list(datos_ingreso_esperado.values())[0])
+    return [sum(datos_ingreso_esperado[key][i] for key in datos_ingreso_esperado) for i in range(num_eventos)]
+
+def _sumar_gastos(datos_gasto_esperado):
+    if not datos_gasto_esperado: return []
+    num_eventos = len(list(datos_gasto_esperado.values())[0])
+    return [sum(datos_gasto_esperado[key][i] for key in datos_gasto_esperado) for i in range(num_eventos)]
+
+def _calcular_beneficio(suma_ingresos, suma_gastos, zs, fracaso):
+    beneficio_values = []
+    for i in range(len(suma_ingresos)): beneficio_values.append((suma_ingresos[i] * zs[i]) + (suma_gastos[i] * fracaso[i]))
+    return beneficio_values
+
+# --- FUNCIONES ESPECÍFICAS DE COMPRA ---
+def _generar_datos_ofertas_compra(config):
+    valor_actual = config["valor_inicial"]; incremento = config["incremento"]
+    fecha_actual = datetime.datetime.strptime(config["fecha_inicio"], "%d/%m/%Y").date()
+    num_dias_tabla = config["dias_a_mostrar"]
+    multiplicadores = [1.05 - i * 0.01 for i in range(11)]
+    column_headers = ["Ofertas (Os)"]; tabla_datos = {f"{m:.2f}": [] for m in multiplicadores}
+    for dia_tabla in range(num_dias_tabla):
+        num_eventos_dia = 1 if dia_tabla == 0 else 2
+        for i in range(1, num_eventos_dia + 1):
+            if dia_tabla == 0 and i == 1: valor_actual += incremento
+            elif i == 2: valor_actual += incremento
+            column_headers.append(f"{fecha_actual.strftime('%a')[:3]} {i}")
+            for m in multiplicadores: tabla_datos[f"{m:.2f}"].append(valor_actual * m)
+        fecha_actual += datetime.timedelta(days=1)
+    return column_headers, tabla_datos
+
+def _generar_datos_exito_compra(config, datos_ofertas):
+    puja_k = config["puja_k"]
+    multiplicadores = [1.05 - i * 0.01 for i in range(11)]
+    casos_exito_datos = {f"{m:.2f}": [] for m in multiplicadores}
+    for m in multiplicadores:
+        for oferta in datos_ofertas[f"{m:.2f}"]: casos_exito_datos[f"{m:.2f}"].append(1 if oferta >= puja_k else 0)
+    return casos_exito_datos
+    
+def _generar_flujo_neto_compra(config, datos_ofertas):
+    puja_k = config["puja_k"]
+    multiplicadores = [1.05 - i * 0.01 for i in range(11)]
+    flujo_neto_datos = {f"{m:.2f}": [] for m in multiplicadores}
+    for m in multiplicadores:
+        for oferta in datos_ofertas[f"{m:.2f}"]: flujo_neto_datos[f"{m:.2f}"].append(oferta - puja_k)
+    return flujo_neto_datos
+
+# --- FUNCIONES ESPECÍFICAS DE VENTA ---
+def _generar_datos_ofertas_venta(config):
+    valor_actual = config["valor_inicial"]; incremento = config["incremento"]
+    if config["ofertas_por_consumir_hoy"] == 1: valor_actual -= incremento
+    fecha_actual = datetime.datetime.strptime(config["fecha_inicio"], "%d/%m/%Y").date()
+    num_dias_tabla = config["dias_a_mostrar"]
+    multiplicadores = [1.05 - i * 0.01 for i in range(11)]
+    column_headers = ["Ofertas (Os)"]; tabla_datos = {f"{m:.2f}": [] for m in multiplicadores}
+    for dia_tabla in range(num_dias_tabla):
+        num_eventos_dia = config["ofertas_por_consumir_hoy"] if dia_tabla == 0 else 2
+        if num_eventos_dia == 0 and dia_tabla == 0: fecha_actual += datetime.timedelta(days=1); continue
+        for i in range(1, num_eventos_dia + 1):
+            if i == 2: valor_actual += incremento
+            column_headers.append(f"{fecha_actual.strftime('%a')[:3]} {i}")
+            for m in multiplicadores: tabla_datos[f"{m:.2f}"].append(valor_actual * m)
+        fecha_actual += datetime.timedelta(days=1)
+    return column_headers, tabla_datos
+
+def _generar_datos_exito_venta(config, datos_ofertas):
+    umbral_exito = config["oferta_maquina"]
+    multiplicadores = [1.05 - i * 0.01 for i in range(11)]
+    casos_exito_datos = {f"{m:.2f}": [] for m in multiplicadores}; dias_por_evento = []; dia_actual = 1
+    eventos_en_dia = 0; num_eventos_totales = len(list(datos_ofertas.values())[0])
+    ofertas_primer_dia = config["ofertas_por_consumir_hoy"]
+    for i in range(num_eventos_totales):
+        dias_por_evento.append(dia_actual); eventos_en_dia += 1
+        limite_eventos = ofertas_primer_dia if dia_actual == 1 else 2
+        if eventos_en_dia >= limite_eventos: dia_actual += 1; eventos_en_dia = 0
+    for m in multiplicadores:
+        key = f"{m:.2f}"
+        for i, oferta in enumerate(datos_ofertas[key]):
+            dia_actual_del_evento = dias_por_evento[i]
+            casos_exito_datos[key].append(1 if oferta >= umbral_exito and dia_actual_del_evento > 1 else 0)
+    return casos_exito_datos
+
+def _generar_flujo_neto_venta(config, datos_ofertas):
+    oferta_maquina = config["oferta_maquina"]
+    multiplicadores = [1.05 - i * 0.01 for i in range(11)]
+    flujo_neto_datos = {f"{m:.2f}": [] for m in multiplicadores}
+    for m in multiplicadores:
+        for oferta in datos_ofertas[f"{m:.2f}"]: flujo_neto_datos[f"{m:.2f}"].append(oferta - oferta_maquina)
+    return flujo_neto_datos
