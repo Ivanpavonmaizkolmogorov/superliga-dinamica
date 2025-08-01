@@ -280,5 +280,37 @@
                 "nombre_mister": "Al Hansi Flick 🏆🏆"
             }
         ]
+    },
+    {
+        "message_id": 587,
+        "reply_to_message_id": null,
+        "telegram_user_id": 1192183458,
+        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
+        "declaracion": "Pedrico si le viniera bien a él tú que piensas que estaría puesto ya o no? Perico Definitivo te está vacilando pero bien él colega Corpas",
+        "timestamp": "2025-08-01T09:08:22.536153",
+        "mencionados": [
+            {
+                "telegram_user_id": 7164678052,
+                "nombre_mister": "Perico"
+            },
+            {
+                "telegram_user_id": 6959330748,
+                "nombre_mister": "Al Hansi Flick 🏆🏆"
+            }
+        ]
+    },
+    {
+        "message_id": 589,
+        "reply_to_message_id": null,
+        "telegram_user_id": 3195403,
+        "nombre_mister": "The 👑",
+        "declaracion": "Dejar a mi capitán Bro '' ER tranquilo que tiene otras cosas más importantes ahora mismo en la cabeza... Ucha tú estos con la presión.  quieren más jugadores en el mercado para gastarselos antes.",
+        "timestamp": "2025-08-01T09:34:14.653065",
+        "mencionados": [
+            {
+                "telegram_user_id": 6959330748,
+                "nombre_mister": "Al Hansi Flick 🏆🏆"
+            }
+        ]
     }
 ]

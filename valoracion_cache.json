@@ -1,10 +1,61 @@
 {
-  "para_fichar": [],
+  "para_fichar": [
+    {
+      "nombre": "Akor Adams",
+      "valor": 622000,
+      "incremento": 42000
+    },
+    {
+      "nombre": "Pere Milla",
+      "valor": 591000,
+      "incremento": 8000
+    },
+    {
+      "nombre": "Conor Gallagher",
+      "valor": 4664000,
+      "incremento": 140000
+    },
+    {
+      "nombre": "Carles Aleñá",
+      "valor": 1020000,
+      "incremento": 70000
+    },
+    {
+      "nombre": "Kike Barja",
+      "valor": 631000,
+      "incremento": 16000
+    },
+    {
+      "nombre": "Peter Federico",
+      "valor": 269000,
+      "incremento": -6000
+    },
+    {
+      "nombre": "Valentin Rosier",
+      "valor": 4016000,
+      "incremento": 128000
+    },
+    {
+      "nombre": "Fernando Calero",
+      "valor": 866000,
+      "incremento": 47000
+    },
+    {
+      "nombre": "Pablo Ramón",
+      "valor": 190000,
+      "incremento": -14000
+    },
+    {
+      "nombre": "Unai Simón",
+      "valor": 10168000,
+      "incremento": -39000
+    }
+  ],
   "para_vender": [
     {
       "nombre": "Alexander Sørloth",
       "valor": 13028000,
-      "incremento": 31000
+      "incremento": -31000
     }
   ]
 }

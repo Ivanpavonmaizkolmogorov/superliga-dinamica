@@ -62,6 +62,8 @@ def clean_value(text_value):
     except (ValueError, TypeError):
         return 0
 
+# Dentro de tu fichero scraper_mercado.py
+
 def extraer_jugadores_mercado():
     print("INFO: Iniciando scraper de mercado...")
     my_manager_id = get_my_manager_id()
@@ -112,13 +114,24 @@ def extraer_jugadores_mercado():
                     nombre = page.locator(f"{PLAYER_INFO_SELECTOR} .name").first.inner_text()
                     apellido = page.locator(f"{PLAYER_INFO_SELECTOR} .surname").first.inner_text()
                     nombre_completo = f"{nombre} {apellido}"
-
                     valor_raw = page.locator(PLAYER_DETAIL_VALUE_SELECTOR).first.inner_text()
-                    incremento_raw = page.locator(INCREMENT_SELECTOR).first.inner_text()
+                    
+                    # --- LÓGICA DE INCREMENTO CORREGIDA Y VALIDADA ---
+                    incremento_element = page.locator(INCREMENT_SELECTOR).first
+                    incremento_raw = incremento_element.inner_text()
+                    # Obtenemos la cadena de clases del elemento (ej: "prev-value red")
+                    incremento_class = incremento_element.get_attribute("class") or ""
+                    
+                    incremento_valor = clean_value(incremento_raw)
+                    
+                    # Si la clase contiene la palabra 'red', convertimos el número a negativo
+                    if "red" in incremento_class and incremento_valor > 0:
+                        incremento_valor = -incremento_valor
+                    # ----------------------------------------------------
                     
                     player_data['nombre'] = nombre_completo.strip()
                     player_data['valor'] = clean_value(valor_raw)
-                    player_data['incremento'] = clean_value(incremento_raw)
+                    player_data['incremento'] = incremento_valor
 
                     if player_info['owner'] == '0':
                         print(f"  -> FICHAR: {player_data['nombre']} (Valor: {player_data['valor']}) Inc: {player_data['incremento']}")
@@ -128,7 +141,7 @@ def extraer_jugadores_mercado():
                         jugadores_para_vender.append(player_data)
 
                 except Exception as e:
-                    print(f"     AVISO: No se pudo procesar la URL '{player_info.get('url', 'desconocida')}'. Error: {e}")
+                    print(f"      AVISO: No se pudo procesar la URL '{player_info.get('url', 'desconocida')}'. Error: {e}")
             
             return {"para_fichar": jugadores_para_fichar, "para_vender": jugadores_para_vender}
 
@@ -139,7 +152,6 @@ def extraer_jugadores_mercado():
             if context:
                 print("INFO: Cerrando navegador...")
                 context.close()
-
 
 # --- Bloque para probar este script de forma aislada ---
 if __name__ == '__main__':
