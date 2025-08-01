@@ -8,7 +8,7 @@ class VistaValoracion(tk.Frame):
         self.master = master
         self.controller = controller
         self.master.title("Módulo de Valoración de Fichajes")
-        self.master.geometry("1200x700")
+        self.master.geometry("1450x700") # Ancho aumentado para la nueva columna
         self.configure(bg="#f0f0f0")
 
         # --- Paneles Principales ---
@@ -26,12 +26,10 @@ class VistaValoracion(tk.Frame):
         self.notebook.pack(fill=tk.BOTH, expand=True)
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_changed)
 
-        # Pestaña FICHAR
         self.fichar_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.fichar_frame, text='Para Fichar')
         self.tree_fichar = self.crear_tabla(self.fichar_frame, "fichar")
 
-        # Pestaña VENDER
         self.vender_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.vender_frame, text='Para Vender')
         self.tree_vender = self.crear_tabla(self.vender_frame, "vender")
@@ -40,7 +38,6 @@ class VistaValoracion(tk.Frame):
         self.on_tab_changed(None)
 
     def on_tab_changed(self, event):
-        """Muestra el panel de simulación correcto según la pestaña activa."""
         pestana_activa = self.notebook.tab(self.notebook.select(), "text")
         if pestana_activa == 'Para Fichar':
             self.vender_params_frame.pack_forget()
@@ -50,23 +47,16 @@ class VistaValoracion(tk.Frame):
             self.vender_params_frame.pack(fill=tk.X, pady=10)
 
     def crear_tabla(self, parent, tipo_tabla):
-        """Crea un Treeview para mostrar los datos."""
-        columnas = ("nombre", "valor", "inc", "puja", "dias", "em")
-        if tipo_tabla == "vender":
-            columnas = ("nombre", "valor", "inc", "oferta_maq", "ofertas_hoy", "dias", "em")
-
-        tree = ttk.Treeview(parent, columns=columnas, show="headings")
+        tree = ttk.Treeview(parent, show="headings")
         tree.bind('<<TreeviewSelect>>', lambda e, t=tipo_tabla: self.controller.on_player_select(e, t))
         
         scrollbar = ttk.Scrollbar(parent, orient="vertical", command=tree.yview)
         tree.configure(yscrollcommand=scrollbar.set)
         scrollbar.pack(side="right", fill="y")
         tree.pack(side="left", fill="both", expand=True)
-
         return tree
 
     def poblar_tabla(self, tipo_tabla, datos_tabla):
-        """Rellena la tabla Treeview."""
         tree = self.tree_fichar if tipo_tabla == "fichar" else self.tree_vender
         
         for i in tree.get_children():
@@ -75,7 +65,11 @@ class VistaValoracion(tk.Frame):
         tree["columns"] = datos_tabla['headers_id']
         for i, header_text in enumerate(datos_tabla['headers_display']):
             tree.heading(datos_tabla['headers_id'][i], text=header_text, anchor='w')
-            ancho = 160 if i == 0 else (140 if i == (len(datos_tabla['headers_id']) - 1) else 80)
+            ancho = 160
+            last_col_index = len(datos_tabla['headers_id']) - 1
+            if i in [last_col_index, last_col_index - 1, last_col_index - 2]: ancho = 140
+            else: ancho = 100
+            if i == 0: ancho = 160
             tree.column(datos_tabla['headers_id'][i], width=ancho, anchor="w")
 
         for row in datos_tabla['data']:
@@ -106,8 +100,7 @@ class VistaValoracion(tk.Frame):
         
         res_group = tk.LabelFrame(self.right_frame, text="Resultado del Análisis", padx=15, pady=10)
         res_group.pack(fill=tk.X, pady=10)
-        self.lbl_equilibrio_valor = self.create_detail_row(res_group, "Puja/Oferta de Equilibrio:", 0, font_size=10, bold=True, color="#00008B")
-        self.lbl_valor_apuesta = self.create_detail_row(res_group, "Esperanza Matemática:", 1, font_size=12, bold=True, color="#006400")
+        self.lbl_valor_apuesta = self.create_detail_row(res_group, "Esperanza Matemática:", 0, font_size=12, bold=True, color="#006400")
         
     def create_spinbox_row(self, parent, label_text, row, variable, from_, to, increment):
         tk.Label(parent, text=label_text).grid(row=row, column=0, sticky="w", pady=5)

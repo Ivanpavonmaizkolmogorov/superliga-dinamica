@@ -45,34 +45,38 @@ class MotorCalculo:
         esperanza_matematica = -sum(datos_beneficio)
 
         return {"esperanza_matematica": esperanza_matematica}
-    def encontrar_puja_equilibrio(self, config_usuario, tipo_analisis):
+    def encontrar_puja_equilibrio(self, dias_solares, tipo_analisis):
         """
         Este método ahora actúa como un distribuidor: llama a la función correcta
         dependiendo de si es una compra o una venta.
         """
         if tipo_analisis == "fichar":
-            return self._encontrar_puja_equilibrio_compra(config_usuario)
+            return self._encontrar_puja_equilibrio_compra(dias_solares)
         elif tipo_analisis == "vender":
-            return self._encontrar_oferta_equilibrio_venta(config_usuario)
+            return self._encontrar_oferta_equilibrio_venta(dias_solares)
         return 0
-    # --- Métodos privados para búsqueda de equilibrio ---
-    def _encontrar_puja_equilibrio_compra(self, config_usuario):
+
+    def _encontrar_puja_equilibrio_compra(self, dias_solares):
         """Encuentra el equilibrio para una COMPRA (método iterativo simple)."""
+        config_base = {"dias_solares": dias_solares}
         puja_estimada = self.datos_jugador.get('valor', 0)
+        
         for _ in range(25):
-            config_usuario['puja_k'] = puja_estimada
-            resultados = self.analizar_compra(config_usuario)
+            config_base['puja_k'] = puja_estimada
+            resultados = self.analizar_compra(config_base)
             esperanza_actual = resultados['esperanza_matematica']
             if abs(esperanza_actual) < 1: break
             puja_estimada += esperanza_actual
         return int(puja_estimada)
 
-    def _encontrar_oferta_equilibrio_venta(self, config_usuario):
+    def _encontrar_oferta_equilibrio_venta(self, dias_solares):
         """Encuentra el equilibrio para una VENTA (método de bisección, más estable)."""
+        config_base = {"dias_solares": dias_solares, "ofertas_hoy": 1} # Asumimos 1 oferta para el cálculo
+        
         limite_inferior = self.datos_jugador.get('valor', 0)
         limite_superior = limite_inferior * 2
         
-        config_test = config_usuario.copy()
+        config_test = config_base.copy()
         config_test['oferta_maquina'] = limite_inferior
         try:
             esperanza_inferior = self.analizar_venta(config_test)['esperanza_matematica']
@@ -83,13 +87,12 @@ class MotorCalculo:
             oferta_media = (limite_inferior + limite_superior) / 2
             if abs(limite_superior - limite_inferior) < 1: break
             
-            config_usuario['oferta_maquina'] = oferta_media
-            esperanza_actual = self.analizar_venta(config_usuario)['esperanza_matematica']
+            config_base['oferta_maquina'] = oferta_media
+            esperanza_actual = self.analizar_venta(config_base)['esperanza_matematica']
             
             if abs(esperanza_actual) < 1:
                 return int(oferta_media)
             
-            # Lógica de bisección para ajustar los límites
             if (esperanza_inferior > 0 and esperanza_actual > 0) or \
                (esperanza_inferior < 0 and esperanza_actual < 0):
                 limite_inferior = oferta_media
