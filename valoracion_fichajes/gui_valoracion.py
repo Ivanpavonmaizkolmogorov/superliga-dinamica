@@ -36,12 +36,17 @@ class VistaValoracion(tk.Frame):
         self.notebook.pack(fill=tk.BOTH, expand=True)
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_changed)
 
+        # --- Pestaña FICHAR ---
         self.fichar_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.fichar_frame, text='Para Fichar')
         self.tree_fichar = self.crear_tabla(self.fichar_frame, "fichar")
 
+        # --- Pestaña VENDER (con su propio botón) ---
         self.vender_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.vender_frame, text='Para Vender')
+        # Se añade el botón aquí, encima de la tabla de venta
+        self.btn_get_offer = ttk.Button(self.vender_frame, text="Actualizar Ofertas de la Máquina para TODOS", command=self.controller.trigger_fetch_machine_offer)
+        self.btn_get_offer.pack(fill=tk.X, pady=5)
         self.tree_vender = self.crear_tabla(self.vender_frame, "vender")
         
         self.setup_details_panel()
@@ -91,29 +96,42 @@ class VistaValoracion(tk.Frame):
             tree.insert("", "end", values=tuple(formatted_row), iid=row[0])
 
     def setup_details_panel(self):
+        # Frame de Detalles del Jugador
         details_group = tk.LabelFrame(self.right_frame, text="Detalles del Jugador", padx=15, pady=10)
         details_group.pack(fill=tk.X, pady=10)
         self.lbl_nombre = self.create_detail_row(details_group, "Nombre:", 0)
         
+        # --- Variables de control para los Spinbox ---
         self.puja_var = tk.IntVar()
         self.dias_var = tk.IntVar(value=8)
         self.oferta_maquina_var = tk.IntVar()
         self.ofertas_hoy_var = tk.IntVar(value=1)
+        self.toggle_b_var = tk.BooleanVar()
 
+        # --- Panel de Parámetros de Compra ---
         self.fichar_params_frame = tk.LabelFrame(self.right_frame, text="Parámetros de Compra", padx=15, pady=10)
         self.create_spinbox_row(self.fichar_params_frame, "Mi Puja (€):", 0, self.puja_var, 0, 1e8, 10000)
         self.create_spinbox_row(self.fichar_params_frame, "Días Solares:", 1, self.dias_var, 2, 100, 1)
+        self.toggle_b = ttk.Checkbutton(
+            self.fichar_params_frame, 
+            text="Activar Lógica 'B'", 
+            variable=self.toggle_b_var, 
+            command=self.controller.recalculate_results
+        )
+        self.toggle_b.grid(row=2, column=0, columnspan=2, sticky="w", pady=5)
 
+        # --- Panel de Parámetros de Venta ---
         self.vender_params_frame = tk.LabelFrame(self.right_frame, text="Parámetros de Venta", padx=15, pady=10)
         self.create_spinbox_row(self.vender_params_frame, "Oferta Máquina (€):", 0, self.oferta_maquina_var, 0, 1e8, 10000)
         self.create_spinbox_row(self.vender_params_frame, "Ofertas Hoy (0-2):", 1, self.ofertas_hoy_var, 0, 2, 1)
         self.create_spinbox_row(self.vender_params_frame, "Días Solares:", 2, self.dias_var, 2, 100, 1)
         
+        # --- Panel de Resultados del Análisis ---
         res_group = tk.LabelFrame(self.right_frame, text="Resultado del Análisis", padx=15, pady=10)
         res_group.pack(fill=tk.X, pady=10)
         self.lbl_equilibrio_valor = self.create_detail_row(res_group, "Puja/Oferta de Equilibrio:", 0, font_size=10, bold=True, color="#00008B")
         self.lbl_valor_apuesta = self.create_detail_row(res_group, "Esperanza Matemática:", 1, font_size=12, bold=True, color="#006400")
-        
+
     def create_spinbox_row(self, parent, label_text, row, variable, from_, to, increment):
         tk.Label(parent, text=label_text).grid(row=row, column=0, sticky="w", pady=5)
         spinbox = ttk.Spinbox(parent, from_=from_, to=to, increment=increment, textvariable=variable, command=self.controller.recalculate_results, width=15)

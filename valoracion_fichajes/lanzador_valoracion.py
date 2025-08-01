@@ -6,6 +6,7 @@ import os
 import locale
 from .gui_valoracion import VistaValoracion
 from .motor_calculo import MotorCalculo
+from .scraper_ofertas_recibidas import extraer_ofertas_maquina
 from .scraper_mercado import extraer_jugadores_mercado
 
 CACHE_FILE = 'valoracion_cache.json'
@@ -32,6 +33,70 @@ class ValoracionController:
         
         self.load_data_from_cache()
 
+    def trigger_fetch_machine_offer(self):
+        """Lanza el scraper de ofertas recibidas para todos los jugadores."""
+        self.view.btn_get_offer.config(state="disabled", text="Buscando...")
+        threading.Thread(target=self.fetch_and_update_all_offers, daemon=True).start()
+
+    def fetch_and_update_all_offers(self):
+        """Ejecuta el scraper y pasa los resultados a la función de actualización."""
+        ofertas = extraer_ofertas_maquina()
+        self.root.after(0, self.on_fetch_all_offers_complete, ofertas)
+
+    def on_fetch_all_offers_complete(self, ofertas):
+        """
+        Recibe todas las ofertas, actualiza los datos en memoria, recalcula
+        y refresca la tabla de venta por completo.
+        """
+        self.view.btn_get_offer.config(state="normal", text="Actualizar Ofertas de la Máquina para TODOS")
+        if ofertas is None:
+            messagebox.showerror("Error", "No se pudieron obtener las ofertas de la máquina.")
+            return
+        if not ofertas:
+            messagebox.showinfo("Info", "No se encontraron nuevas ofertas de la máquina.")
+            return
+
+        print("INFO: Actualizando tabla de venta con nuevas ofertas...")
+        
+        # Recorremos la lista de datos original y la actualizamos
+        for i, player_row in enumerate(self.datos_originales_vender):
+            nombre_jugador = player_row[0]
+            if nombre_jugador in ofertas:
+                print(f"  -> Actualizando oferta para {nombre_jugador}")
+                # El índice 3 corresponde a 'Oferta Máquina'
+                self.datos_originales_vender[i][3] = ofertas[nombre_jugador]
+
+        # Ahora, recalculamos toda la lista de datos con la información actualizada
+        datos_vender_recalculados = []
+        dias_defecto = self.view.dias_global_var.get()
+        for j_row in self.datos_originales_vender:
+            nombre = j_row[0]
+            motor = self.motores_calculo[nombre]
+            config = {
+                "oferta_maquina": j_row[3], # Usamos la oferta actualizada
+                "ofertas_hoy": j_row[4],
+                "dias_solares": dias_defecto # Usamos los días globales
+            }
+            resultado = motor.analizar_venta(config)
+            equilibrio = motor.encontrar_puja_equilibrio(dias_defecto, "vender")
+            margen = equilibrio - j_row[3]
+            
+            # Reconstruimos la fila
+            datos_vender_recalculados.append([
+                nombre, j_row[1], j_row[2], j_row[3], j_row[4], dias_defecto,
+                resultado['esperanza_matematica'], equilibrio, margen
+            ])
+        
+        # Guardamos los datos actualizados y repoblamos la tabla
+        self.datos_originales_vender = datos_vender_recalculados.copy()
+        
+        headers_vender = {
+            "id": ("nombre", "valor", "inc", "oferta_maq", "ofertas_hoy", "dias", "em", "equilibrio", "margen"), 
+            "display": ["Nombre", "Valor", "Inc.", "Oferta Máquina", "Ofertas Hoy", "Días", "Esp. Matemática", "Oferta Equilibrio", "Margen"]
+        }
+        self.view.poblar_tabla("vender", {"headers_id": headers_vender["id"], "headers_display": headers_vender["display"], "data": self.datos_originales_vender})
+        messagebox.showinfo("Éxito", f"Tabla de venta actualizada con {len(ofertas)} oferta(s) encontrada(s).")
+        
     def load_data_from_cache(self):
         if os.path.exists(CACHE_FILE):
             try:
