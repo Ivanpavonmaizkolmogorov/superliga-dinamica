@@ -8,6 +8,7 @@ from .gui_valoracion import VistaValoracion
 from .motor_calculo import MotorCalculo
 from .scraper_ofertas_recibidas import extraer_ofertas_maquina
 from .scraper_mercado import extraer_jugadores_mercado
+from .bot_pujas import realizar_pujas
 
 CACHE_FILE = 'valoracion_cache.json'
 
@@ -96,7 +97,59 @@ class ValoracionController:
         }
         self.view.poblar_tabla("vender", {"headers_id": headers_vender["id"], "headers_display": headers_vender["display"], "data": self.datos_originales_vender})
         messagebox.showinfo("Éxito", f"Tabla de venta actualizada con {len(ofertas)} oferta(s) encontrada(s).")
+
+    def trigger_auto_bid(self):
+        """Prepara los datos y lanza el bot de pujas SOLO para los jugadores seleccionados."""
         
+        # 1. Obtener las filas seleccionadas de la tabla de fichar
+        tree = self.view.tree_fichar
+        selected_items = tree.selection()
+
+        if not selected_items:
+            messagebox.showwarning("Sin Selección", "Por favor, selecciona uno o más jugadores de la tabla para pujar.")
+            return
+
+        # 2. Recopilar datos SOLO de las filas seleccionadas
+        pujas_a_realizar = []
+        for item_id in selected_items:
+            valores_fila = tree.item(item_id, 'values')
+            try:
+                nombre = valores_fila[0]
+                # La Puja de Equilibrio está en la penúltima columna
+                puja_equilibrio = int(str(valores_fila[-2]).replace('.', '').replace(',', '.'))
+                pujas_a_realizar.append({"nombre": nombre, "puja": puja_equilibrio})
+            except (IndexError, ValueError):
+                continue
+        
+        if not pujas_a_realizar:
+            messagebox.showerror("Error", "No se pudieron leer los datos de los jugadores seleccionados.")
+            return
+
+        # 3. Pedir confirmación al usuario
+        mensaje = "Se va a intentar pujar por los siguientes jugadores con su puja de equilibrio:\n\n"
+        for p in pujas_a_realizar:
+            mensaje += f"- {p['nombre']}: {p['puja']:,} €\n"
+        mensaje += "\n¿Deseas continuar?"
+        
+        if messagebox.askyesno("Confirmar Pujas Automáticas", mensaje):
+            self.view.btn_auto_bid.config(state="disabled", text="Pujando...")
+            # 4. Lanzar el bot en un hilo
+            threading.Thread(target=self.run_auto_bid, args=(pujas_a_realizar,), daemon=True).start()
+            
+    def run_auto_bid(self, pujas_a_realizar):
+        """Ejecuta el bot y gestiona el resultado."""
+        resultado = realizar_pujas(pujas_a_realizar)
+        self.root.after(0, self.on_auto_bid_complete, resultado)
+
+    def on_auto_bid_complete(self, resultado):
+        """Callback que se ejecuta cuando el bot de pujas termina."""
+        self.view.btn_auto_bid.config(state="normal", text="Realizar TODAS las Pujas de Equilibrio")
+        if resultado and resultado.get("exito"):
+            messagebox.showinfo("Proceso Finalizado", resultado.get("mensaje", "Las pujas se han completado."))
+        else:
+            messagebox.showerror("Error en el Bot", resultado.get("mensaje", "Ocurrió un error durante el proceso de puja."))
+
+
     def load_data_from_cache(self):
         if os.path.exists(CACHE_FILE):
             try:

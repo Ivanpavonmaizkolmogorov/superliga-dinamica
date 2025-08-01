@@ -36,22 +36,23 @@ class VistaValoracion(tk.Frame):
         self.notebook.pack(fill=tk.BOTH, expand=True)
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_changed)
 
-        # --- Pestaña FICHAR ---
+        # --- Pestaña FICHAR (con su propio botón de auto-puja) ---
         self.fichar_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.fichar_frame, text='Para Fichar')
+        self.btn_auto_bid = ttk.Button(self.fichar_frame, text="Realizar TODAS las Pujas de Equilibrio", command=self.controller.trigger_auto_bid)
+        self.btn_auto_bid.pack(fill=tk.X, pady=5)
         self.tree_fichar = self.crear_tabla(self.fichar_frame, "fichar")
 
-        # --- Pestaña VENDER (con su propio botón) ---
+        # --- Pestaña VENDER ---
         self.vender_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.vender_frame, text='Para Vender')
-        # Se añade el botón aquí, encima de la tabla de venta
         self.btn_get_offer = ttk.Button(self.vender_frame, text="Actualizar Ofertas de la Máquina para TODOS", command=self.controller.trigger_fetch_machine_offer)
         self.btn_get_offer.pack(fill=tk.X, pady=5)
         self.tree_vender = self.crear_tabla(self.vender_frame, "vender")
         
         self.setup_details_panel()
         self.on_tab_changed(None)
-
+        
     def on_tab_changed(self, event):
         pestana_activa = self.notebook.tab(self.notebook.select(), "text")
         if pestana_activa == 'Para Fichar':
