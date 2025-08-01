@@ -1,0 +1,58 @@
+[
+  {
+    "nombre_pareja": "La Dinastía",
+    "id_managers": [
+      "7106479",
+      "14581041"
+    ],
+    "justificacion": "Juntad al 'Saboteador' de fichajes con el 4 veces campeón 'The Special Juan'. Uno te roba la ganga que esperas y el otro encuentra la que no ves. Con 6 títulos entre ambos, no son una pareja, son una dinastía."
+  },
+  {
+    "nombre_pareja": "Los Último Minuto",
+    "id_managers": [
+      "7107051",
+      "14574192"
+    ],
+    "justificacion": "Un equipo forjado en la urgencia. Cuando juntas a un 'experto en parches' de última hora con alguien que 'siempre llega tarde al mercado', el resultado es una estrategia clara: dejarlo todo para el final. Su presión alta no es solo en el campo, sino también contra el reloj."
+  },
+  {
+    "nombre_pareja": "Verde que te quiero Riesgo",
+    "id_managers": [
+      "7106472",
+      "7108124"
+    ],
+    "justificacion": "El equilibrio perfecto entre la audacia y la prudencia. Rafatobalo pone el riesgo y la caza de gangas, mientras Pericles asegura las 'puntuaciones verdes' y la estabilidad. Uno busca la emoción del pelotazo; el otro, la tranquilidad de la regularidad."
+  },
+  {
+    "nombre_pareja": "La Nolitada United",
+    "id_managers": [
+      "7110624",
+      "7101774"
+    ],
+    "justificacion": "La historia ha unido lo que 'La Nolitada' separó. El mago que vendió a Nolito a precio de oro y el cartera que lo compró, ahora son compañeros y rivales históricos. ¿Podrán alcanzar la gloria o habrá una segunda Nolitada interna?"
+  },
+  {
+    "nombre_pareja": "El Imperio del Mediocampo",
+    "id_managers": [
+      "12112883",
+      "10361479"
+    ],
+    "justificacion": "La unión de un amante del 'Tikitaka' con un especialista en 'mucho pelotero en medio campo'. Juntos, usan parches y gangas para construir una medular dominante. Su objetivo es claro: controlar el balón y el partido desde el círculo central."
+  },
+  {
+    "nombre_pareja": "Revolución o Desastre",
+    "id_managers": [
+      "8524310",
+      "8539397"
+    ],
+    "justificacion": "Unen a 'la revelación del torneo' con un campeón que conoce el desastre de los 'innumerables negativos'. Su estilo es una mezcla de riesgo y 'fuel al centro del campo'. Cada jornada será un todo o nada: o la revolución o el próximo gran desastre."
+  },
+  {
+    "nombre_pareja": "Ataque a Muerte",
+    "id_managers": [
+      "13305509",
+      "7106544"
+    ],
+    "justificacion": "Una dupla ofensiva con dos métodos para un mismo fin. PIRI busca el ataque con gangas, mientras que THE ELEVATOR lo alimenta tirando de cartera. Juntos, representan una filosofía de riesgo total, aunque a veces el ascensor baje al descenso por un error de cálculo."
+  }
+]

@@ -11,7 +11,6 @@ class VistaValoracion(tk.Frame):
         self.master.geometry("1450x700")
         self.configure(bg="#f0f0f0")
 
-        # --- Paneles Principales ---
         self.right_frame = tk.Frame(self, width=350)
         self.right_frame.pack(side=tk.RIGHT, fill=tk.Y, padx=(0, 10), pady=10)
         self.right_frame.pack_propagate(False)
@@ -22,24 +21,16 @@ class VistaValoracion(tk.Frame):
         self.btn_update = ttk.Button(left_panel, text="Actualizar Datos del Mercado", command=self.controller.trigger_scrape)
         self.btn_update.pack(fill=tk.X, pady=(0, 10))
 
-        # --- PANEL DE CONTROLES GLOBALES ---
         global_controls_frame = tk.Frame(left_panel)
         global_controls_frame.pack(fill=tk.X, pady=(0, 5))
-        
         tk.Label(global_controls_frame, text="Días Límite (Global):").pack(side=tk.LEFT, padx=(0, 5))
-        
         self.dias_global_var = tk.IntVar(value=8)
         self.spin_dias_global = ttk.Spinbox(
-            global_controls_frame,
-            from_=2,
-            to=100,
-            increment=1,
-            textvariable=self.dias_global_var,
-            width=5,
+            global_controls_frame, from_=2, to=100, increment=1,
+            textvariable=self.dias_global_var, width=5,
             command=self.controller.recalculate_all_rows
         )
         self.spin_dias_global.pack(side=tk.LEFT)
-        # --- FIN DEL PANEL GLOBAL ---
 
         self.notebook = ttk.Notebook(left_panel)
         self.notebook.pack(fill=tk.BOTH, expand=True)
@@ -82,7 +73,9 @@ class VistaValoracion(tk.Frame):
         
         tree["columns"] = datos_tabla['headers_id']
         for i, header_text in enumerate(datos_tabla['headers_display']):
-            tree.heading(datos_tabla['headers_id'][i], text=header_text, anchor='w')
+            tree.heading(datos_tabla['headers_id'][i], text=header_text, anchor='w', 
+                        command=lambda c=datos_tabla['headers_id'][i]: self.controller.on_header_click(c, tipo_tabla))
+            
             ancho = 160
             last_col_index = len(datos_tabla['headers_id']) - 1
             if i in [last_col_index, last_col_index - 1, last_col_index - 2]: ancho = 140
