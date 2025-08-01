@@ -47,34 +47,56 @@ class MotorCalculo:
         return {"esperanza_matematica": esperanza_matematica}
     def encontrar_puja_equilibrio(self, config_usuario, tipo_analisis):
         """
-        NUEVO: Encuentra iterativamente la puja/oferta que hace la Esperanza Matemática = 0.
+        Este método ahora actúa como un distribuidor: llama a la función correcta
+        dependiendo de si es una compra o una venta.
         """
         if tipo_analisis == "fichar":
-            # Empezamos estimando con el valor del jugador
-            puja_estimada = self.datos_jugador.get('valor', 0)
-            
-            # Iteramos para converger
-            for _ in range(25): # 25 iteraciones son más que suficientes
-                config_usuario['puja_k'] = puja_estimada
-                resultados = self.analizar_compra(config_usuario)
-                esperanza_actual = resultados['esperanza_matematica']
-                if abs(esperanza_actual) < 1: break # Si estamos muy cerca, paramos
-                # Ajustamos la puja en base a la esperanza. Si es positiva, subimos la puja.
-                puja_estimada += esperanza_actual
-            return int(puja_estimada)
-
+            return self._encontrar_puja_equilibrio_compra(config_usuario)
         elif tipo_analisis == "vender":
-            # La lógica es la misma, pero ajustando la oferta de la máquina
-            oferta_estimada = self.datos_jugador.get('valor', 0)
-            for _ in range(25):
-                config_usuario['oferta_maquina'] = oferta_estimada
-                resultados = self.analizar_venta(config_usuario)
-                esperanza_actual = resultados['esperanza_matematica']
-                if abs(esperanza_actual) < 1: break
-                oferta_estimada += esperanza_actual
-            return int(oferta_estimada)
-        
+            return self._encontrar_oferta_equilibrio_venta(config_usuario)
         return 0
+    # --- Métodos privados para búsqueda de equilibrio ---
+    def _encontrar_puja_equilibrio_compra(self, config_usuario):
+        """Encuentra el equilibrio para una COMPRA (método iterativo simple)."""
+        puja_estimada = self.datos_jugador.get('valor', 0)
+        for _ in range(25):
+            config_usuario['puja_k'] = puja_estimada
+            resultados = self.analizar_compra(config_usuario)
+            esperanza_actual = resultados['esperanza_matematica']
+            if abs(esperanza_actual) < 1: break
+            puja_estimada += esperanza_actual
+        return int(puja_estimada)
+
+    def _encontrar_oferta_equilibrio_venta(self, config_usuario):
+        """Encuentra el equilibrio para una VENTA (método de bisección, más estable)."""
+        limite_inferior = self.datos_jugador.get('valor', 0)
+        limite_superior = limite_inferior * 2
+        
+        config_test = config_usuario.copy()
+        config_test['oferta_maquina'] = limite_inferior
+        try:
+            esperanza_inferior = self.analizar_venta(config_test)['esperanza_matematica']
+        except (IndexError, TypeError):
+            return int(limite_inferior)
+
+        for _ in range(25):
+            oferta_media = (limite_inferior + limite_superior) / 2
+            if abs(limite_superior - limite_inferior) < 1: break
+            
+            config_usuario['oferta_maquina'] = oferta_media
+            esperanza_actual = self.analizar_venta(config_usuario)['esperanza_matematica']
+            
+            if abs(esperanza_actual) < 1:
+                return int(oferta_media)
+            
+            # Lógica de bisección para ajustar los límites
+            if (esperanza_inferior > 0 and esperanza_actual > 0) or \
+               (esperanza_inferior < 0 and esperanza_actual < 0):
+                limite_inferior = oferta_media
+            else:
+                limite_superior = oferta_media
+                
+        return int(limite_superior)
     # --- Métodos privados para crear las configuraciones ---
     def _crear_config_compra(self, config_usuario):
         config = {
