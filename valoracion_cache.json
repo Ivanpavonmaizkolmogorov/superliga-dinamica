@@ -1,61 +1,10 @@
 {
-  "para_fichar": [
-    {
-      "nombre": "Pablo Durán",
-      "valor": 1042000,
-      "incremento": 22000
-    },
-    {
-      "nombre": "Yvan Neyou",
-      "valor": 1094000,
-      "incremento": 24000
-    },
-    {
-      "nombre": "Moi Gómez",
-      "valor": 620000,
-      "incremento": 12000
-    },
-    {
-      "nombre": "Flavien Boyomo",
-      "valor": 6061000,
-      "incremento": 28000
-    },
-    {
-      "nombre": "Dani Calvo",
-      "valor": 3258000,
-      "incremento": 59000
-    },
-    {
-      "nombre": "José Ángel Carmona",
-      "valor": 1196000,
-      "incremento": 29000
-    },
-    {
-      "nombre": "Adrià Pedrosa",
-      "valor": 1160000,
-      "incremento": 11000
-    },
-    {
-      "nombre": "Juan Iglesias",
-      "valor": 1085000,
-      "incremento": 18000
-    },
-    {
-      "nombre": "Thibaut Courtois",
-      "valor": 11117000,
-      "incremento": 24000
-    },
-    {
-      "nombre": "Dani Cárdenas",
-      "valor": 168000,
-      "incremento": 1000
-    }
-  ],
+  "para_fichar": [],
   "para_vender": [
     {
       "nombre": "Alexander Sørloth",
-      "valor": 13059000,
-      "incremento": 36000
+      "valor": 13028000,
+      "incremento": 31000
     }
   ]
 }

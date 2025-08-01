@@ -8,7 +8,7 @@ class VistaValoracion(tk.Frame):
         self.master = master
         self.controller = controller
         self.master.title("Módulo de Valoración de Fichajes")
-        self.master.geometry("1450x700") # Ancho aumentado para la nueva columna
+        self.master.geometry("1450x700")
         self.configure(bg="#f0f0f0")
 
         # --- Paneles Principales ---
@@ -21,6 +21,25 @@ class VistaValoracion(tk.Frame):
         
         self.btn_update = ttk.Button(left_panel, text="Actualizar Datos del Mercado", command=self.controller.trigger_scrape)
         self.btn_update.pack(fill=tk.X, pady=(0, 10))
+
+        # --- PANEL DE CONTROLES GLOBALES ---
+        global_controls_frame = tk.Frame(left_panel)
+        global_controls_frame.pack(fill=tk.X, pady=(0, 5))
+        
+        tk.Label(global_controls_frame, text="Días Límite (Global):").pack(side=tk.LEFT, padx=(0, 5))
+        
+        self.dias_global_var = tk.IntVar(value=8)
+        self.spin_dias_global = ttk.Spinbox(
+            global_controls_frame,
+            from_=2,
+            to=100,
+            increment=1,
+            textvariable=self.dias_global_var,
+            width=5,
+            command=self.controller.recalculate_all_rows
+        )
+        self.spin_dias_global.pack(side=tk.LEFT)
+        # --- FIN DEL PANEL GLOBAL ---
 
         self.notebook = ttk.Notebook(left_panel)
         self.notebook.pack(fill=tk.BOTH, expand=True)
@@ -59,8 +78,7 @@ class VistaValoracion(tk.Frame):
     def poblar_tabla(self, tipo_tabla, datos_tabla):
         tree = self.tree_fichar if tipo_tabla == "fichar" else self.tree_vender
         
-        for i in tree.get_children():
-            tree.delete(i)
+        for i in tree.get_children(): tree.delete(i)
         
         tree["columns"] = datos_tabla['headers_id']
         for i, header_text in enumerate(datos_tabla['headers_display']):
@@ -100,7 +118,8 @@ class VistaValoracion(tk.Frame):
         
         res_group = tk.LabelFrame(self.right_frame, text="Resultado del Análisis", padx=15, pady=10)
         res_group.pack(fill=tk.X, pady=10)
-        self.lbl_valor_apuesta = self.create_detail_row(res_group, "Esperanza Matemática:", 0, font_size=12, bold=True, color="#006400")
+        self.lbl_equilibrio_valor = self.create_detail_row(res_group, "Puja/Oferta de Equilibrio:", 0, font_size=10, bold=True, color="#00008B")
+        self.lbl_valor_apuesta = self.create_detail_row(res_group, "Esperanza Matemática:", 1, font_size=12, bold=True, color="#006400")
         
     def create_spinbox_row(self, parent, label_text, row, variable, from_, to, increment):
         tk.Label(parent, text=label_text).grid(row=row, column=0, sticky="w", pady=5)
