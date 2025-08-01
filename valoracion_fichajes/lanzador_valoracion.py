@@ -5,7 +5,6 @@ import json
 import os
 import locale
 from .gui_valoracion import VistaValoracion
-from .scraper_mercado import extraer_jugadores_mercado
 from .motor_calculo import MotorCalculo
 
 CACHE_FILE = 'valoracion_cache.json'
@@ -16,125 +15,137 @@ class ValoracionController:
         try:
             locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
         except locale.Error:
-            try:
-                locale.setlocale(locale.LC_ALL, 'Spanish_Spain.1252')
-            except locale.Error:
-                print("Advertencia: No se encontró la configuración regional española.")
+            try: locale.setlocale(locale.LC_ALL, 'Spanish_Spain.1252')
+            except locale.Error: print("Advertencia: No se encontró la configuración regional española.")
         
         self.view = VistaValoracion(root, self)
         self.view.pack(expand=True, fill=tk.BOTH)
-        self.jugadores_para_fichar = []
-        self.jugadores_para_vender = []
+        self.jugadores_mercado = []
         self.motores_calculo = {}
-        self.current_player_motor = None
+        self.current_player = None
+        self.current_type = None
         self.load_data_from_cache()
 
     def load_data_from_cache(self):
-        # (Sin cambios)
         if os.path.exists(CACHE_FILE):
             try:
                 with open(CACHE_FILE, 'r', encoding='utf-8') as f:
-                    datos_mercado = json.load(f)
-                self.actualizar_gui_con_datos(datos_mercado)
+                    self.jugadores_mercado = json.load(f)
+                self.preparar_y_poblar_tablas()
                 return
-            except Exception: pass
+            except Exception as e: print(f"Error cargando caché: {e}")
         messagebox.showinfo("Caché Vacío", "Pulsa 'Actualizar' para cargar la información.")
-        self.actualizar_gui_con_datos(None)
 
     def trigger_scrape(self):
-        # (Sin cambios)
         self.view.btn_update.config(state="disabled", text="Actualizando...")
-        self.view.populate_list('fichar', [], is_loading=True)
-        self.view.populate_list('vender', [], is_loading=True)
-        thread = threading.Thread(target=self.scrape_and_save_to_cache, daemon=True)
-        thread.start()
+        threading.Thread(target=self.scrape_and_save_to_cache, daemon=True).start()
 
     def scrape_and_save_to_cache(self):
-        # (Sin cambios)
-        datos_mercado = extraer_jugadores_mercado()
-        if datos_mercado:
+        self.jugadores_mercado = extraer_jugadores_mercado()
+        if self.jugadores_mercado:
             try:
                 with open(CACHE_FILE, 'w', encoding='utf-8') as f:
-                    json.dump(datos_mercado, f, indent=2, ensure_ascii=False)
+                    json.dump(self.jugadores_mercado, f, indent=2, ensure_ascii=False)
             except Exception: pass
-        self.root.after(0, self.actualizar_gui_con_datos, datos_mercado)
+        self.root.after(0, self.preparar_y_poblar_tablas)
 
-    def actualizar_gui_con_datos(self, datos_mercado):
-        # (Sin cambios)
+    def preparar_y_poblar_tablas(self):
         self.view.btn_update.config(state="normal", text="Actualizar Datos del Mercado")
-        if datos_mercado is None:
-            self.view.populate_list('fichar', [], is_loading=False, empty_text="Pulsa 'Actualizar'")
-            self.view.populate_list('vender', [], is_loading=False, empty_text="Pulsa 'Actualizar'")
-            return
-        self.jugadores_para_fichar = datos_mercado.get('para_fichar', [])
-        self.jugadores_para_vender = datos_mercado.get('para_vender', [])
-        self.view.populate_list('fichar', self.jugadores_para_fichar)
-        self.view.populate_list('vender', self.jugadores_para_vender)
+        if not self.jugadores_mercado: return
+
         self.motores_calculo.clear()
-        for jugador in self.jugadores_para_fichar + self.jugadores_para_vender:
+        jugadores_fichar = self.jugadores_mercado.get('para_fichar', [])
+        jugadores_vender = self.jugadores_mercado.get('para_vender', [])
+        for jugador in jugadores_fichar + jugadores_vender:
             self.motores_calculo[jugador['nombre']] = MotorCalculo(jugador)
 
+        headers_fichar = {"id": ("nombre", "valor", "inc", "puja", "dias", "em"), "display": ["Nombre", "Valor", "Inc.", "Mi Puja", "Días", "Esp. Matemática"]}
+        datos_fichar = [[j['nombre'], j['valor'], j['incremento'], j['valor'], 8, 0.0] for j in jugadores_fichar]
+        self.view.poblar_tabla("fichar", {"headers_id": headers_fichar["id"], "headers_display": headers_fichar["display"], "data": datos_fichar})
+
+        headers_vender = {"id": ("nombre", "valor", "inc", "oferta_maq", "ofertas_hoy", "dias", "em"), "display": ["Nombre", "Valor", "Inc.", "Oferta Máquina", "Ofertas Hoy", "Días", "Esp. Matemática"]}
+        datos_vender = [[j['nombre'], j['valor'], j['incremento'], j['valor'], 1, 8, 0.0] for j in jugadores_vender]
+        self.view.poblar_tabla("vender", {"headers_id": headers_vender["id"], "headers_display": headers_vender["display"], "data": datos_vender})
+
     def on_player_select(self, event, list_type):
-        listbox = self.view.fichar_listbox if list_type == "fichar" else self.view.vender_listbox
-        lista_jugadores = self.jugadores_para_fichar if list_type == "fichar" else self.jugadores_para_vender
-        selected_indices = listbox.curselection()
-        if not selected_indices: return
+        tree = self.view.tree_fichar if list_type == "fichar" else self.view.tree_vender
+        selection = tree.selection()
+        if not selection: return
         
-        nombre = listbox.get(selected_indices[0])
-        jugador_data = next((p for p in lista_jugadores if p['nombre'] == nombre), None)
+        item_id = selection[0]
+        item_values = tree.item(item_id, 'values')
+        nombre_jugador = item_values[0]
         
-        if jugador_data:
-            self.current_player_motor = self.motores_calculo.get(nombre)
-            if not self.current_player_motor: return
+        self.current_type = list_type
+        lista_completa = self.jugadores_mercado.get('para_fichar' if list_type == 'fichar' else 'para_vender', [])
+        self.current_player = next((p for p in lista_completa if p['nombre'] == nombre_jugador), None)
+
+        if self.current_player:
+            self.view.lbl_nombre.config(text=self.current_player['nombre'])
+            self.view.set_active_panel(list_type)
             
-            self.view.lbl_nombre.config(text=f"{jugador_data['nombre']}")
-            self.view.lbl_valor.config(text=f"{locale.format_string('%d', jugador_data['valor'], grouping=True)} €")
-            self.view.lbl_incremento.config(text=f"{locale.format_string('%d', jugador_data['incremento'], grouping=True)} € / día")
-            
-            # Establecer valores por defecto en los campos de simulación
+            def to_int(value_str):
+                return int(float(str(value_str).replace('.', '').replace(',', '.')))
+
             if list_type == 'fichar':
-                 self.view.puja_var.set(jugador_data['valor'])
-            elif list_type == 'vender':
-                 self.view.oferta_maquina_var.set(jugador_data['valor'])
+                self.view.puja_var.set(to_int(item_values[3]))
+                self.view.dias_var.set(to_int(item_values[4]))
+            else: # vender
+                self.view.oferta_maquina_var.set(to_int(item_values[3]))
+                self.view.ofertas_hoy_var.set(to_int(item_values[4]))
+                self.view.dias_var.set(to_int(item_values[5]))
             
             self.recalculate_results()
 
     def recalculate_results(self, event=None):
-        if not self.current_player_motor: return
+        if not self.current_player: return
         
-        pestana_activa = self.view.notebook.tab(self.view.notebook.select(), "text")
+        motor = self.motores_calculo.get(self.current_player['nombre'])
+        if not motor: return
+        
+        tree = self.view.tree_fichar if self.current_type == 'fichar' else self.view.tree_vender
+        item_id = self.current_player['nombre']
         
         try:
-            if pestana_activa == 'Para Fichar':
-                mi_puja = self.view.puja_var.get()
-                dias_limite = self.view.dias_var_fichar.get()
-                self.view.lbl_puja_formateada.config(text=f"({locale.format_string('%d', mi_puja, grouping=True)})")
+            current_values = list(tree.item(item_id)['values'])
+            config_usuario = {}
+            
+            if self.current_type == 'fichar':
+                puja = self.view.puja_var.get()
+                dias = self.view.dias_var.get()
+                config_usuario = {"puja_k": puja, "dias_solares": dias}
+                resultado = motor.analizar_compra(config_usuario)
                 
-                config_usuario = {"puja_k": mi_puja, "dias_solares": dias_limite}
-                resultados = self.current_player_motor.analizar_compra(config_usuario)
-
-            elif pestana_activa == 'Para Vender':
+                # --- GUARDAR TODOS LOS CAMBIOS EN LA TABLA ---
+                current_values[3] = locale.format_string('%d', puja, grouping=True)
+                current_values[4] = dias
+                current_values[5] = f"{resultado['esperanza_matematica']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                
+            else: # vender
                 oferta_maq = self.view.oferta_maquina_var.get()
                 ofertas_hoy = self.view.ofertas_hoy_var.get()
-                dias_limite = self.view.dias_var_vender.get()
-                self.view.lbl_oferta_formateada.config(text=f"({locale.format_string('%d', oferta_maq, grouping=True)})")
+                dias = self.view.dias_var.get()
+                config_usuario = {"oferta_maquina": oferta_maq, "ofertas_hoy": ofertas_hoy, "dias_solares": dias}
+                resultado = motor.analizar_venta(config_usuario)
+                
+                # --- GUARDAR TODOS LOS CAMBIOS EN LA TABLA ---
+                current_values[3] = locale.format_string('%d', oferta_maq, grouping=True)
+                current_values[4] = ofertas_hoy
+                current_values[5] = dias
+                current_values[6] = f"{resultado['esperanza_matematica']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
-                config_usuario = {
-                    "oferta_maquina": oferta_maq, 
-                    "dias_solares": dias_limite,
-                    "ofertas_hoy": ofertas_hoy
-                }
-                resultados = self.current_player_motor.analizar_venta(config_usuario)
+            # Actualizar panel lateral
+            esperanza_formateada = f"{resultado['esperanza_matematica']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            self.view.lbl_valor_apuesta.config(text=f"{esperanza_formateada} €")
+            
+            valor_equilibrio = motor.encontrar_puja_equilibrio(config_usuario, self.current_type)
+            self.view.lbl_equilibrio_valor.config(text=f"{locale.format_string('%d', valor_equilibrio, grouping=True)} €")
 
-            else:
-                return # No hacer nada si no hay pestaña activa
+            # Actualizar la fila entera en la tabla
+            tree.item(item_id, values=tuple(current_values))
         
-        except tk.TclError:
-            return # Evitar error si el campo está vacío
-
-        # Actualizar la GUI con el resultado final
-        esperanza = resultados['esperanza_matematica']
-        self.view.lbl_valor_apuesta.config(text=f"{locale.format_string('%.2f', esperanza, grouping=True)} €")
+        except (tk.TclError, ValueError, IndexError) as e:
+            print(f"Error al recalcular: {e}")
 
 def main():
     root = tk.Tk()

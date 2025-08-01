@@ -5,7 +5,7 @@ import datetime
 class MotorCalculo:
     def __init__(self, datos_jugador):
         self.datos_jugador = datos_jugador
-
+    
     # --- MÉTODO PRINCIPAL PARA ANÁLISIS DE COMPRA ---
     def analizar_compra(self, config_usuario):
         config = self._crear_config_compra(config_usuario)
@@ -45,7 +45,36 @@ class MotorCalculo:
         esperanza_matematica = -sum(datos_beneficio)
 
         return {"esperanza_matematica": esperanza_matematica}
+    def encontrar_puja_equilibrio(self, config_usuario, tipo_analisis):
+        """
+        NUEVO: Encuentra iterativamente la puja/oferta que hace la Esperanza Matemática = 0.
+        """
+        if tipo_analisis == "fichar":
+            # Empezamos estimando con el valor del jugador
+            puja_estimada = self.datos_jugador.get('valor', 0)
+            
+            # Iteramos para converger
+            for _ in range(25): # 25 iteraciones son más que suficientes
+                config_usuario['puja_k'] = puja_estimada
+                resultados = self.analizar_compra(config_usuario)
+                esperanza_actual = resultados['esperanza_matematica']
+                if abs(esperanza_actual) < 1: break # Si estamos muy cerca, paramos
+                # Ajustamos la puja en base a la esperanza. Si es positiva, subimos la puja.
+                puja_estimada += esperanza_actual
+            return int(puja_estimada)
 
+        elif tipo_analisis == "vender":
+            # La lógica es la misma, pero ajustando la oferta de la máquina
+            oferta_estimada = self.datos_jugador.get('valor', 0)
+            for _ in range(25):
+                config_usuario['oferta_maquina'] = oferta_estimada
+                resultados = self.analizar_venta(config_usuario)
+                esperanza_actual = resultados['esperanza_matematica']
+                if abs(esperanza_actual) < 1: break
+                oferta_estimada += esperanza_actual
+            return int(oferta_estimada)
+        
+        return 0
     # --- Métodos privados para crear las configuraciones ---
     def _crear_config_compra(self, config_usuario):
         config = {
