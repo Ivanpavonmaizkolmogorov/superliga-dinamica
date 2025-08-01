@@ -6,6 +6,8 @@ import os
 import locale
 from .gui_valoracion import VistaValoracion
 from .motor_calculo import MotorCalculo
+# --- LÍNEA AÑADIDA ---
+from .scraper_mercado import extraer_jugadores_mercado
 
 CACHE_FILE = 'valoracion_cache.json'
 
@@ -41,6 +43,7 @@ class ValoracionController:
         threading.Thread(target=self.scrape_and_save_to_cache, daemon=True).start()
 
     def scrape_and_save_to_cache(self):
+        # Esta llamada ahora funcionará gracias al import
         self.jugadores_mercado = extraer_jugadores_mercado()
         if self.jugadores_mercado:
             try:
@@ -59,12 +62,24 @@ class ValoracionController:
         for jugador in jugadores_fichar + jugadores_vender:
             self.motores_calculo[jugador['nombre']] = MotorCalculo(jugador)
 
-        headers_fichar = {"id": ("nombre", "valor", "inc", "puja", "dias", "em"), "display": ["Nombre", "Valor", "Inc.", "Mi Puja", "Días", "Esp. Matemática"]}
-        datos_fichar = [[j['nombre'], j['valor'], j['incremento'], j['valor'], 8, 0.0] for j in jugadores_fichar]
+        headers_fichar = {"id": ("nombre", "valor", "inc", "puja", "dias", "em", "equilibrio"), "display": ["Nombre", "Valor", "Inc.", "Mi Puja", "Días", "Esp. Matemática", "Puja Equilibrio"]}
+        datos_fichar = []
+        for j in jugadores_fichar:
+            motor = self.motores_calculo[j['nombre']]
+            config_inicial = {"puja_k": j['valor'], "dias_solares": 8}
+            resultado = motor.analizar_compra(config_inicial)
+            equilibrio = motor.encontrar_puja_equilibrio(config_inicial, "fichar")
+            datos_fichar.append([j['nombre'], j['valor'], j['incremento'], j['valor'], 8, resultado['esperanza_matematica'], equilibrio])
         self.view.poblar_tabla("fichar", {"headers_id": headers_fichar["id"], "headers_display": headers_fichar["display"], "data": datos_fichar})
 
-        headers_vender = {"id": ("nombre", "valor", "inc", "oferta_maq", "ofertas_hoy", "dias", "em"), "display": ["Nombre", "Valor", "Inc.", "Oferta Máquina", "Ofertas Hoy", "Días", "Esp. Matemática"]}
-        datos_vender = [[j['nombre'], j['valor'], j['incremento'], j['valor'], 1, 8, 0.0] for j in jugadores_vender]
+        headers_vender = {"id": ("nombre", "valor", "inc", "oferta_maq", "ofertas_hoy", "dias", "em", "equilibrio"), "display": ["Nombre", "Valor", "Inc.", "Oferta Máquina", "Ofertas Hoy", "Días", "Esp. Matemática", "Oferta Equilibrio"]}
+        datos_vender = []
+        for j in jugadores_vender:
+            motor = self.motores_calculo[j['nombre']]
+            config_inicial = {"oferta_maquina": j['valor'], "ofertas_hoy": 1, "dias_solares": 8}
+            resultado = motor.analizar_venta(config_inicial)
+            equilibrio = motor.encontrar_puja_equilibrio(config_inicial, "vender")
+            datos_vender.append([j['nombre'], j['valor'], j['incremento'], j['valor'], 1, 8, resultado['esperanza_matematica'], equilibrio])
         self.view.poblar_tabla("vender", {"headers_id": headers_vender["id"], "headers_display": headers_vender["display"], "data": datos_vender})
 
     def on_player_select(self, event, list_type):
@@ -109,17 +124,19 @@ class ValoracionController:
         try:
             current_values = list(tree.item(item_id)['values'])
             config_usuario = {}
+            valor_equilibrio = 0
             
             if self.current_type == 'fichar':
                 puja = self.view.puja_var.get()
                 dias = self.view.dias_var.get()
                 config_usuario = {"puja_k": puja, "dias_solares": dias}
                 resultado = motor.analizar_compra(config_usuario)
+                valor_equilibrio = motor.encontrar_puja_equilibrio(config_usuario, self.current_type)
                 
-                # --- GUARDAR TODOS LOS CAMBIOS EN LA TABLA ---
                 current_values[3] = locale.format_string('%d', puja, grouping=True)
                 current_values[4] = dias
                 current_values[5] = f"{resultado['esperanza_matematica']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                current_values[6] = locale.format_string('%d', valor_equilibrio, grouping=True)
                 
             else: # vender
                 oferta_maq = self.view.oferta_maquina_var.get()
@@ -127,21 +144,18 @@ class ValoracionController:
                 dias = self.view.dias_var.get()
                 config_usuario = {"oferta_maquina": oferta_maq, "ofertas_hoy": ofertas_hoy, "dias_solares": dias}
                 resultado = motor.analizar_venta(config_usuario)
+                valor_equilibrio = motor.encontrar_puja_equilibrio(config_usuario, self.current_type)
                 
-                # --- GUARDAR TODOS LOS CAMBIOS EN LA TABLA ---
                 current_values[3] = locale.format_string('%d', oferta_maq, grouping=True)
                 current_values[4] = ofertas_hoy
                 current_values[5] = dias
                 current_values[6] = f"{resultado['esperanza_matematica']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                current_values[7] = locale.format_string('%d', valor_equilibrio, grouping=True)
 
-            # Actualizar panel lateral
             esperanza_formateada = f"{resultado['esperanza_matematica']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
             self.view.lbl_valor_apuesta.config(text=f"{esperanza_formateada} €")
-            
-            valor_equilibrio = motor.encontrar_puja_equilibrio(config_usuario, self.current_type)
             self.view.lbl_equilibrio_valor.config(text=f"{locale.format_string('%d', valor_equilibrio, grouping=True)} €")
 
-            # Actualizar la fila entera en la tabla
             tree.item(item_id, values=tuple(current_values))
         
         except (tk.TclError, ValueError, IndexError) as e:
