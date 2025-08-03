@@ -24,7 +24,7 @@ class VistaValoracion(tk.Frame):
         global_controls_frame = tk.Frame(left_panel)
         global_controls_frame.pack(fill=tk.X, pady=(0, 5))
         tk.Label(global_controls_frame, text="Días Límite (Global):").pack(side=tk.LEFT, padx=(0, 5))
-        self.dias_global_var = tk.IntVar(value=8)
+        self.dias_global_var = tk.IntVar(value=3)
         self.spin_dias_global = ttk.Spinbox(
             global_controls_frame, from_=2, to=100, increment=1,
             textvariable=self.dias_global_var, width=5,
@@ -104,7 +104,7 @@ class VistaValoracion(tk.Frame):
         
         # --- Variables de control para los Spinbox ---
         self.puja_var = tk.IntVar()
-        self.dias_var = tk.IntVar(value=8)
+        self.dias_var = tk.IntVar(value=3)
         self.oferta_maquina_var = tk.IntVar()
         self.ofertas_hoy_var = tk.IntVar(value=1)
         self.toggle_b_var = tk.BooleanVar()
