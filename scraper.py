@@ -1,99 +1,95 @@
-# valoracion_fichajes/scraper_mercado.py (VERSIÓN CON URL CORREGIDA)
+# scraper.py (Versión "Bingo" con Inyección de JavaScript que SÍ FUNCIONABA)
 
+from playwright.sync_api import sync_playwright, TimeoutError
+from config import MISTER_URL, PLAYWRIGHT_PROFILE_PATH
 import time
 import re
-import json
-from playwright.sync_api import sync_playwright, TimeoutError
-from config import MISTER_URL_MERCADO, PLAYWRIGHT_PROFILE_PATH, PERFILES_JSON_PATH
 
-# --- SELECTORES CSS ---
-PLAYER_ITEM_SELECTOR = "ul#list-on-sale > li"
-PLAYER_LINK_SELECTOR = "a.player"
-INCREMENT_SELECTOR = "div.value .prev-value"
-# --------------------
+def extraer_datos_mister():
+    if not MISTER_URL: print("Error: Falta MISTER_URL_LIGA en .env"); return None
 
-def get_my_manager_id():
-    try:
-        with open(PERFILES_JSON_PATH, 'r', encoding='utf-8') as f:
-            perfil = json.load(f)[0]
-            return perfil.get('id_manager')
-    except Exception as e:
-        print(f"ERROR: No se pudo leer el ID de mánager. {e}")
-        return None
-
-def clean_value(text_value):
-    try:
-        return int(re.sub(r'[.€\s]', '', text_value))
-    except (ValueError, TypeError):
-        return 0
-
-def extraer_jugadores_mercado():
-    print("INFO: Iniciando scraper de mercado...")
-    my_manager_id = get_my_manager_id()
-    if not my_manager_id: return None
-
-    jugadores_para_fichar = []
-    jugadores_para_vender = []
+    print("Iniciando scraping con perfil DEDICADO...")
     
     with sync_playwright() as p:
         context = None
         try:
             browser_args = ['--disable-session-crashed-bubble', '--start-maximized']
             context = p.chromium.launch_persistent_context(PLAYWRIGHT_PROFILE_PATH, headless=False, channel="msedge", args=browser_args, no_viewport=True)
-            page = context.new_page()
-
-            print(f"INFO: Navegando a {MISTER_URL_MERCADO}")
-            page.goto(MISTER_URL_MERCADO, timeout=60000)
-            page.wait_for_selector(PLAYER_ITEM_SELECTOR, timeout=30000)
+            page = context.pages[0] if context.pages else context.new_page()
             
-            player_elements = page.query_selector_all(PLAYER_ITEM_SELECTOR)
-            print(f"INFO: {len(player_elements)} jugadores encontrados. Extrayendo datos...")
-
-            players_to_visit = []
-            for element in player_elements:
-                owner_id = element.get_attribute('data-owner')
-                if owner_id == '0' or owner_id == my_manager_id:
-                    link_el = element.query_selector(PLAYER_LINK_SELECTOR)
-                    if link_el:
-                        players_to_visit.append({
-                            'url': link_el.get_attribute('href'),
-                            'owner': owner_id
-                        })
+            print(f"Navegando a {MISTER_URL}...")
+            page.goto(MISTER_URL, timeout=40000, wait_until="load")
             
-            for player_info in players_to_visit:
-                player_data = {}
-                try:
-                    # --- ¡AQUÍ ESTÁ LA CORRECCIÓN DEFINITIVA! ---
-                    # Añadimos la barra '/' que faltaba.
-                    full_url = f"https://mister.mundodeportivo.com{player_info['url']}"
-                    
-                    page.goto(full_url, timeout=20000)
-                    page.wait_for_selector("div.player-stats", timeout=15000)
+            print("Página cargada. Esperando 3 segundos...")
+            time.sleep(3)
 
-                    nombre = page.locator("div.player-header .name").first.inner_text()
-                    valor_raw = page.locator("div.value").first.inner_text()
-                    incremento_raw = page.locator(INCREMENT_SELECTOR).first.inner_text()
-                    
-                    player_data['nombre'] = nombre.strip()
-                    player_data['valor'] = clean_value(valor_raw)
-                    player_data['incremento'] = clean_value(incremento_raw)
+            # --- Lógica de CLIC FORZADO ---
+            try:
+                page.evaluate("document.querySelector('button[data-tab=\"total\"]').click()")
+                print("-> Clic en 'General' forzado. Esperando 2s...")
+                time.sleep(2)
+            except Exception:
+                # Si esto falla es porque no estamos logueados.
+                pass
 
-                    if player_info['owner'] == '0':
-                        print(f"  -> FICHAR: {player_data['nombre']} (Valor: {player_data['valor']}) Inc: {player_data['incremento']}")
-                        jugadores_para_fichar.append(player_data)
-                    elif player_info['owner'] == my_manager_id:
-                        print(f"  -> VENDER: {player_data['nombre']} (Valor: {player_data['valor']}) Inc: {player_data['incremento']}")
-                        jugadores_para_vender.append(player_data)
-
-                except Exception as e:
-                    print(f"     AVISO: No se pudo procesar la URL '{player_info.get('url', 'desconocida')}'. Error: {e}")
+            # --- COMPROBACIÓN DEFINITIVA ---
+            filas_managers_html = page.query_selector_all("div.panel-total ul.player-list li a.user")
             
-            return {"para_fichar": jugadores_para_fichar, "para_vender": jugadores_para_vender}
+            if not filas_managers_html:
+                print("\n¡ACCIÓN REQUERIDA! No se han encontrado datos de mánagers (posiblemente sesión no iniciada).")
+                page.wait_for_event('close', timeout=300000)
+                return None # Devolvemos None para indicar un fallo que requiere acción
+
+            # --- SI HAY DATOS, EXTRAEMOS TODO ---
+            print(f"-> ¡Éxito! {len(filas_managers_html)} mánagers encontrados. Extrayendo datos...")
+            
+            # 1. Datos Generales
+            datos_generales = {}
+            for fila in page.query_selector_all("div.panel-total ul.player-list li"):
+                link = fila.query_selector("a.user"); points = fila.query_selector("div.points")
+                if not link or not points: continue
+                manager_id = link.get_attribute("href").split('/')[1]
+                nombre_element = fila.query_selector("div.name")
+                nombre_manager = nombre_element.inner_text().strip() if nombre_element else "N/A"
+                puntos_totales = int(points.inner_text().split()[0])
+                datos_generales[manager_id] = {"nombre_mister": nombre_manager, "puntos_totales": puntos_totales}
+
+            # 2. Datos de Jornada
+            page.evaluate("document.querySelector('button[data-tab=\"gameweek\"]').click()")
+            time.sleep(2)
+            
+            datos_jornada = {}
+            numero_jornada_actual = 1
+            if not page.locator('div.panel-gameweek div.empty').is_visible():
+                opciones = page.query_selector_all("div.panel-gameweek select option")
+                if opciones:
+                    ultima_opcion = opciones[-1]
+                    texto_jornada = ultima_opcion.inner_text()
+                    numeros = re.findall(r'\d+', texto_jornada)
+                    if numeros: numero_jornada_actual = int(numeros[0])
+                    page.select_option("div.panel-gameweek select", value=ultima_opcion.get_attribute("value"))
+                    time.sleep(2)
+                
+                for fila in page.query_selector_all("div.panel-gameweek ul.player-list li"):
+                    link = fila.query_selector("a.user"); points = fila.query_selector("div.points")
+                    if not link or not points: continue
+                    manager_id = link.get_attribute("href").split('/')[1]
+                    datos_jornada[manager_id] = int(points.inner_text().split()[0])
+            
+            print(f"-> Última jornada detectada: {numero_jornada_actual}")
+
+            # 3. Fusión Final
+            resultado_final = []
+            for manager_id, data in datos_generales.items():
+                resultado_final.append({
+                    "id_manager": manager_id, "nombre_mister": data["nombre_mister"],
+                    "puntos_jornada": datos_jornada.get(manager_id, 0),
+                    "puntos_totales": data["puntos_totales"]
+                })
+            
+            return {"numero_jornada": numero_jornada_actual, "datos_managers": resultado_final}
 
         except Exception as e:
-            print(f"\n--- ERROR CRÍTICO en el scraper ---\n{e}")
-            return None
+            print(f"\n--- ERROR CRÍTICO ---\n{e}"); return None
         finally:
-            if context:
-                print("INFO: Cerrando navegador...")
-                context.close()
+            if context: print("Cerrando navegador..."); context.close()

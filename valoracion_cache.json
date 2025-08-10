@@ -1,61 +1,111 @@
 {
   "para_fichar": [
     {
-      "nombre": "Akor Adams",
-      "valor": 622000,
-      "incremento": 42000
+      "nombre": "Iago Aspas",
+      "valor": 11909000,
+      "incremento": -25000
     },
     {
-      "nombre": "Pere Milla",
-      "valor": 591000,
-      "incremento": 8000
+      "nombre": "Ilias Akhomach",
+      "valor": 817000,
+      "incremento": 45000
     },
     {
-      "nombre": "Conor Gallagher",
-      "valor": 4664000,
-      "incremento": 140000
+      "nombre": "Jude Bellingham",
+      "valor": 20005000,
+      "incremento": -59000
     },
     {
-      "nombre": "Carles Aleñá",
-      "valor": 1020000,
-      "incremento": 70000
+      "nombre": "Dani Parejo",
+      "valor": 9508000,
+      "incremento": -60000
     },
     {
-      "nombre": "Kike Barja",
-      "valor": 631000,
-      "incremento": 16000
+      "nombre": "Chrisantus Uche",
+      "valor": 4466000,
+      "incremento": 170000
     },
     {
-      "nombre": "Peter Federico",
-      "valor": 269000,
-      "incremento": -6000
+      "nombre": "Jon Guridi",
+      "valor": 1631000,
+      "incremento": 57000
     },
     {
-      "nombre": "Valentin Rosier",
-      "valor": 4016000,
-      "incremento": 128000
+      "nombre": "Calebe Gonçalves",
+      "valor": 574000,
+      "incremento": -44000
     },
     {
-      "nombre": "Fernando Calero",
-      "valor": 866000,
+      "nombre": "Pep Chavarría",
+      "valor": 3821000,
+      "incremento": 123000
+    },
+    {
+      "nombre": "Natan Souza",
+      "valor": 1998000,
+      "incremento": 77000
+    },
+    {
+      "nombre": "Adrián de la Fuente",
+      "valor": 1937000,
+      "incremento": 65000
+    },
+    {
+      "nombre": "Duje Ćaleta-Car",
+      "valor": 1774000,
       "incremento": 47000
     },
     {
-      "nombre": "Pablo Ramón",
-      "valor": 190000,
-      "incremento": -14000
+      "nombre": "Víctor Parada",
+      "valor": 267000,
+      "incremento": 32000
     },
     {
-      "nombre": "Unai Simón",
-      "valor": 10168000,
-      "incremento": -39000
+      "nombre": "Jon Pacheco",
+      "valor": 263000,
+      "incremento": 19000
+    },
+    {
+      "nombre": "Matías Dituro",
+      "valor": 2662000,
+      "incremento": 100000
     }
   ],
   "para_vender": [
     {
-      "nombre": "Alexander Sørloth",
-      "valor": 13028000,
-      "incremento": -31000
+      "nombre": "Roberto Fernández",
+      "valor": 8387000,
+      "incremento": 80000
+    },
+    {
+      "nombre": "Jorge de Frutos",
+      "valor": 5505000,
+      "incremento": 71000
+    },
+    {
+      "nombre": "Pedro Díaz",
+      "valor": 5210000,
+      "incremento": 26000
+    },
+    {
+      "nombre": "Pablo Maffeo",
+      "valor": 5350000,
+      "incremento": 6000
+    },
+    {
+      "nombre": "Ángel Ortiz",
+      "valor": 549000,
+      "incremento": 8000
+    },
+    {
+      "nombre": "Nobel Mendy",
+      "valor": 305000,
+      "incremento": 8000
+    },
+    {
+      "nombre": "Johan Mojica",
+      "valor": 5426000,
+      "incremento": 18000
     }
   ]
 }

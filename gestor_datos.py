@@ -1,7 +1,7 @@
-# gestor_datos.py (Versión con la nueva función para cargar la configuración de la liga)
+# gestor_datos.py (Versión Corregida y Final)
 
 import json
-# ¡Importante! Añadimos la nueva variable de configuración
+# ¡Importante! Añadimos todas las variables de configuración
 from config import PERFILES_JSON_PATH, PAREJAS_JSON_PATH, LIGA_CONFIG_JSON_PATH
 
 def cargar_perfiles():
@@ -47,7 +47,6 @@ def cargar_parejas():
         print(f"ERROR: '{PAREJAS_JSON_PATH}' está corrupto.")
         return []
 
-# --- ¡NUEVA FUNCIÓN AÑADIDA! ---
 def cargar_config_liga():
     """
     Abre y carga la configuración de la liga desde 'liga_config.json'.
@@ -66,17 +65,22 @@ def cargar_config_liga():
         print(f"ERROR: '{LIGA_CONFIG_JSON_PATH}' está corrupto.")
         return {}
 
-# Añade esta función a tu archivo gestor_datos.py
-
-def guardar_perfiles(perfiles):
+# --- ✅ ¡FUNCIÓN AÑADIDA! ---
+def cargar_declaraciones():
     """
-    Guarda la lista completa de perfiles en el archivo perfiles.json.
+    Abre y carga las declaraciones desde 'declaraciones.json'.
+    Si el archivo no existe o está vacío, devuelve una lista vacía.
     """
     try:
-        with open('perfiles.json', 'w', encoding='utf-8') as f:
-            json.dump(perfiles, f, ensure_ascii=False, indent=4)
-        print("INFO: perfiles.json guardado correctamente.")
-        return True
-    except Exception as e:
-        print(f"ERROR: No se pudo guardar perfiles.json. Error: {e}")
-        return False
+        # Usamos el nombre del archivo directamente, en lugar de una variable de config
+        with open('declaraciones.json', 'r', encoding='utf-8') as f:
+            contenido = f.read()
+            if not contenido:
+                return [] # Devuelve una lista vacía si el archivo no tiene nada
+            return json.loads(contenido)
+    except FileNotFoundError:
+        print("INFO: No se encontró 'declaraciones.json'. Se asumirá que no hay declaraciones.")
+        return []
+    except json.JSONDecodeError:
+        print("ADVERTENCIA: 'declaraciones.json' está corrupto o vacío.")
+        return []

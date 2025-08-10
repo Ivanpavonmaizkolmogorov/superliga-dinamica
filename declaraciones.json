@@ -321,5 +321,42 @@
         "declaracion": "La porconeta ya está jugando su partido psicológico con el timming, yo mientras me tumbo en el sofá tranquilamente 🧘‍♀️  .",
         "timestamp": "2025-08-01T15:12:26.487025",
         "mencionados": []
+    },
+    {
+        "message_id": 628,
+        "reply_to_message_id": 624,
+        "telegram_user_id": 1192183458,
+        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
+        "declaracion": "Ojito que Furby ya tiene un top 3 de la liga… con 15 en el mercado diarios antes de empezar esta el top 5 colocado…",
+        "timestamp": "2025-08-03T13:55:34.515399",
+        "mencionados": [
+            {
+                "telegram_user_id": 7360061740,
+                "nombre_mister": "Francis"
+            }
+        ]
+    },
+    {
+        "message_id": 632,
+        "reply_to_message_id": null,
+        "telegram_user_id": 3195403,
+        "nombre_mister": "The 👑",
+        "declaracion": "Buenos días, menos mal que mi hermano Bro '' ER ha sembrado en mi la paciencia y la tranquilidad, si no ya estaba yo sin dineros...",
+        "timestamp": "2025-08-04T08:49:20.836591",
+        "mencionados": [
+            {
+                "telegram_user_id": 6959330748,
+                "nombre_mister": "Al Hansi Flick 🏆🏆"
+            }
+        ]
+    },
+    {
+        "message_id": 635,
+        "reply_to_message_id": 632,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "El Monarca de las Sombras 🏆 🏆",
+        "declaracion": "Tarde o temprano por más que te escondas saldrás a la luz  , seguro!",
+        "timestamp": "2025-08-04T22:57:29.737963",
+        "mencionados": []
     }
 ]
