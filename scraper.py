@@ -32,29 +32,17 @@ def extraer_datos_mister():
                 # Si esto falla es porque no estamos logueados.
                 pass
 
-            # --- COMPROBACIÓN DE SESIÓN Y PAUSA PARA LOGIN MANUAL ---
+            # --- COMPROBACIÓN DEFINITIVA ---
             filas_managers_html = page.query_selector_all("div.panel-total ul.player-list li a.user")
             
             if not filas_managers_html:
-                print("\n¡ACCIÓN REQUERIDA! Sesión no iniciada o caducada.")
-                print("Por favor, inicia sesión en la ventana del navegador que se ha abierto.")
-                print("La sesión se guardará en tu perfil para futuras ejecuciones.")
-                print("Cuando hayas terminado, vuelve a esta consola y presiona 'Enter' para continuar...")
-                input()
-                
-                print("Recargando la página para continuar con el scraping...")
-                page.reload(wait_until="load")
-                time.sleep(3) # Espera extra para que cargue todo tras el login
-
-                # Reintentamos la búsqueda de datos tras el login manual
-                filas_managers_html = page.query_selector_all("div.panel-total ul.player-list li a.user")
-                if not filas_managers_html:
-                    print("\nError: No se han podido encontrar los datos de mánagers incluso después de iniciar sesión.")
-                    print("Asegúrate de estar en la página correcta de la clasificación de la liga.")
-                    return None
+                print("\n¡ACCIÓN REQUERIDA! No se han encontrado datos de mánagers (posiblemente sesión no iniciada).")
+                page.wait_for_event('close', timeout=300000)
+                return None # Devolvemos None para indicar un fallo que requiere acción
 
             # --- SI HAY DATOS, EXTRAEMOS TODO ---
             print(f"-> ¡Éxito! {len(filas_managers_html)} mánagers encontrados. Extrayendo datos...")
+            
             # 1. Datos Generales
             datos_generales = {}
             for fila in page.query_selector_all("div.panel-total ul.player-list li"):
