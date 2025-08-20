@@ -1,16 +1,4 @@
 {
-  "para_fichar": [
-    {
-      "nombre": "Unai Egiluz",
-      "valor": 160000,
-      "incremento": -4000
-    }
-  ],
-  "para_vender": [
-    {
-      "nombre": "Ángel Ortiz",
-      "valor": 575000,
-      "incremento": 17000
-    }
-  ]
+  "para_fichar": [],
+  "para_vender": []
 }

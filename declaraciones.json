@@ -358,5 +358,51 @@
         "declaracion": "Tarde o temprano por más que te escondas saldrás a la luz  , seguro!",
         "timestamp": "2025-08-04T22:57:29.737963",
         "mencionados": []
+    },
+    {
+        "message_id": 644,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7360061740,
+        "nombre_mister": "Francis",
+        "declaracion": "Ivan Pavon saca su varita mágica de nuevo y se lleva al mejor jugador de la temporada 25-26 ¡ojo a todo el revuelo que pueda generar en su vestuario! ¡Las oficinas echan humo y el estratega activa palancas!",
+        "timestamp": "2025-08-14T11:28:44.091589",
+        "mencionados": [
+            {
+                "telegram_user_id": 2078045747,
+                "nombre_mister": "El Monarca de las Sombras 🏆 🏆"
+            }
+        ]
+    },
+    {
+        "message_id": 653,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "Digo yo que si lo ve como el mejor del juego, que puede ser y nadie lo niega. Por qué no lo has cambiado por rapinha mostro! Que lo ve él con su ojo de Alcon el makina Francisco Javier",
+        "timestamp": "2025-08-14T16:44:43.673085",
+        "mencionados": [
+            {
+                "telegram_user_id": 7360061740,
+                "nombre_mister": "Francis"
+            }
+        ]
+    },
+    {
+        "message_id": 665,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "está año nuestro amigo @javimoralv  se lo tomaría más enserio.. y se refería a que por lo menos se metería ya que el año pasado ni eso jajajajjajaa",
+        "timestamp": "2025-08-15T10:27:24.300085",
+        "mencionados": []
+    },
+    {
+        "message_id": 677,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "@javimoralv creo que te hubiera salido más rentable quedarte en negativo, no?",
+        "timestamp": "2025-08-16T00:21:00.681654",
+        "mencionados": []
     }
 ]
