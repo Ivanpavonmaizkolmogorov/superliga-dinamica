@@ -516,7 +516,7 @@ def main():
         print(f"❌ ERROR al subir cambios con Git: {e}")
 
     # Pausa para que la web de GitHub se actualice
-    delay_segundos = 20 
+    delay_segundos = 220 
     print(f"\n--- [PAUSA] Esperando {delay_segundos} segundos para que la web se actualice...")
     time.sleep(delay_segundos)
 
