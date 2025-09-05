@@ -78,7 +78,7 @@ def extraer_jugadores_mercado():
         context = None
         try:
             browser_args = ['--disable-session-crashed-bubble', '--start-maximized']
-            context = p.chromium.launch_persistent_context(PLAYWRIGHT_PROFILE_PATH, headless=False, channel="msedge", args=browser_args, no_viewport=True)
+            context = p.chromium.launch_persistent_context(PLAYWRIGHT_PROFILE_PATH, headless=False, args=browser_args, no_viewport=True)
             page = context.new_page()
 
             print(f"INFO: Navegando a {MISTER_URL_MERCADO}")

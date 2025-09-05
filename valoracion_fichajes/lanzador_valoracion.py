@@ -1,9 +1,12 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, font
 import threading
 import json
 import os
 import locale
+import queue # <-- CAMBIO: Necesario para comunicar hilos
+
+# Se mantienen las importaciones de tu proyecto
 from .gui_valoracion import VistaValoracion
 from .motor_calculo import MotorCalculo
 from .scraper_ofertas_recibidas import extraer_ofertas_maquina
@@ -13,6 +16,10 @@ from .bot_pujas import realizar_pujas
 CACHE_FILE = 'valoracion_cache.json'
 
 class ValoracionController:
+    # --- TU CLASE CONTROLLER SE QUEDA EXACTAMENTE IGUAL ---
+    # No es necesario pegar aquí todo el código, solo asegúrate de que
+    # tu clase ValoracionController (la que ya tienes) esté aquí.
+    # El único cambio que haremos será en la función main() de abajo.
     def __init__(self, root):
         self.root = root
         try:
@@ -32,7 +39,18 @@ class ValoracionController:
         self.datos_originales_vender = []
         self.sort_state = {}
         
-        self.load_data_from_cache()
+        # <-- CAMBIO: Ya no llamamos a load_data_from_cache() aquí.
+        # Los datos se pasarán desde fuera después de la carga inicial.
+
+    def initialize_with_data(self, data):
+        """
+        <-- CAMBIO: Nueva función para iniciar el controlador con datos ya cargados.
+        """
+        if data:
+            self.jugadores_mercado = data
+            self.preparar_y_poblar_tablas()
+        else:
+            messagebox.showinfo("Caché Vacío", "No se encontraron datos. Pulsa 'Actualizar' para cargar la información del mercado.")
 
     def trigger_fetch_machine_offer(self):
         """Lanza el scraper de ofertas recibidas para todos los jugadores."""
@@ -351,10 +369,96 @@ class ValoracionController:
                 print(f"Error recalculando fila para {item_id}: {e}")
         self.root.config(cursor="")
         
+# --- FIN DE LA CLASE VALORACION CONTROLLER ---
+
+
 def main():
+    """
+    <-- CAMBIO: Esta es la nueva función principal que orquesta todo.
+    """
+    # 1. Crear una ventana raíz principal, pero mantenerla oculta por ahora.
     root = tk.Tk()
-    app = ValoracionController(root)
+    root.withdraw()
+
+    # 2. Crear una ventana secundaria (Toplevel) para el mensaje de carga.
+    loading_window = tk.Toplevel(root)
+    loading_window.title("Cargando...")
+    loading_window.resizable(False, False)
+    # Centrar la ventana de carga
+    root.update_idletasks()
+    x = root.winfo_screenwidth() // 2 - 150
+    y = root.winfo_screenheight() // 2 - 50
+    loading_window.geometry(f'300x100+{x}+{y}')
+    
+    # Mensaje dentro de la ventana de carga
+    loading_font = font.Font(family="Helvetica", size=10)
+    tk.Label(loading_window, text="\nBuscando datos del mercado...\nPor favor, espera.", font=loading_font).pack(pady=10)
+    
+    # <-- CAMBIO CLAVE PARA LINUX: Forzar la actualización de la GUI
+    loading_window.update()
+
+
+    # 3. Crear una cola para la comunicación entre hilos
+    result_queue = queue.Queue()
+
+    # 4. Función que se ejecutará en el hilo secundario (el scraper)
+    def run_scrape_in_thread():
+        print("INFO (hilo): Iniciando scraping de mercado...")
+        # Primero, intenta cargar desde el caché
+        datos = None
+        if os.path.exists(CACHE_FILE):
+            try:
+                with open(CACHE_FILE, 'r', encoding='utf-8') as f:
+                    datos = json.load(f)
+                print("INFO (hilo): Datos cargados desde la caché.")
+            except Exception as e:
+                print(f"AVISO (hilo): No se pudo leer la caché ({e}), se procederá a scrapear.")
+                datos = None
+        
+        # Si no hay caché, ejecuta el scraper
+        if not datos:
+            datos = extraer_jugadores_mercado()
+            if datos:
+                # Guarda los nuevos datos en la caché para la próxima vez
+                try:
+                    with open(CACHE_FILE, 'w', encoding='utf-8') as f:
+                        json.dump(datos, f, indent=2, ensure_ascii=False)
+                    print("INFO (hilo): Nuevos datos guardados en caché.")
+                except Exception as e:
+                    print(f"AVISO (hilo): No se pudo guardar la caché: {e}")
+
+        result_queue.put(datos) # Pone el resultado en la cola
+
+    # 5. Función que revisa periódicamente si el hilo ha terminado
+    def check_for_result():
+        try:
+            # Intenta obtener el resultado de la cola sin bloquear la app
+            scraped_data = result_queue.get(block=False)
+            
+            # Si llegamos aquí, el hilo ha terminado.
+            loading_window.destroy() # Cierra la ventana de "cargando"
+            
+            # Muestra la ventana principal que estaba oculta
+            root.deiconify()
+            
+            # Crea el controlador principal y lo inicia con los datos recién obtenidos
+            app = ValoracionController(root)
+            app.initialize_with_data(scraped_data)
+
+        except queue.Empty:
+            # Si la cola está vacía, el hilo aún está trabajando.
+            # Vuelve a llamar a esta misma función después de 100ms.
+            root.after(100, check_for_result)
+
+    # 6. Iniciar el hilo del scraper
+    threading.Thread(target=run_scrape_in_thread, daemon=True).start()
+    
+    # 7. Iniciar el primer chequeo de la cola
+    root.after(100, check_for_result)
+
+    # 8. Iniciar el bucle principal de la aplicación
     root.mainloop()
+
 
 if __name__ == '__main__':
     main()

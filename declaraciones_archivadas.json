@@ -312,5 +312,88 @@
         "declaracion": "Tarde o temprano por más que te escondas saldrás a la luz  , seguro!",
         "timestamp": "2025-08-04T22:57:29.737963",
         "mencionados": []
+    },
+    {
+        "message_id": 511,
+        "reply_to_message_id": 499,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "El Monarca de las Sombras 🏆 🏆",
+        "declaracion": "El dúo Jolin ( Jaime y @javimoralv  )ya mismo está en la pista!",
+        "timestamp": "2025-07-30T16:23:09.350097",
+        "mencionados": [
+            {
+                "telegram_user_id": 8237874411,
+                "nombre_mister": "king revolution 💪⚽"
+            }
+        ]
+    },
+    {
+        "message_id": 587,
+        "reply_to_message_id": null,
+        "telegram_user_id": 1192183458,
+        "nombre_mister": "The special Juan 🏆🏆🏆🏆",
+        "declaracion": "Pedrico si le viniera bien a él tú que piensas que estaría puesto ya o no? Perico Definitivo te está vacilando pero bien él colega Corpas",
+        "timestamp": "2025-08-01T09:08:22.536153",
+        "mencionados": [
+            {
+                "telegram_user_id": 7164678052,
+                "nombre_mister": "Perico"
+            },
+            {
+                "telegram_user_id": 6959330748,
+                "nombre_mister": "Al Hansi Flick 🏆🏆"
+            }
+        ]
+    },
+    {
+        "message_id": 632,
+        "reply_to_message_id": null,
+        "telegram_user_id": 3195403,
+        "nombre_mister": "The 👑",
+        "declaracion": "Buenos días, menos mal que mi hermano Bro '' ER ha sembrado en mi la paciencia y la tranquilidad, si no ya estaba yo sin dineros...",
+        "timestamp": "2025-08-04T08:49:20.836591",
+        "mencionados": [
+            {
+                "telegram_user_id": 6959330748,
+                "nombre_mister": "Al Hansi Flick 🏆🏆"
+            }
+        ]
+    },
+    {
+        "message_id": 644,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7360061740,
+        "nombre_mister": "Francis",
+        "declaracion": "Ivan Pavon saca su varita mágica de nuevo y se lleva al mejor jugador de la temporada 25-26 ¡ojo a todo el revuelo que pueda generar en su vestuario! ¡Las oficinas echan humo y el estratega activa palancas!",
+        "timestamp": "2025-08-14T11:28:44.091589",
+        "mencionados": [
+            {
+                "telegram_user_id": 2078045747,
+                "nombre_mister": "El Monarca de las Sombras 🏆 🏆"
+            }
+        ]
+    },
+    {
+        "message_id": 653,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "Digo yo que si lo ve como el mejor del juego, que puede ser y nadie lo niega. Por qué no lo has cambiado por rapinha mostro! Que lo ve él con su ojo de Alcon el makina Francisco Javier",
+        "timestamp": "2025-08-14T16:44:43.673085",
+        "mencionados": [
+            {
+                "telegram_user_id": 7360061740,
+                "nombre_mister": "Francis"
+            }
+        ]
+    },
+    {
+        "message_id": 665,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "está año nuestro amigo @javimoralv  se lo tomaría más enserio.. y se refería a que por lo menos se metería ya que el año pasado ni eso jajajajjajaa",
+        "timestamp": "2025-08-15T10:27:24.300085",
+        "mencionados": []
     }
 ]

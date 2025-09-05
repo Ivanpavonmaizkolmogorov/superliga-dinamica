@@ -7,14 +7,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 49,
-        "puesto": 1,
-        "puntos_totales": 103
+        "puesto": 2,
+        "puntos_totales": 142
       },
       {
         "jornada": 2,
         "puntos_jornada": 54,
-        "puesto": 1,
-        "puntos_totales": 103
+        "puesto": 2,
+        "puntos_totales": 142
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 36,
+        "puesto": 2,
+        "puntos_totales": 142
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 3,
+        "puesto": 2,
+        "puntos_totales": 142
       }
     ],
     "momento_gloria": "Esperando el momento! ",
@@ -33,14 +45,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 30,
-        "puesto": 12,
-        "puntos_totales": 49
+        "puesto": 11,
+        "puntos_totales": 85
       },
       {
         "jornada": 2,
         "puntos_jornada": 19,
-        "puesto": 12,
-        "puntos_totales": 49
+        "puesto": 11,
+        "puntos_totales": 85
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 33,
+        "puesto": 11,
+        "puntos_totales": 85
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 3,
+        "puesto": 11,
+        "puntos_totales": 85
       }
     ],
     "telegram_user_id": 3195403,
@@ -59,14 +83,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 32,
-        "puesto": 8,
-        "puntos_totales": 63
+        "puesto": 6,
+        "puntos_totales": 110
       },
       {
         "jornada": 2,
         "puntos_jornada": 31,
-        "puesto": 8,
-        "puntos_totales": 63
+        "puesto": 6,
+        "puntos_totales": 110
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 47,
+        "puesto": 6,
+        "puntos_totales": 110
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 0,
+        "puesto": 6,
+        "puntos_totales": 110
       }
     ],
     "telegram_user_id": 2043658875,
@@ -85,14 +121,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 46,
-        "puesto": 10,
-        "puntos_totales": 61
+        "puesto": 8,
+        "puntos_totales": 92
       },
       {
         "jornada": 2,
         "puntos_jornada": 15,
-        "puesto": 10,
-        "puntos_totales": 61
+        "puesto": 8,
+        "puntos_totales": 92
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 31,
+        "puesto": 8,
+        "puntos_totales": 92
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 0,
+        "puesto": 8,
+        "puntos_totales": 92
       }
     ],
     "momento_gloria": "Doblete, dos veces seguidas siendo campeon. En una temporada con casi todas las estrellas del R. Madrid: Belligham, Vinicius, Rodrygo, T. Kroos y en otra con los grandes del Betis con Peligrini el ingeniero con Isco, Lo Celso y Antony. Equipazos.",
@@ -111,13 +159,25 @@
       {
         "jornada": 1,
         "puntos_jornada": 28,
-        "puesto": 13,
+        "puesto": 14,
         "puntos_totales": 28
       },
       {
         "jornada": 2,
         "puntos_jornada": 0,
-        "puesto": 13,
+        "puesto": 14,
+        "puntos_totales": 28
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 0,
+        "puesto": 14,
+        "puntos_totales": 28
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 0,
+        "puesto": 14,
         "puntos_totales": 28
       }
     ],
@@ -137,14 +197,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 28,
-        "puesto": 11,
-        "puntos_totales": 50
+        "puesto": 12,
+        "puntos_totales": 85
       },
       {
         "jornada": 2,
         "puntos_jornada": 22,
-        "puesto": 11,
-        "puntos_totales": 50
+        "puesto": 12,
+        "puntos_totales": 85
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 35,
+        "puesto": 12,
+        "puntos_totales": 85
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 0,
+        "puesto": 12,
+        "puntos_totales": 85
       }
     ],
     "momento_gloria": "Remontada en la segunda vuelta",
@@ -163,14 +235,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 31,
-        "puesto": 7,
-        "puntos_totales": 63
+        "puesto": 9,
+        "puntos_totales": 88
       },
       {
         "jornada": 2,
         "puntos_jornada": 32,
-        "puesto": 7,
-        "puntos_totales": 63
+        "puesto": 9,
+        "puntos_totales": 88
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 21,
+        "puesto": 9,
+        "puntos_totales": 88
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 4,
+        "puesto": 9,
+        "puntos_totales": 88
       }
     ],
     "telegram_user_id": 8286000967,
@@ -189,14 +273,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 32,
-        "puesto": 6,
-        "puntos_totales": 63
+        "puesto": 10,
+        "puntos_totales": 87
       },
       {
         "jornada": 2,
         "puntos_jornada": 31,
-        "puesto": 6,
-        "puntos_totales": 63
+        "puesto": 10,
+        "puntos_totales": 87
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 23,
+        "puesto": 10,
+        "puntos_totales": 87
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 1,
+        "puesto": 10,
+        "puntos_totales": 87
       }
     ],
     "momento_gloria": "Mi primer y único titulo de liga con joselu y el chimy de delanteros.",
@@ -215,14 +311,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 45,
-        "puesto": 2,
-        "puntos_totales": 101
+        "puesto": 1,
+        "puntos_totales": 147
       },
       {
         "jornada": 2,
         "puntos_jornada": 56,
-        "puesto": 2,
-        "puntos_totales": 101
+        "puesto": 1,
+        "puntos_totales": 147
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 46,
+        "puesto": 1,
+        "puntos_totales": 147
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 0,
+        "puesto": 1,
+        "puntos_totales": 147
       }
     ],
     "momento_gloria": "Mi titulo de campeon",
@@ -241,14 +349,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 34,
-        "puesto": 9,
-        "puntos_totales": 62
+        "puesto": 7,
+        "puntos_totales": 106
       },
       {
         "jornada": 2,
         "puntos_jornada": 28,
-        "puesto": 9,
-        "puntos_totales": 62
+        "puesto": 7,
+        "puntos_totales": 106
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 35,
+        "puesto": 7,
+        "puntos_totales": 106
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 9,
+        "puesto": 7,
+        "puntos_totales": 106
       }
     ],
     "momento_gloria": "Cada minuto ",
@@ -267,14 +387,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 44,
-        "puesto": 5,
-        "puntos_totales": 82
+        "puesto": 3,
+        "puntos_totales": 136
       },
       {
         "jornada": 2,
         "puntos_jornada": 38,
-        "puesto": 5,
-        "puntos_totales": 82
+        "puesto": 3,
+        "puntos_totales": 136
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 50,
+        "puesto": 3,
+        "puntos_totales": 136
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 4,
+        "puesto": 3,
+        "puntos_totales": 136
       }
     ],
     "momento_gloria": "La Nolitada. Le llamamos todo el grupo asi al hecho de que vendi a mi rival 7101774 a Nolito por un precio desorbitado, y el se lo creyo, es decir, pensaba que habia adquirido una gangan, menuda risa.",
@@ -293,14 +425,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 41,
-        "puesto": 4,
-        "puntos_totales": 84
+        "puesto": 5,
+        "puntos_totales": 123
       },
       {
         "jornada": 2,
         "puntos_jornada": 43,
-        "puesto": 4,
-        "puntos_totales": 84
+        "puesto": 5,
+        "puntos_totales": 123
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 31,
+        "puesto": 5,
+        "puntos_totales": 123
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 8,
+        "puesto": 5,
+        "puntos_totales": 123
       }
     ],
     "momento_gloria": "No recuerdo algo increíble que haya sucedido",
@@ -319,14 +463,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 18,
-        "puesto": 14,
-        "puntos_totales": 20
+        "puesto": 13,
+        "puntos_totales": 39
       },
       {
         "jornada": 2,
         "puntos_jornada": 2,
-        "puesto": 14,
-        "puntos_totales": 20
+        "puesto": 13,
+        "puntos_totales": 39
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 19,
+        "puesto": 13,
+        "puntos_totales": 39
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 0,
+        "puesto": 13,
+        "puntos_totales": 39
       }
     ],
     "momento_gloria": "Yo creo que lograr el título siempre es la máxima en este juego",
@@ -345,14 +501,26 @@
       {
         "jornada": 1,
         "puntos_jornada": 47,
-        "puesto": 3,
-        "puntos_totales": 85
+        "puesto": 4,
+        "puntos_totales": 129
       },
       {
         "jornada": 2,
         "puntos_jornada": 38,
-        "puesto": 3,
-        "puntos_totales": 85
+        "puesto": 4,
+        "puntos_totales": 129
+      },
+      {
+        "jornada": 3,
+        "puntos_jornada": 41,
+        "puesto": 4,
+        "puntos_totales": 129
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 3,
+        "puesto": 4,
+        "puntos_totales": 129
       }
     ],
     "telegram_user_id": 6861763306,

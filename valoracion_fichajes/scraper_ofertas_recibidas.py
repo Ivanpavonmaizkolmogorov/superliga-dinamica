@@ -32,7 +32,7 @@ def extraer_ofertas_maquina():
     with sync_playwright() as p:
         context = None
         try:
-            context = p.chromium.launch_persistent_context(PLAYWRIGHT_PROFILE_PATH, headless=False, channel="msedge")
+            context = p.chromium.launch_persistent_context(PLAYWRIGHT_PROFILE_PATH, headless=False)
             page = context.new_page()
 
             print(f"INFO: Navegando a {MISTER_URL_MERCADO}")
