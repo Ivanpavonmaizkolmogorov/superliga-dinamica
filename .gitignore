@@ -16,4 +16,5 @@ __pycache__/
 playwright_edge_profile/
 
 # Ignorar archivos de caché de Playwright si se generan
-playwright-report/
+playwright-report/playwright_edge_profile_backup_corrupt/
+node_modules/

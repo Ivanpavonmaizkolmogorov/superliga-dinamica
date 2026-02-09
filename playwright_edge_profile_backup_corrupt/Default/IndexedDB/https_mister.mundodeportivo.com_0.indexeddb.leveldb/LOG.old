@@ -1,0 +1,14 @@
+2025/11/25-07:56:33.838 2a1044 Reusing MANIFEST /home/ivan/proyectos/superliga-dinamica/playwright_edge_profile/Default/IndexedDB/https_mister.mundodeportivo.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/11/25-07:56:33.838 2a1044 Recovering log #129
+2025/11/25-07:56:33.839 2a1044 Reusing old log /home/ivan/proyectos/superliga-dinamica/playwright_edge_profile/Default/IndexedDB/https_mister.mundodeportivo.com_0.indexeddb.leveldb/000129.log 
+2025/11/25-07:56:33.840 2a1044 Delete type=2 #127
+2025/11/25-07:56:34.798 2a1044 Level-0 table #134: started
+2025/11/25-07:56:34.804 2a1044 Level-0 table #134: 4017 bytes OK
+2025/11/25-07:56:34.816 2a1044 Delete type=0 #129
+2025/11/25-07:56:34.817 2a1044 Manual compaction at level-0 from '\x00$\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00%\x00\x00\x00' @ 0 : 0; will stop at '\x00$\x00\x00\x05' @ 2267 : 1
+2025/11/25-07:56:34.817 2a1044 Compacting 1@0 + 1@1 files
+2025/11/25-07:56:34.823 2a1044 Generated table #135@0: 96 keys, 2348 bytes
+2025/11/25-07:56:34.823 2a1044 Compacted 1@0 + 1@1 files => 2348 bytes
+2025/11/25-07:56:34.831 2a1044 compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/11/25-07:56:34.831 2a1044 Delete type=2 #134
+2025/11/25-07:56:34.831 2a1044 Manual compaction at level-0 from '\x00$\x00\x00\x05' @ 2267 : 1 .. '\x00%\x00\x00\x00' @ 0 : 0; will stop at (end)
