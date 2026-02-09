@@ -93,21 +93,26 @@ def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
         miembros = [p for p in perfiles if p['id_manager'] in pareja.get('id_managers', [])]
         if not miembros: continue
         puntos_totales = sum(m['historial_temporada'][-1]['puntos_totales'] for m in miembros)
+        nombres_miembros = [m['nombre_mister'] for m in miembros] # <-- AÑADIMOS ESTO
         media = puntos_totales / len(miembros)
-        clasificacion.append({"nombre": pareja['nombre_pareja'], "media": round(media)})
+        # Y AHORA GUARDAMOS LOS NOMBRES EN LA CLASIFICACIÓN
+        clasificacion.append({"nombre": pareja['nombre_pareja'], "media": round(media), "miembros": nombres_miembros})
     
     clasificacion.sort(key=lambda x: x['media'], reverse=True)
     
     clasificacion_texto = ""
     for i, item in enumerate(clasificacion):
-        nombre_pareja = item['nombre']
+        nombre_pareja = item['nombre'] # "La Dinastía"
         media_pareja = item['media']
         
         # --- ¡AQUÍ ESTÁ LA NUEVA LÓGICA! ---
         
         # Si la pareja tiene eventos, creamos un desplegable
         if nombre_pareja in eventos_parejas:
-            summary = f"<b>{i+1}. {nombre_pareja}</b> - (Media Total: {media_pareja} pts)"
+            # CONSTRUIMOS EL TEXTO DE LOS MIEMBROS
+            texto_miembros = f" ({' & '.join(item['miembros'])})"
+            # Y LO AÑADIMOS AL TÍTULO
+            summary = f"<b>{i+1}. {nombre_pareja}</b>{texto_miembros} - (Media Total: {media_pareja} pts)"
             
             # Construimos el contenido del desplegable
             contenido_desplegable = ""
@@ -118,7 +123,9 @@ def calcular_clasificacion_parejas(perfiles, parejas, jornada_actual):
         
         # Si no hay eventos, mostramos la línea como antes (pero sin markdown extra)
         else:
-            clasificacion_texto += f"<b>{i+1}. {nombre_pareja}</b> - (Media Total: {media_pareja} pts)\n"
+            # HACEMOS LO MISMO PARA LAS LÍNEAS NORMALES
+            texto_miembros = f" ({' & '.join(item['miembros'])})"
+            clasificacion_texto += f"<b>{i+1}. {nombre_pareja}</b>{texto_miembros} - (Media Total: {media_pareja} pts)\n"
 
     return f"{titulo}{clasificacion_texto}"
 
@@ -130,9 +137,20 @@ def calcular_clasificacion_sprints(perfiles, jornada_actual):
         if jornada_actual >= inicio:
             titulo = f"## 🚀 CLASIFICACIÓN {nombre.upper()} 🚀\n\n"
             clasificacion = []
+            
+            print(f"\n--- [LOG] Verificando Cálculo de {nombre} (J{inicio}-J{fin}) ---")
+            
             for perfil in perfiles:
-                puntos = sum(h['puntos_jornada'] for h in perfil['historial_temporada'] if inicio <= h['jornada'] <= fin)
+                # Log confirmado solicitado por el usuario
+                puntos_desglosados = [h['puntos_jornada'] for h in perfil['historial_temporada'] if inicio <= h['jornada'] <= fin]
+                puntos = sum(puntos_desglosados)
+                
+                # Solo imprimimos si tiene puntos o es relevante, para no ensuciar demasiado
+                if puntos > 0:
+                    print(f"   > {perfil['nombre_mister']}: Suma({puntos_desglosados}) = {puntos}")
+                
                 clasificacion.append({"nombre": perfil['nombre_mister'], "puntos": puntos})
+                
             clasificacion.sort(key=lambda x: x['puntos'], reverse=True)
             clasificacion_texto = "".join([f"**{i+1}.** {item['nombre']} - {item['puntos']} pts\n" for i, item in enumerate(clasificacion)])
             reporte_final += f"{titulo}{clasificacion_texto}\n\n---\n"
@@ -449,6 +467,18 @@ def main():
         with open('declaraciones.json', 'r', encoding='utf-8') as f: todas_declaraciones = json.load(f)
     except Exception: todas_declaraciones = []
     print(f"--- [PUNTO DE CONTROL 2] Datos cargados para la Jornada {jornada_actual} ---")
+    
+    # --- CORRECCIÓN CRÍTICA DE RANGOS (PUESTOS) ---
+    # Como procesar_jornada.py a veces deja el puesto en 0, lo recalculamos aquí en memoria
+    # para asegurar que el reporte salga perfecto.
+    print("--- [CORRECCIÓN] Recalculando puestos en memoria para evitar errores de 0...")
+    # Ordenamos por puntos totales de mayor a menor
+    perfiles.sort(key=lambda p: p['historial_temporada'][-1]['puntos_totales'], reverse=True)
+    # Asignamos el puesto correcto (1, 2, 3...)
+    for i, perfil in enumerate(perfiles):
+        perfil['historial_temporada'][-1]['puesto'] = i + 1
+    # -----------------------------------------------
+
     # --- NUEVA LÍNEA: LLAMAMOS AL DETECTOR DE EVENTOS ---
     eventos_individuales_lista = detectar_eventos_individuales(perfiles)
     eventos_por_manager = agrupar_eventos_por_manager(eventos_individuales_lista)

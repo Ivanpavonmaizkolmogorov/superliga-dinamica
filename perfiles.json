@@ -7,26 +7,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 49,
-        "puesto": 2,
-        "puntos_totales": 142
+        "puesto": 1,
+        "puntos_totales": 49
       },
       {
         "jornada": 2,
         "puntos_jornada": 54,
-        "puesto": 2,
-        "puntos_totales": 142
+        "puesto": 1,
+        "puntos_totales": 103
       },
       {
         "jornada": 3,
         "puntos_jornada": 36,
-        "puesto": 2,
-        "puntos_totales": 142
+        "puesto": 1,
+        "puntos_totales": 139
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 16,
+        "puesto": 1,
+        "puntos_totales": 155
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 63,
+        "puesto": 1,
+        "puntos_totales": 218
       },
       {
         "jornada": 6,
-        "puntos_jornada": 3,
-        "puesto": 2,
-        "puntos_totales": 142
+        "puntos_jornada": 37,
+        "puesto": 1,
+        "puntos_totales": 255
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 34,
+        "puesto": 1,
+        "puntos_totales": 289
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 56,
+        "puesto": 1,
+        "puntos_totales": 345
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 48,
+        "puesto": 1,
+        "puntos_totales": 393
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 43,
+        "puesto": 1,
+        "puntos_totales": 436
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 63,
+        "puesto": 1,
+        "puntos_totales": 499
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 52,
+        "puesto": 1,
+        "puntos_totales": 551
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 48,
+        "puesto": 1,
+        "puntos_totales": 599
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 52,
+        "puesto": 0,
+        "puntos_totales": 651
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 54,
+        "puesto": 0,
+        "puntos_totales": 705
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 29,
+        "puesto": 0,
+        "puntos_totales": 734
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 54,
+        "puesto": 0,
+        "puntos_totales": 788
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 65,
+        "puesto": 0,
+        "puntos_totales": 853
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 50,
+        "puesto": 0,
+        "puntos_totales": 903
       }
     ],
     "momento_gloria": "Esperando el momento! ",
@@ -45,26 +135,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 30,
-        "puesto": 11,
-        "puntos_totales": 85
+        "puesto": 12,
+        "puntos_totales": 30
       },
       {
         "jornada": 2,
         "puntos_jornada": 19,
-        "puesto": 11,
-        "puntos_totales": 85
+        "puesto": 12,
+        "puntos_totales": 49
       },
       {
         "jornada": 3,
         "puntos_jornada": 33,
-        "puesto": 11,
-        "puntos_totales": 85
+        "puesto": 12,
+        "puntos_totales": 82
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 19,
+        "puesto": 12,
+        "puntos_totales": 101
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 10,
+        "puesto": 12,
+        "puntos_totales": 111
       },
       {
         "jornada": 6,
-        "puntos_jornada": 3,
-        "puesto": 11,
-        "puntos_totales": 85
+        "puntos_jornada": 31,
+        "puesto": 12,
+        "puntos_totales": 142
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 29,
+        "puesto": 12,
+        "puntos_totales": 171
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 24,
+        "puesto": 12,
+        "puntos_totales": 195
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 30,
+        "puesto": 12,
+        "puntos_totales": 225
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 28,
+        "puesto": 12,
+        "puntos_totales": 253
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 46,
+        "puesto": 12,
+        "puntos_totales": 299
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 46,
+        "puesto": 12,
+        "puntos_totales": 345
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 37,
+        "puesto": 12,
+        "puntos_totales": 382
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 19,
+        "puesto": 0,
+        "puntos_totales": 401
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 20,
+        "puesto": 0,
+        "puntos_totales": 421
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 0,
+        "puesto": 0,
+        "puntos_totales": 421
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 23,
+        "puesto": 0,
+        "puntos_totales": 444
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 38,
+        "puesto": 0,
+        "puntos_totales": 482
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 39,
+        "puesto": 0,
+        "puntos_totales": 521
       }
     ],
     "telegram_user_id": 3195403,
@@ -83,26 +263,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 32,
-        "puesto": 6,
-        "puntos_totales": 110
+        "puesto": 4,
+        "puntos_totales": 32
       },
       {
         "jornada": 2,
         "puntos_jornada": 31,
-        "puesto": 6,
-        "puntos_totales": 110
+        "puesto": 4,
+        "puntos_totales": 63
       },
       {
         "jornada": 3,
         "puntos_jornada": 47,
-        "puesto": 6,
+        "puesto": 4,
         "puntos_totales": 110
       },
       {
+        "jornada": 4,
+        "puntos_jornada": 37,
+        "puesto": 4,
+        "puntos_totales": 147
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 44,
+        "puesto": 4,
+        "puntos_totales": 191
+      },
+      {
         "jornada": 6,
-        "puntos_jornada": 0,
-        "puesto": 6,
-        "puntos_totales": 110
+        "puntos_jornada": 21,
+        "puesto": 4,
+        "puntos_totales": 212
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 61,
+        "puesto": 4,
+        "puntos_totales": 273
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 40,
+        "puesto": 4,
+        "puntos_totales": 313
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 48,
+        "puesto": 4,
+        "puntos_totales": 361
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 32,
+        "puesto": 4,
+        "puntos_totales": 393
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 36,
+        "puesto": 4,
+        "puntos_totales": 429
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 37,
+        "puesto": 4,
+        "puntos_totales": 466
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 47,
+        "puesto": 4,
+        "puntos_totales": 513
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 36,
+        "puesto": 0,
+        "puntos_totales": 549
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 35,
+        "puesto": 0,
+        "puntos_totales": 584
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 39,
+        "puesto": 0,
+        "puntos_totales": 623
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 678
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 37,
+        "puesto": 0,
+        "puntos_totales": 715
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 36,
+        "puesto": 0,
+        "puntos_totales": 751
       }
     ],
     "telegram_user_id": 2043658875,
@@ -121,26 +391,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 46,
-        "puesto": 8,
-        "puntos_totales": 92
+        "puesto": 7,
+        "puntos_totales": 46
       },
       {
         "jornada": 2,
         "puntos_jornada": 15,
-        "puesto": 8,
-        "puntos_totales": 92
+        "puesto": 7,
+        "puntos_totales": 61
       },
       {
         "jornada": 3,
         "puntos_jornada": 31,
-        "puesto": 8,
+        "puesto": 7,
         "puntos_totales": 92
       },
       {
+        "jornada": 4,
+        "puntos_jornada": 41,
+        "puesto": 7,
+        "puntos_totales": 133
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 20,
+        "puesto": 7,
+        "puntos_totales": 153
+      },
+      {
         "jornada": 6,
+        "puntos_jornada": 24,
+        "puesto": 7,
+        "puntos_totales": 177
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 52,
+        "puesto": 7,
+        "puntos_totales": 229
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 12,
+        "puesto": 7,
+        "puntos_totales": 241
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 62,
+        "puesto": 7,
+        "puntos_totales": 303
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 53,
+        "puesto": 7,
+        "puntos_totales": 356
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 55,
+        "puesto": 7,
+        "puntos_totales": 411
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 40,
+        "puesto": 7,
+        "puntos_totales": 451
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 41,
+        "puesto": 7,
+        "puntos_totales": 492
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 62,
+        "puesto": 0,
+        "puntos_totales": 554
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 41,
+        "puesto": 0,
+        "puntos_totales": 595
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 52,
+        "puesto": 0,
+        "puntos_totales": 647
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 72,
+        "puesto": 0,
+        "puntos_totales": 719
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 774
+      },
+      {
+        "jornada": 19,
         "puntos_jornada": 0,
-        "puesto": 8,
-        "puntos_totales": 92
+        "puesto": 0,
+        "puntos_totales": 774
       }
     ],
     "momento_gloria": "Doblete, dos veces seguidas siendo campeon. En una temporada con casi todas las estrellas del R. Madrid: Belligham, Vinicius, Rodrygo, T. Kroos y en otra con los grandes del Betis con Peligrini el ingeniero con Isco, Lo Celso y Antony. Equipazos.",
@@ -159,26 +519,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 28,
-        "puesto": 14,
+        "puesto": 9,
         "puntos_totales": 28
       },
       {
         "jornada": 2,
         "puntos_jornada": 0,
-        "puesto": 14,
+        "puesto": 9,
         "puntos_totales": 28
       },
       {
         "jornada": 3,
         "puntos_jornada": 0,
-        "puesto": 14,
+        "puesto": 9,
         "puntos_totales": 28
       },
       {
+        "jornada": 4,
+        "puntos_jornada": 26,
+        "puesto": 9,
+        "puntos_totales": 54
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 25,
+        "puesto": 9,
+        "puntos_totales": 79
+      },
+      {
         "jornada": 6,
-        "puntos_jornada": 0,
-        "puesto": 14,
-        "puntos_totales": 28
+        "puntos_jornada": 43,
+        "puesto": 9,
+        "puntos_totales": 122
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 34,
+        "puesto": 9,
+        "puntos_totales": 156
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 61,
+        "puesto": 9,
+        "puntos_totales": 217
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 37,
+        "puesto": 9,
+        "puntos_totales": 254
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 48,
+        "puesto": 9,
+        "puntos_totales": 302
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 57,
+        "puesto": 9,
+        "puntos_totales": 359
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 42,
+        "puesto": 9,
+        "puntos_totales": 401
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 41,
+        "puesto": 9,
+        "puntos_totales": 442
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 30,
+        "puesto": 0,
+        "puntos_totales": 472
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 51,
+        "puesto": 0,
+        "puntos_totales": 523
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 32,
+        "puesto": 0,
+        "puntos_totales": 555
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 53,
+        "puesto": 0,
+        "puntos_totales": 608
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 50,
+        "puesto": 0,
+        "puntos_totales": 658
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 15,
+        "puesto": 0,
+        "puntos_totales": 673
       }
     ],
     "momento_gloria": "Único 4 veces campeón del campeonato, sin participar en las últimas 4 ligas no hay nadie ni cerca de igualar mi palmarés…",
@@ -197,26 +647,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 28,
-        "puesto": 12,
-        "puntos_totales": 85
+        "puesto": 14,
+        "puntos_totales": 28
       },
       {
         "jornada": 2,
         "puntos_jornada": 22,
-        "puesto": 12,
-        "puntos_totales": 85
+        "puesto": 14,
+        "puntos_totales": 50
       },
       {
         "jornada": 3,
         "puntos_jornada": 35,
-        "puesto": 12,
+        "puesto": 14,
         "puntos_totales": 85
       },
       {
+        "jornada": 4,
+        "puntos_jornada": 43,
+        "puesto": 14,
+        "puntos_totales": 128
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 20,
+        "puesto": 14,
+        "puntos_totales": 148
+      },
+      {
         "jornada": 6,
-        "puntos_jornada": 0,
-        "puesto": 12,
-        "puntos_totales": 85
+        "puntos_jornada": 32,
+        "puesto": 14,
+        "puntos_totales": 180
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 14,
+        "puesto": 14,
+        "puntos_totales": 194
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 23,
+        "puesto": 14,
+        "puntos_totales": 217
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 21,
+        "puesto": 14,
+        "puntos_totales": 238
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 18,
+        "puesto": 14,
+        "puntos_totales": 256
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 35,
+        "puesto": 14,
+        "puntos_totales": 291
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 21,
+        "puesto": 14,
+        "puntos_totales": 312
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 38,
+        "puesto": 14,
+        "puntos_totales": 350
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 30,
+        "puesto": 0,
+        "puntos_totales": 380
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 27,
+        "puesto": 0,
+        "puntos_totales": 407
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 462
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 43,
+        "puesto": 0,
+        "puntos_totales": 505
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 43,
+        "puesto": 0,
+        "puntos_totales": 548
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 41,
+        "puesto": 0,
+        "puntos_totales": 589
       }
     ],
     "momento_gloria": "Remontada en la segunda vuelta",
@@ -235,26 +775,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 31,
-        "puesto": 9,
-        "puntos_totales": 88
+        "puesto": 6,
+        "puntos_totales": 31
       },
       {
         "jornada": 2,
         "puntos_jornada": 32,
-        "puesto": 9,
-        "puntos_totales": 88
+        "puesto": 6,
+        "puntos_totales": 63
       },
       {
         "jornada": 3,
         "puntos_jornada": 21,
-        "puesto": 9,
-        "puntos_totales": 88
+        "puesto": 6,
+        "puntos_totales": 84
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 48,
+        "puesto": 6,
+        "puntos_totales": 132
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 46,
+        "puesto": 6,
+        "puntos_totales": 178
       },
       {
         "jornada": 6,
-        "puntos_jornada": 4,
-        "puesto": 9,
-        "puntos_totales": 88
+        "puntos_jornada": 29,
+        "puesto": 6,
+        "puntos_totales": 207
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 45,
+        "puesto": 6,
+        "puntos_totales": 252
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 32,
+        "puesto": 6,
+        "puntos_totales": 284
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 46,
+        "puesto": 6,
+        "puntos_totales": 330
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 48,
+        "puesto": 6,
+        "puntos_totales": 378
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 39,
+        "puesto": 6,
+        "puntos_totales": 417
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 44,
+        "puesto": 6,
+        "puntos_totales": 461
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 44,
+        "puesto": 6,
+        "puntos_totales": 505
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 38,
+        "puesto": 0,
+        "puntos_totales": 543
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 28,
+        "puesto": 0,
+        "puntos_totales": 571
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 33,
+        "puesto": 0,
+        "puntos_totales": 604
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 64,
+        "puesto": 0,
+        "puntos_totales": 668
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 34,
+        "puesto": 0,
+        "puntos_totales": 702
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 29,
+        "puesto": 0,
+        "puntos_totales": 731
       }
     ],
     "telegram_user_id": 8286000967,
@@ -274,25 +904,115 @@
         "jornada": 1,
         "puntos_jornada": 32,
         "puesto": 10,
-        "puntos_totales": 87
+        "puntos_totales": 32
       },
       {
         "jornada": 2,
         "puntos_jornada": 31,
         "puesto": 10,
-        "puntos_totales": 87
+        "puntos_totales": 63
       },
       {
         "jornada": 3,
         "puntos_jornada": 23,
         "puesto": 10,
-        "puntos_totales": 87
+        "puntos_totales": 86
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 17,
+        "puesto": 10,
+        "puntos_totales": 103
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 26,
+        "puesto": 10,
+        "puntos_totales": 129
       },
       {
         "jornada": 6,
-        "puntos_jornada": 1,
+        "puntos_jornada": 43,
         "puesto": 10,
-        "puntos_totales": 87
+        "puntos_totales": 172
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 41,
+        "puesto": 10,
+        "puntos_totales": 213
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 37,
+        "puesto": 10,
+        "puntos_totales": 250
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 36,
+        "puesto": 10,
+        "puntos_totales": 286
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 27,
+        "puesto": 10,
+        "puntos_totales": 313
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 38,
+        "puesto": 10,
+        "puntos_totales": 351
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 39,
+        "puesto": 10,
+        "puntos_totales": 390
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 33,
+        "puesto": 10,
+        "puntos_totales": 423
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 480
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 56,
+        "puesto": 0,
+        "puntos_totales": 536
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 18,
+        "puesto": 0,
+        "puntos_totales": 554
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 50,
+        "puesto": 0,
+        "puntos_totales": 604
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 35,
+        "puesto": 0,
+        "puntos_totales": 639
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 40,
+        "puesto": 0,
+        "puntos_totales": 679
       }
     ],
     "momento_gloria": "Mi primer y único titulo de liga con joselu y el chimy de delanteros.",
@@ -311,26 +1031,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 45,
-        "puesto": 1,
-        "puntos_totales": 147
+        "puesto": 2,
+        "puntos_totales": 45
       },
       {
         "jornada": 2,
         "puntos_jornada": 56,
-        "puesto": 1,
-        "puntos_totales": 147
+        "puesto": 2,
+        "puntos_totales": 101
       },
       {
         "jornada": 3,
         "puntos_jornada": 46,
-        "puesto": 1,
+        "puesto": 2,
         "puntos_totales": 147
       },
       {
+        "jornada": 4,
+        "puntos_jornada": 53,
+        "puesto": 2,
+        "puntos_totales": 200
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 49,
+        "puesto": 2,
+        "puntos_totales": 249
+      },
+      {
         "jornada": 6,
-        "puntos_jornada": 0,
-        "puesto": 1,
-        "puntos_totales": 147
+        "puntos_jornada": 56,
+        "puesto": 2,
+        "puntos_totales": 305
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 53,
+        "puesto": 2,
+        "puntos_totales": 358
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 27,
+        "puesto": 2,
+        "puntos_totales": 385
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 44,
+        "puesto": 2,
+        "puntos_totales": 429
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 29,
+        "puesto": 2,
+        "puntos_totales": 458
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 56,
+        "puesto": 2,
+        "puntos_totales": 514
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 39,
+        "puesto": 2,
+        "puntos_totales": 553
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 41,
+        "puesto": 2,
+        "puntos_totales": 594
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 45,
+        "puesto": 0,
+        "puntos_totales": 639
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 67,
+        "puesto": 0,
+        "puntos_totales": 706
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 44,
+        "puesto": 0,
+        "puntos_totales": 750
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 55,
+        "puesto": 0,
+        "puntos_totales": 805
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 51,
+        "puesto": 0,
+        "puntos_totales": 856
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 56,
+        "puesto": 0,
+        "puntos_totales": 912
       }
     ],
     "momento_gloria": "Mi titulo de campeon",
@@ -349,26 +1159,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 34,
-        "puesto": 7,
-        "puntos_totales": 106
+        "puesto": 11,
+        "puntos_totales": 34
       },
       {
         "jornada": 2,
         "puntos_jornada": 28,
-        "puesto": 7,
-        "puntos_totales": 106
+        "puesto": 11,
+        "puntos_totales": 62
       },
       {
         "jornada": 3,
         "puntos_jornada": 35,
-        "puesto": 7,
-        "puntos_totales": 106
+        "puesto": 11,
+        "puntos_totales": 97
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 20,
+        "puesto": 11,
+        "puntos_totales": 117
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 28,
+        "puesto": 11,
+        "puntos_totales": 145
       },
       {
         "jornada": 6,
-        "puntos_jornada": 9,
-        "puesto": 7,
-        "puntos_totales": 106
+        "puntos_jornada": 45,
+        "puesto": 11,
+        "puntos_totales": 190
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 27,
+        "puesto": 11,
+        "puntos_totales": 217
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 43,
+        "puesto": 11,
+        "puntos_totales": 260
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 28,
+        "puesto": 11,
+        "puntos_totales": 288
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 24,
+        "puesto": 11,
+        "puntos_totales": 312
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 36,
+        "puesto": 11,
+        "puntos_totales": 348
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 21,
+        "puesto": 11,
+        "puntos_totales": 369
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 28,
+        "puesto": 11,
+        "puntos_totales": 397
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 52,
+        "puesto": 0,
+        "puntos_totales": 449
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 44,
+        "puesto": 0,
+        "puntos_totales": 493
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 42,
+        "puesto": 0,
+        "puntos_totales": 535
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 49,
+        "puesto": 0,
+        "puntos_totales": 584
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 44,
+        "puesto": 0,
+        "puntos_totales": 628
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 21,
+        "puesto": 0,
+        "puntos_totales": 649
       }
     ],
     "momento_gloria": "Cada minuto ",
@@ -387,26 +1287,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 44,
-        "puesto": 3,
-        "puntos_totales": 136
+        "puesto": 5,
+        "puntos_totales": 44
       },
       {
         "jornada": 2,
         "puntos_jornada": 38,
-        "puesto": 3,
-        "puntos_totales": 136
+        "puesto": 5,
+        "puntos_totales": 82
       },
       {
         "jornada": 3,
         "puntos_jornada": 50,
-        "puesto": 3,
-        "puntos_totales": 136
+        "puesto": 5,
+        "puntos_totales": 132
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 34,
+        "puesto": 5,
+        "puntos_totales": 166
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 31,
+        "puesto": 5,
+        "puntos_totales": 197
       },
       {
         "jornada": 6,
-        "puntos_jornada": 4,
-        "puesto": 3,
-        "puntos_totales": 136
+        "puntos_jornada": 41,
+        "puesto": 5,
+        "puntos_totales": 238
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 44,
+        "puesto": 5,
+        "puntos_totales": 282
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 42,
+        "puesto": 5,
+        "puntos_totales": 324
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 37,
+        "puesto": 5,
+        "puntos_totales": 361
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 43,
+        "puesto": 5,
+        "puntos_totales": 404
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 29,
+        "puesto": 5,
+        "puntos_totales": 433
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 32,
+        "puesto": 5,
+        "puntos_totales": 465
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 38,
+        "puesto": 5,
+        "puntos_totales": 503
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 42,
+        "puesto": 0,
+        "puntos_totales": 545
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 51,
+        "puesto": 0,
+        "puntos_totales": 596
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 37,
+        "puesto": 0,
+        "puntos_totales": 633
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 46,
+        "puesto": 0,
+        "puntos_totales": 679
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 20,
+        "puesto": 0,
+        "puntos_totales": 699
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 35,
+        "puesto": 0,
+        "puntos_totales": 734
       }
     ],
     "momento_gloria": "La Nolitada. Le llamamos todo el grupo asi al hecho de que vendi a mi rival 7101774 a Nolito por un precio desorbitado, y el se lo creyo, es decir, pensaba que habia adquirido una gangan, menuda risa.",
@@ -425,26 +1415,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 41,
-        "puesto": 5,
-        "puntos_totales": 123
+        "puesto": 3,
+        "puntos_totales": 41
       },
       {
         "jornada": 2,
         "puntos_jornada": 43,
-        "puesto": 5,
-        "puntos_totales": 123
+        "puesto": 3,
+        "puntos_totales": 84
       },
       {
         "jornada": 3,
         "puntos_jornada": 31,
-        "puesto": 5,
-        "puntos_totales": 123
+        "puesto": 3,
+        "puntos_totales": 115
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 34,
+        "puesto": 3,
+        "puntos_totales": 149
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 32,
+        "puesto": 3,
+        "puntos_totales": 181
       },
       {
         "jornada": 6,
-        "puntos_jornada": 8,
-        "puesto": 5,
-        "puntos_totales": 123
+        "puntos_jornada": 42,
+        "puesto": 3,
+        "puntos_totales": 223
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 34,
+        "puesto": 3,
+        "puntos_totales": 257
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 41,
+        "puesto": 3,
+        "puntos_totales": 298
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 54,
+        "puesto": 3,
+        "puntos_totales": 352
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 31,
+        "puesto": 3,
+        "puntos_totales": 383
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 48,
+        "puesto": 3,
+        "puntos_totales": 431
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 38,
+        "puesto": 3,
+        "puntos_totales": 469
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 58,
+        "puesto": 3,
+        "puntos_totales": 527
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 33,
+        "puesto": 0,
+        "puntos_totales": 560
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 41,
+        "puesto": 0,
+        "puntos_totales": 601
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 34,
+        "puesto": 0,
+        "puntos_totales": 635
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 39,
+        "puesto": 0,
+        "puntos_totales": 674
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 23,
+        "puesto": 0,
+        "puntos_totales": 697
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 31,
+        "puesto": 0,
+        "puntos_totales": 728
       }
     ],
     "momento_gloria": "No recuerdo algo increíble que haya sucedido",
@@ -464,13 +1544,13 @@
         "jornada": 1,
         "puntos_jornada": 18,
         "puesto": 13,
-        "puntos_totales": 39
+        "puntos_totales": 18
       },
       {
         "jornada": 2,
         "puntos_jornada": 2,
         "puesto": 13,
-        "puntos_totales": 39
+        "puntos_totales": 20
       },
       {
         "jornada": 3,
@@ -479,10 +1559,100 @@
         "puntos_totales": 39
       },
       {
-        "jornada": 6,
-        "puntos_jornada": 0,
+        "jornada": 4,
+        "puntos_jornada": 35,
         "puesto": 13,
-        "puntos_totales": 39
+        "puntos_totales": 74
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 37,
+        "puesto": 13,
+        "puntos_totales": 111
+      },
+      {
+        "jornada": 6,
+        "puntos_jornada": 16,
+        "puesto": 13,
+        "puntos_totales": 127
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 31,
+        "puesto": 13,
+        "puntos_totales": 158
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 30,
+        "puesto": 13,
+        "puntos_totales": 188
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 34,
+        "puesto": 13,
+        "puntos_totales": 222
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 25,
+        "puesto": 13,
+        "puntos_totales": 247
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 38,
+        "puesto": 13,
+        "puntos_totales": 285
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 45,
+        "puesto": 13,
+        "puntos_totales": 330
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 25,
+        "puesto": 13,
+        "puntos_totales": 355
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 34,
+        "puesto": 0,
+        "puntos_totales": 389
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 41,
+        "puesto": 0,
+        "puntos_totales": 430
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 46,
+        "puesto": 0,
+        "puntos_totales": 476
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 37,
+        "puesto": 0,
+        "puntos_totales": 513
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 69,
+        "puesto": 0,
+        "puntos_totales": 582
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 27,
+        "puesto": 0,
+        "puntos_totales": 609
       }
     ],
     "momento_gloria": "Yo creo que lograr el título siempre es la máxima en este juego",
@@ -501,26 +1671,116 @@
       {
         "jornada": 1,
         "puntos_jornada": 47,
-        "puesto": 4,
-        "puntos_totales": 129
+        "puesto": 8,
+        "puntos_totales": 47
       },
       {
         "jornada": 2,
         "puntos_jornada": 38,
-        "puesto": 4,
-        "puntos_totales": 129
+        "puesto": 8,
+        "puntos_totales": 85
       },
       {
         "jornada": 3,
         "puntos_jornada": 41,
-        "puesto": 4,
-        "puntos_totales": 129
+        "puesto": 8,
+        "puntos_totales": 126
+      },
+      {
+        "jornada": 4,
+        "puntos_jornada": 29,
+        "puesto": 8,
+        "puntos_totales": 155
+      },
+      {
+        "jornada": 5,
+        "puntos_jornada": 35,
+        "puesto": 8,
+        "puntos_totales": 190
       },
       {
         "jornada": 6,
-        "puntos_jornada": 3,
-        "puesto": 4,
-        "puntos_totales": 129
+        "puntos_jornada": 17,
+        "puesto": 8,
+        "puntos_totales": 207
+      },
+      {
+        "jornada": 7,
+        "puntos_jornada": 32,
+        "puesto": 8,
+        "puntos_totales": 239
+      },
+      {
+        "jornada": 8,
+        "puntos_jornada": 25,
+        "puesto": 8,
+        "puntos_totales": 264
+      },
+      {
+        "jornada": 9,
+        "puntos_jornada": 37,
+        "puesto": 8,
+        "puntos_totales": 301
+      },
+      {
+        "jornada": 10,
+        "puntos_jornada": 36,
+        "puesto": 8,
+        "puntos_totales": 337
+      },
+      {
+        "jornada": 11,
+        "puntos_jornada": 41,
+        "puesto": 8,
+        "puntos_totales": 378
+      },
+      {
+        "jornada": 12,
+        "puntos_jornada": 41,
+        "puesto": 8,
+        "puntos_totales": 419
+      },
+      {
+        "jornada": 13,
+        "puntos_jornada": 39,
+        "puesto": 8,
+        "puntos_totales": 458
+      },
+      {
+        "jornada": 14,
+        "puntos_jornada": 69,
+        "puesto": 0,
+        "puntos_totales": 527
+      },
+      {
+        "jornada": 15,
+        "puntos_jornada": 52,
+        "puesto": 0,
+        "puntos_totales": 579
+      },
+      {
+        "jornada": 16,
+        "puntos_jornada": 57,
+        "puesto": 0,
+        "puntos_totales": 636
+      },
+      {
+        "jornada": 17,
+        "puntos_jornada": 29,
+        "puesto": 0,
+        "puntos_totales": 665
+      },
+      {
+        "jornada": 18,
+        "puntos_jornada": 52,
+        "puesto": 0,
+        "puntos_totales": 717
+      },
+      {
+        "jornada": 19,
+        "puntos_jornada": 50,
+        "puesto": 0,
+        "puntos_totales": 767
       }
     ],
     "telegram_user_id": 6861763306,

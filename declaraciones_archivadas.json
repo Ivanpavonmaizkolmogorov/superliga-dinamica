@@ -395,5 +395,159 @@
         "declaracion": "está año nuestro amigo @javimoralv  se lo tomaría más enserio.. y se refería a que por lo menos se metería ya que el año pasado ni eso jajajajjajaa",
         "timestamp": "2025-08-15T10:27:24.300085",
         "mencionados": []
+    },
+    {
+        "message_id": 677,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "@javimoralv creo que te hubiera salido más rentable quedarte en negativo, no?",
+        "timestamp": "2025-08-16T00:21:00.681654",
+        "mencionados": []
+    },
+    {
+        "message_id": 702,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "Mira eso… lo dice el  que es el que entiende de esas cosas",
+        "timestamp": "2025-08-20T08:19:55.668392",
+        "mencionados": []
+    },
+    {
+        "message_id": 708,
+        "reply_to_message_id": 704,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "El Monarca de las Sombras 🏆 🏆",
+        "declaracion": "Esto es verdad Jaime?",
+        "timestamp": "2025-08-20T09:51:31.148242",
+        "mencionados": [
+            {
+                "telegram_user_id": 8237874411,
+                "nombre_mister": "king revolution 💪⚽"
+            }
+        ]
+    },
+    {
+        "message_id": 709,
+        "reply_to_message_id": null,
+        "telegram_user_id": 3195403,
+        "nombre_mister": "The 👑",
+        "declaracion": "El chaval tiene que trabajar el doble, el Panda tiene otras cosas en la cabeza... Y las gestione de compra y venta que está realizando son pruebas de ello",
+        "timestamp": "2025-08-20T09:55:44.927078",
+        "mencionados": []
+    },
+    {
+        "message_id": 724,
+        "reply_to_message_id": null,
+        "telegram_user_id": 3195403,
+        "nombre_mister": "The 👑",
+        "declaracion": "Esto de empezar las jornadas debiendo hace poca gracia...menos a @javimoralv que pagará poco 😂😂😂",
+        "timestamp": "2025-08-23T12:09:13.888797",
+        "mencionados": []
+    },
+    {
+        "message_id": 751,
+        "reply_to_message_id": null,
+        "telegram_user_id": 3195403,
+        "nombre_mister": "The 👑",
+        "declaracion": "Se dice \"tu eres tonto\" en un corrillo cerveza en mano y lo pasamos por alto, (no le damos importancia) pero si se dice por alguna Red social suena más feo, no le des importancia Jaime que seguro que Furby no te lo ha dicho para ofender, más en plan jocoso.\nNo creo que necesitemos un moderador, que ya somos grandes y sois amigos (o conocidos)\nDejemos de hablar de nuestros respectivos equipos y hablemos del juego nos irá mejor.  la gente de donde saca los dineros Piru estás dando horas extras los Sábados?",
+        "timestamp": "2025-08-24T11:00:53.625685",
+        "mencionados": [
+            {
+                "telegram_user_id": 8237874411,
+                "nombre_mister": "king revolution 💪⚽"
+            },
+            {
+                "telegram_user_id": 7360061740,
+                "nombre_mister": "Francis"
+            },
+            {
+                "telegram_user_id": 2043658875,
+                "nombre_mister": "raul_piru_"
+            }
+        ]
+    },
+    {
+        "message_id": 704,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "Que tienes a Jaime  negro perdió. Que dice que él no te hubiera elegido.. que es lo que tocó por ser el último..   🔥 🔥",
+        "timestamp": "2025-08-20T08:21:37.448802",
+        "mencionados": [
+            {
+                "telegram_user_id": 8237874411,
+                "nombre_mister": "king revolution 💪⚽"
+            }
+        ]
+    },
+    {
+        "message_id": 854,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7360061740,
+        "nombre_mister": "Francis",
+        "declaracion": "se viene revuelta en las oficinas con el mejor jugador del juego hasta el momento. ¿Quién reventará el mercado? Puede crear muchas dudas cediendo penaltis a ViniciusJR 😂",
+        "timestamp": "2025-11-11T15:39:57.586657",
+        "mencionados": []
+    },
+    {
+        "message_id": 855,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "aquí uno esperando a que se revienten todos para pescar en río revuelto las sobras!",
+        "timestamp": "2025-11-11T15:39:57.609290",
+        "mencionados": []
+    },
+    {
+        "message_id": 857,
+        "reply_to_message_id": null,
+        "telegram_user_id": 6788000516,
+        "nombre_mister": "THE ELEVATOR💪🏆",
+        "declaracion": "Golpe en la mesa del Corpas 😱  AL HANSI FLIK no se anda con tonterías",
+        "timestamp": "2025-11-12T06:48:43.068194",
+        "mencionados": [
+            {
+                "telegram_user_id": 6959330748,
+                "nombre_mister": "Al Hansi Flick 🏆🏆"
+            }
+        ]
+    },
+    {
+        "message_id": 858,
+        "reply_to_message_id": null,
+        "telegram_user_id": 7164678052,
+        "nombre_mister": "Perico",
+        "declaracion": "La cantidad de billetes que tiene la peña… sin vender jugadores, pagando 40k",
+        "timestamp": "2025-11-12T06:55:20.456858",
+        "mencionados": []
+    },
+    {
+        "message_id": 860,
+        "reply_to_message_id": null,
+        "telegram_user_id": 2078045747,
+        "nombre_mister": "El Monarca de las Sombras 🏆 🏆",
+        "declaracion": "Jamás se pagó tanto por un jugador en la jornada 12 y en las condiciones de juego k tenemos ahora con menos ingresos por punto y salarios. Increíble puja y cm dice el perro del perico Pantaki , sin sufrir demasiado en las ventas previas (por todos en general). Ha sido una puja bonita y creo k todo el mundo ha jugado bien lo k tenia y hasta donde podía llegar sin volarse la cabeza. Sí que me sorprende la capacidad k guardaba al hansi xk ha sido bestial, veremos los reajustes, pero sin duda, enhorabuena por el fichaje bro Corpas , si todo va bien Kylian ya no solo te dará coraje que meta gol ahora tb te dará alegrías por tenerlo en tus filas. Y al resto pues me reitero, denota que gran dominio de la materia. Que continué el juego!",
+        "timestamp": "2025-11-12T07:22:18.509137",
+        "mencionados": [
+            {
+                "telegram_user_id": 7164678052,
+                "nombre_mister": "Perico"
+            },
+            {
+                "telegram_user_id": 6959330748,
+                "nombre_mister": "Al Hansi Flick 🏆🏆"
+            }
+        ]
+    },
+    {
+        "message_id": 861,
+        "reply_to_message_id": null,
+        "telegram_user_id": 8286000967,
+        "nombre_mister": "Jortru",
+        "declaracion": ", increíble la cantidad de billetes que tenía guardados o con los que se ha quedado en negativo de momento sabiendo que no corre peligro esta semana xk no hay liga, lo que está claro es que se ha asegurado una buena cantidad de puntos todas las jornadas, 😅😅",
+        "timestamp": "2025-11-12T07:27:54.663109",
+        "mencionados": []
     }
 ]

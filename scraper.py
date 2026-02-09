@@ -42,8 +42,61 @@ def extraer_datos_mister():
             except Exception as e:
                 print(f"-> Error menor al cerrar cookies: {e}")
 
+            # --- DETECCIÓN DE LOGIN ---
+            # --- DETECCIÓN DE LOGIN (MEJORADA) ---
+            print("Verificando sesión...")
+            
+            # Bucle de espera inteligente (máx 5 mins)
+            start_time = time.time()
+            max_wait = 300
+            session_active = False
+
+            while time.time() - start_time < max_wait:
+                try:
+                    # 1. ¿Estamos ya en la pantalla correcta con el botón de jornada?
+                    if page.locator('button[data-tab="gameweek"]').is_visible():
+                        print("-> ¡Botón de jornada detectado! Estamos listos.")
+                        session_active = True
+                        break
+                    
+                    # 2. ¿Estamos logueados pero en otra pantalla (ej: Feed/Noticias)?
+                    # Buscamos elementos típicos de estar dentro: menú usuario, feed, etc.
+                    if page.locator('div.feed').is_visible() or page.locator('div.user-header').is_visible() or page.locator('a[href="/feed"]').is_visible():
+                        print("-> Login detectado (estamos en Home/Feed). Redirigiendo a Clasificación...")
+                        page.goto(MISTER_URL, wait_until="domcontentloaded")
+                        time.sleep(2) # Dar tiempo a que cargue
+                        continue
+                    
+                    # 3. Si no, seguimos esperando que el usuario se loguee
+                    current_wait = int(time.time() - start_time)
+                    if current_wait % 10 == 0: # Avisar cada 10s
+                        print(f"   (Esperando login... {current_wait}s / {max_wait}s)")
+                    
+                    time.sleep(1)
+
+                except Exception as e:
+                    print(f"Error leve verificando sesión: {e}")
+                    time.sleep(1)
+
+            if not session_active:
+                print("\n⚠️ NO SE DETECTA SESIÓN ACTIVA O BOTÓN DE JORNADA ⚠️")
+                print(">> Por favor, asegúrate de iniciar sesión y de que la web cargue correctamente.")
+                # Último intento desesperado: ir a la URL directa
+                print(">> Intentando ir directamente a la URL de clasificación una última vez...")
+                page.goto(MISTER_URL, wait_until="domcontentloaded")
+                try:
+                    page.locator('button[data-tab="gameweek"]').wait_for(state="visible", timeout=10000)
+                    print("-> ¡Ahora sí! Botón detectado.")
+                except TimeoutError:
+                    print("\n❌ Error: No se pudo acceder a la clasificación tras el login.")
+                    return None
+            else:
+                print("-> Sesión confirmada.")
+
             print("\nAccediendo a la pestaña de Jornada para obtener datos históricos...")
-            page.locator('button[data-tab="gameweek"]').click()
+            # Un click de seguridad por si acaso no estamos en la pestaña activa
+            if page.locator('button[data-tab="gameweek"]').is_visible():
+                page.locator('button[data-tab="gameweek"]').click()
             
             jornada_selector_locator = "div.gameweek-selector-inline a.btn"
             list_selector = "div.panel-gameweek ul.player-list"

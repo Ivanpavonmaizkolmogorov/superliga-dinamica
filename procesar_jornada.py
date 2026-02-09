@@ -56,7 +56,7 @@ def main():
         datos_web.sort(key=lambda x: x['puntos_totales'], reverse=True)
         
         # =================================================================
-        # FASE 1: SINCRONIZACIÓN DE PUNTOS Y PUESTOS (LÓGICA COMPLETAMENTE NUEVA)
+        # FASE 1: SINCRONIZACIÓN DE PUNTOS Y PUESTOS (CORREGIDO)
         # =================================================================
         hay_cambios_reales = False
         
@@ -68,37 +68,50 @@ def main():
             if not perfil_local:
                 continue
 
-            # Iteramos sobre CADA jornada que nos ha devuelto el scraper para este mánager
+            # 1. Actualizamos PUNTOS DE JORNADA (solamente)
             for registro_jornada_web in datos_manager_web.get('historial_web', []):
                 jornada_num = registro_jornada_web['jornada']
+                puntos_jornada_nuevos = registro_jornada_web['puntos_jornada']
                 
-                # Creamos el registro completo con los datos de esa jornada y los totales/puesto actuales
-                registro_web_completo = {
-                    "jornada": jornada_num,
-                    "puntos_jornada": registro_jornada_web['puntos_jornada'],
-                    "puesto": puesto_actual,
-                    "puntos_totales": datos_manager_web['puntos_totales']
-                }
-
                 historial_local = next((h for h in perfil_local['historial_temporada'] if h['jornada'] == jornada_num), None)
 
                 if not historial_local:
                     print(f"    - Añadiendo NUEVA J.{jornada_num} para {perfil_local['nombre_mister']}...")
-                    perfil_local['historial_temporada'].append(registro_web_completo)
+                    # Inicializamos puntos_totales en 0, se recalculará después
+                    perfil_local['historial_temporada'].append({
+                        "jornada": jornada_num,
+                        "puntos_jornada": puntos_jornada_nuevos,
+                        "puesto": 0, # Se recalculará después
+                        "puntos_totales": 0 
+                    })
                     hay_cambios_reales = True
-                elif historial_local != registro_web_completo:
-                    print(f"    - Actualizando datos en J.{jornada_num} para {perfil_local['nombre_mister']}...")
-                    historial_local.update(registro_web_completo)
+                elif historial_local['puntos_jornada'] != puntos_jornada_nuevos:
+                    print(f"    - Actualizando puntos en J.{jornada_num} para {perfil_local['nombre_mister']} (Antes: {historial_local['puntos_jornada']} -> Ahora: {puntos_jornada_nuevos})...")
+                    historial_local['puntos_jornada'] = puntos_jornada_nuevos
                     hay_cambios_reales = True
             
-            # Ordenamos el historial del perfil local una sola vez si ha habido cambios
-            if any(registro_jornada_web for registro_jornada_web in datos_manager_web.get('historial_web', [])):
-                 perfil_local['historial_temporada'].sort(key=lambda x: x['jornada'])
+            # 2. Recalculamos el HISTORIAL ACUMULADO (Puntos Totales y Puesto nos fiamos del orden actual)
+            # Ordenamos cronológicamente
+            perfil_local['historial_temporada'].sort(key=lambda x: x['jornada'])
+            
+            acumulado = 0
+            for jornada_data in perfil_local['historial_temporada']:
+                acumulado += jornada_data['puntos_jornada']
+                if jornada_data['puntos_totales'] != acumulado:
+                    jornada_data['puntos_totales'] = acumulado
+                    # Marcamos cambio si hemos corregido algún total histórico corrupto
+                    hay_cambios_reales = True
 
-        # Guardamos los perfiles actualizados ANTES de generar el reporte
+            # Verificación de seguridad: ¿Coincide nuestro cálculo con el total de la web?
+            if acumulado != datos_manager_web['puntos_totales']:
+                print(f"    ⚠️ ADVERTENCIA: Diferencia en totales para {perfil_local['nombre_mister']}. Web dice {datos_manager_web['puntos_totales']}, Calculado {acumulado}")
+                # Opcional: Podríamos forzar el de la web en la última jornada si confiamos más, 
+                # pero lo matemático es confiar en la suma. Lo dejamos así como aviso.
+
+        # Guardamos los perfiles actualizados
         if hay_cambios_reales:
             guardar_perfiles(perfiles)
-            print("-> ¡Cambios detectados! 'perfiles.json' ha sido actualizado.")
+            print("-> ¡Cambios detectados y corregidos! 'perfiles.json' ha sido actualizado.")
         else:
             print("-> No se han detectado cambios. Todo estaba ya sincronizado.")
         
