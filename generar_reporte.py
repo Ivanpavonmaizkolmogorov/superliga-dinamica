@@ -1,4 +1,9 @@
 # Imports completos, incluyendo tkinter
+import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 import tkinter as tk
 from tkinter import font, scrolledtext, messagebox
 from gestor_datos import cargar_perfiles, cargar_parejas, cargar_config_liga
@@ -207,7 +212,8 @@ def calcular_reparto_premios(perfiles, parejas, config_liga, jornada_actual):
                 nombre_premio_final = f"Líder Prov. Sprint {nombre_premio.split(' ')[2]}"
             
             # Calcula el líder actual del sprint
-            lider_sprint = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= jornada_actual))
+            fin_efectivo = min(fin, jornada_actual)
+            lider_sprint = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= fin_efectivo))
             
             # Asigna el premio con el nombre correcto
             premios_por_manager[lider_sprint['nombre_mister']].append((nombre_premio_final, premios_info.get(nombre_premio, 0)))
@@ -283,7 +289,8 @@ def generar_seccion_comentarios_ia(perfiles, parejas, config_liga, jornada_actua
     for nombre, (inicio, fin) in sprints_def.items():
         if jornada_actual >= inicio:
             es_final = (jornada_actual >= fin)
-            lider = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= jornada_actual))
+            fin_efectivo = min(fin, jornada_actual)
+            lider = max(perfiles, key=lambda p: sum(h['puntos_jornada'] for h in p['historial_temporada'] if inicio <= h['jornada'] <= fin_efectivo))
             comentario = generar_comentario_premio(f"Líder {nombre}", [lider['nombre_mister']], jornada_actual, es_final)
             reporte += f"### Sobre el Líder del {nombre}: {lider['nombre_mister']}\n{comentario}\n\n"
             
